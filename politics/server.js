@@ -9,7 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(__dirname));
 
 const DB_PATH = path.join(__dirname, 'db.json');
@@ -219,8 +220,6 @@ function validateImageUrl(url) {
     }
   });
 }
-
-// ---------------- REST API ENDPOINTS ----------------
 
 // Get complete database
 app.get('/api/db', (req, res) => {
@@ -444,13 +443,15 @@ app.post('/api/db/news/fetch', async (req, res) => {
           if (feed.lang === 'ta') {
             newArticle.title_ta = cleanRawTitle;
             newArticle.content_ta = cleanDesc || "செய்தியின் முழு விவரம் தவெக தலைமை அலுவலக ஊடகப் பிரிவில் விரைவில் வெளியிடப்படும்.";
-            newArticle.title_en = cleanRawTitle; // Fallback
-            newArticle.content_en = newArticle.content_ta; // Fallback
+            // English fields: leave blank so admin can fill them in correctly
+            newArticle.title_en = "";
+            newArticle.content_en = "Please add English translation of this article.";
           } else {
             newArticle.title_en = cleanRawTitle;
             newArticle.content_en = cleanDesc || "Press release details and official transcript will be published shortly by TVK Media Cell.";
-            newArticle.title_ta = cleanRawTitle; // Fallback
-            newArticle.content_ta = newArticle.content_en; // Fallback
+            // Tamil fields: leave blank so admin can fill them in correctly
+            newArticle.title_ta = "";
+            newArticle.content_ta = "இந்தக் கட்டுரையின் தமிழ் மொழிபெயர்ப்பை சேர்க்கவும்.";
           }
           
           dbData.news.unshift(newArticle); // Insert at top

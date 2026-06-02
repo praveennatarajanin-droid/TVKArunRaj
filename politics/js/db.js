@@ -10,178 +10,178 @@ const TVKDb = (() => {
   // Initial Seed Data to make the website look highly authentic and rich on first load
   const seedData = {
     config: {
-      site_title_en: "Tamilaga Vettri Kazhagam | TVK Party Portal | Chief Minister of TN",
-      site_title_ta: "தமிழக வெற்றி கழகம் | தவெக தலைமை இணையதளம் | தமிழக முதல்வர்",
-      party_name_en: "Tamilaga Vettri Kazhagam (TVK)",
-      party_name_ta: "தமிழக வெற்றி கழகம் (தவெக)",
-      mla_name_en: "Thalapathy Vijay",
-      mla_name_ta: "தளபதி விஜய்",
-      mla_title_en: "TVK Founder-President & Hon'ble Chief Minister of Tamil Nadu",
-      mla_title_ta: "தவெக நிறுவனத் தலைவர் & மாண்புமிகு தமிழக முதலமைச்சர்",
-      marquee_news_en: "🏆 TVK President Thalapathy Vijay sworn in as Chief Minister of Tamil Nadu! • Historic thanksgiving rally held in Tiruchirappalli: Vijay declares TVK as the primary alternative in TN • Membership drive achieves record 1 crore registrations • Public helpline launched: 1800-425-4545",
-      marquee_news_ta: "🏆 தவெக தலைவர் தளபதி விஜய் தமிழக முதலமைச்சராக பொறுப்பேற்பு! • திருச்சியில் நடந்த பிரம்மாண்ட நன்றி அறிவிப்பு கூட்டம்: தவெகவே தமிழகத்தின் முதன்மை மாற்று என விஜய் பிரகடனம் • தவெக உறுப்பினர் சேர்க்கை 1 கோடியை கடந்து சாதனை • மக்கள் உதவி எண்: 1800-425-4545",
-      phone: "+91 44 2465 1234",
-      email: "contact@tvk.org.in",
-      office_address_en: "TVK Headquarters, No. 25, Bhaktiyar Street, Panneerselvam Nagar, Panaiyur, Chennai - 600119",
-      office_address_ta: "தவெக தலைமை நிலையம், எண். 25, பக்தியார் தெரு, பன்னீர்செல்வம் நகர், பனையூர், சென்னை - 600119",
+      site_title_en: "TVK Tambaram MLA | D. Sarathkumar Constituency Portal",
+      site_title_ta: "தவெக தாம்பரம் சட்டமன்ற உறுப்பினர் | டி. சரத்குமார் இணையதள முகப்பு",
+      party_name_en: "Tamilaga Vettri Kazhagam (TVK) - Tambaram",
+      party_name_ta: "தமிழக வெற்றி கழகம் (தவெக) - தாம்பரம்",
+      mla_name_en: "D. Sarathkumar",
+      mla_name_ta: "டி. சரத்குமார்",
+      mla_title_en: "Cabinet Minister for Human Resources Management & Tambaram MLA",
+      mla_title_ta: "மனிதவள மேலாண்மைத் துறை அமைச்சர் & தாம்பரம் சட்டமன்ற உறுப்பினர்",
+      marquee_news_en: "🏆 Tambaram MLA D. Sarathkumar inspects Selaiyur and Mudichur lake desilting projects • TVK Membership camp registered 50,000+ members in Tambaram • MLA Grievance cell resolves 1,200+ municipal complaints this month • Free coaching classes launched for TNPSC aspirants at East Tambaram.",
+      marquee_news_ta: "🏆 தாம்பரம் சட்டமன்ற உறுப்பினர் டி. சரத்குமார் சேலையூர் மற்றும் முடிச்சூர் ஏரிகளை நேரில் ஆய்வு செய்தார்! • தாம்பரத்தில் தவெக உறுப்பினர் சேர்க்கை 50,000-ஐ கடந்தது • சட்டமன்ற உறுப்பினர் குறைதீர்ப்பு முகாமில் இம்மாதம் 1,200+ மனுக்களுக்கு தீர்வு • கிழக்கு தாம்பரத்தில் TNPSC போட்டித் தேர்வுகளுக்கான இலவச பயிலகம் துவக்கம்.",
+      phone: "+91 44 2239 5555",
+      email: "tambaram.mla@tvk.org.in",
+      office_address_en: "TVK Constituency Office, No. 12, Duraisamy Reddy Street, East Tambaram, Chennai - 600059",
+      office_address_ta: "தவெக தொகுதி அலுவலகம், எண். 12, துரைசாமி ரெட்டி தெரு, கிழக்கு தாம்பரம், சென்னை - 600059",
       facebook: "https://facebook.com/tvkofficial",
       twitter: "https://twitter.com/tvkofficial",
       instagram: "https://instagram.com/tvkofficial",
       youtube: "https://youtube.com/c/TVKOfficial",
-      mla_image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Vijay_at_the_Nadigar_Sangam_Protest.jpg",
+      mla_image_url: "images/sarathkumar.png",
       leader_image_url: "images/tvklogo.png",
       admin_password: "tvk2026"
     },
     news: [
       {
         id: "news_1",
-        title_en: "Chief Minister Vijay's first massive Thanksgiving Rally in Trichy: Declares political battlefield is only between TVK and DMK",
-        title_ta: "திருச்சியில் முதல்வர் விஜய் பங்கேற்ற பிரம்மாண்ட தவெக நன்றி அறிவிப்பு விழா: தவெக vs திமுக இடையே தான் நேரடிப் போட்டி எனப் பிரகடனம்",
-        content_en: "Tamilaga Vettri Kazhagam (TVK) President and newly sworn-in Chief Minister C. Joseph Vijay addressed a massive thanksgiving meeting in Tiruchirappalli today, marking his first major public appearance since assuming office. Addressing a crowd of lakhs of supporters, Vijay declared that the political battlefield in Tamil Nadu is now a binary contest only between TVK and the ruling DMK, dismissing the relevance of other political forces. He rejected all allegations of horse-trading in the post-election government formation, asserting that his administration would offer a secular, transparent, and corruption-free governance model based on social justice.",
-        content_ta: "தமிழக வெற்றி கழகத்தின் (தவெக) நிறுவனத் தலைவரும் மாண்புமிகு தமிழக முதலமைச்சருமான தளபதி விஜய், பதவியேற்ற பிறகு தனது முதல் பிரம்மாண்ட மக்கள் நன்றி அறிவிப்பு கூட்டத்தில் திருச்சிராப்பள்ளியில் இன்று உரையாற்றினார். லட்சக்கணக்கான மக்கள் திரண்டிருந்த இந்தக் கூட்டத்தில் உரையாற்றிய முதல்வர் விஜய், தமிழகத்தில் இனி களம் என்பது தவெக மற்றும் திமுக ஆகிய இரு கட்சிகளுக்கு இடையே மட்டுமேயான நேரடிப் போட்டி என்று பிரகடனம் செய்தார். ஆட்சி அமைப்பது தொடர்பாக தன் மீது சுமத்தப்பட்ட அவதூறுகளை திட்டவட்டமாக மறுத்த அவர், சமூக நீதி, மதச்சார்பற்ற தன்மை மற்றும் வெளிப்படையான ஊழலற்ற நிர்வாகத்தை மக்கள் நலனுக்காக தவெக அரசு வழங்கும் என்றார்.",
-        image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Vijay_at_the_Nadigar_Sangam_Protest.jpg",
         category: "Press Releases",
         date: "2026-06-01",
-        is_featured: true
+        image_url: "images/secretariat.jpg",
+        is_featured: true,
+        title_en: "Graft-free administration is our prime goal: CM Joseph Vijay at first State Cabinet briefing",
+        title_ta: "ஊழலற்ற நிர்வாகமே எங்கள் முதன்மை இலக்கு: முதல் அமைச்சரவைக் கூட்டத்தில் முதல்வர் விஜய் உறுதி",
+        content_en: "In the first cabinet briefing after taking oath, Chief Minister Thalapathy Vijay announced a series of administrative reforms, emphasizing a graft-free, secular, and transparent government model. TVK cabinet has approved the digitization of all files and automated civic grievance redressal. The CM assured that welfare schemes will reach every citizen without intermediary leakages.",
+        content_ta: "பதவியேற்புக்குப் பிந்தைய முதல் அமைச்சரவைக் கூட்டத்தில் பேசிய மாண்புமிகு முதல்வர் தளபதி விஜய், நேர்மையான, மதச்சார்பற்ற மற்றும் ஊழலற்ற வெளிப்படையான நிர்வாகத்தை மக்கள் நலனுக்காக தவெக அரசு வழங்கும் எனப் பிரகடனம் செய்தார். கோப்புகள் அனைத்தும் டிஜிட்டல் மயமாக்கப்பட்டு, மக்கள் குறைகளுக்கு 15 நாட்களில் தீர்வு காண அமைச்சரவை ஒப்புதல் அளித்துள்ளது."
       },
       {
         id: "news_2",
-        title_en: "TVK Government passes Vote of Confidence in Legislative Assembly; CM Vijay outlines welfare plan",
-        title_ta: "தமிழக சட்டப்பேரவையில் தவெக அரசு பெரும்பான்மையை நிரூபித்தது; புதிய மக்கள் நலத்திட்டங்களை அறிவித்தார் முதல்வர் விஜய்",
-        content_en: "The newly formed TVK government under Chief Minister Vijay successfully passed the vote of confidence in the Tamil Nadu Legislative Assembly at Fort St. George today. Securing 144 votes in favor with support from alliance partners, the motion was carried smoothly. In his maiden assembly address, Chief Minister Vijay outlined his government's priority sectors, including youth employment reforms under the Human Resources Department, digital grievance cells, and accelerated restoration of water channels across Chennai and key municipal districts.",
-        content_ta: "தலைமைச் செயலகமான கோட்டை செயின்ட் ஜார்ஜில் இன்று நடைபெற்ற சட்டமன்றக் கூட்டத்தொடரில், தவெக அரசு தனது பெரும்பான்மையை வெற்றிகரமாக நிரூபித்தது. கூட்டணி கட்சிகளின் ஆதரவுடன் 144 வாக்குகள் பெற்று நம்பிக்கை தீர்மானம் வெற்றி பெற்றது. தனது முதல் பேரவை உரையில் பேசிய முதலமைச்சர் விஜய், அரசுப் பணிகளில் வெளிப்படையான வேலைவாய்ப்பு சீர்திருத்தங்கள், டிஜிட்டல் முறையிலான மக்கள் குறைதீர்ப்பு மையங்கள் மற்றும் தமிழகத்தின் முக்கிய நீர்நிலைகளைப் பாதுகாக்கும் திட்டங்களுக்கு முன்னுரிமை அளிக்கப்படும் என்று உறுதியளித்தார்.",
-        image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Fort_St_George_Chennai.JPG",
         category: "Constituency Work",
         date: "2026-05-28",
-        is_featured: false
+        image_url: "images/lake.jpg",
+        is_featured: false,
+        title_en: "Tambaram MLA D. Sarathkumar inspects storm water drain construction and desilting at Mudichur",
+        title_ta: "தாம்பரம் சட்டமன்ற உறுப்பினர் டி. சரத்குமார் முடிச்சூரில் பருவமழைக்கு முன் வடிகால் பணிகளை ஆய்வு செய்தார்",
+        content_en: "Tambaram Assembly constituency MLA and Minister D. Sarathkumar conducted a field inspection of desilting and storm water drain works at Mudichur, Selaiyur, and Chromepet. He directed corporation engineers to remove blockages and complete all structural works before the monsoon season to prevent water-logging in residential zones.",
+        content_ta: "தாம்பரம் தொகுதி சட்டமன்ற உறுப்பினரும் அமைச்சருமான டி. சரத்குமார் இன்று முடிச்சூர் மற்றும் சேலையூர் ஏரி இணைப்புக் கால்வாய்கள் தூர்வாரும் பணிகளை நேரில் பார்வையிட்டார். மழைக்காலங்களில் குடியிருப்புப் பகுதிகளில் வெள்ளம் சூழாமல் இருக்க, மழைநீர் வடிகால் பணிகளை உடனடியாக முடிக்க மாநகராட்சி அதிகாரிகளுக்கு அறிவுறுத்தினார்."
       },
       {
         id: "news_3",
-        title_en: "CM Vijay resigns from Tiruchirappalli East, retains Perambur Assembly Constituency",
-        title_ta: "திருச்சி கிழக்கு தொகுதியை ராஜினாமா செய்து பெரம்பூர் தொகுதி சட்டமன்ற உறுப்பினராக நீடிக்கிறார் முதல்வர் விஜய்",
-        content_en: "Following his victory in both Tiruchirappalli East and Perambur assembly constituencies in the 2026 elections, Chief Minister Vijay has formally resigned from the Tiruchirappalli East seat. He will continue to represent the Perambur constituency in the Legislative Assembly. The Election Commission will announce the by-election dates for the vacant Tiruchirappalli East seat shortly, which is expected to witness a high-profile electoral contest.",
-        content_ta: "அண்மையில் நடைபெற்ற சட்டமன்றத் தேர்தல் முடிவுகளில் திருச்சி கிழக்கு மற்றும் பெரம்பூர் ஆகிய இரு தொகுதிகளிலும் வெற்றி பெற்ற மாண்புமிகு முதலமைச்சர் விஜய், தனது திருச்சி கிழக்கு தொகுதி சட்டமன்ற உறுப்பினர் பதவியை அதிகாரப்பூர்வமாக ராஜினாமா செய்தார். அவர் சென்னை பெரம்பூர் தொகுதி உறுப்பினராகத் தொடர்ந்து நீடிப்பார். காலியாக உள்ள திருச்சி கிழக்கு தொகுதிக்கு விரைவில் இடைத்தேர்தல் தேதியை தேர்தல் ஆணையம் அறிவிக்கும் என எதிர்பார்க்கப்படுகிறது.",
-        image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Srirangam_temple_gopuram.jpg",
-        category: "Press Releases",
+        category: "Welfare Activities",
         date: "2026-05-25",
-        is_featured: false
+        image_url: "images/medical.jpg",
+        is_featured: false,
+        title_en: "Free multi-specialty medical checkup camp organized by TVK youth wing in West Tambaram",
+        title_ta: "மேற்கு தாம்பரத்தில் தவெக சார்பில் நடைபெற்ற இலவச பன்னோக்கு மருத்துவ ஆலோசனை முகாம்",
+        content_en: "Under the guidance of CM Thalapathy Vijay, a massive free health camp was organized by Tambaram TVK cadres. Over 1,000 residents received free medical checks, consultations, and medicines. Tambaram MLA D. Sarathkumar inaugurated the camp and distributed healthcare aid kits to families.",
+        content_ta: "தவெக தலைவர் முதல்வர் தளபதி விஜய் அவர்களின் அறிவுறுத்தலின்படி, தாம்பரம் தொகுதி தவெக சார்பில் மாபெரும் இலவச மருத்துவ முகாம் நடைபெற்றது. 1,000-க்கும் மேற்பட்ட பயனாளிகளுக்கு இலவச மருத்துவ பரிசோதனைகள் செய்யப்பட்டு மருந்துகள் வழங்கப்பட்டன. முகாமைத் தொடங்கி வைத்த அமைச்சர் டி. சரத்குமார் குடும்பங்களுக்கு நலத்திட்ட உதவிகளை வழங்கினார்."
       },
       {
         id: "news_4",
-        title_en: "TVK Headquarters launches statewide Membership Drive Campaign; targets 2 crore members",
-        title_ta: "தமிழகம் முழுவதும் தவெகவின் புதிய உறுப்பினர் சேர்க்கை முகாம் துவக்கம்; 2 கோடி உறுப்பினர்களை சேர்க்க இலக்கு",
-        content_en: "TVK General Secretary announced the launch of the second phase of the party's statewide membership drive. Following the party's ascension to power, there has been an unprecedented surge in youth registration. Using a state-of-the-art digital portal and mobile application, the party aims to register over 2 crore members by the end of 2026. Local party cadres have been instructed to conduct door-to-door enrollment camps in every village and municipal ward.",
-        content_ta: "தமிழக வெற்றி கழகத்தின் மாநில அளவிலான புதிய உறுப்பினர் சேர்க்கை இயக்கத்தின் இரண்டாம் கட்டத்தை கட்சியின் பொதுச்செயலாளர் இன்று தொடங்கி வைத்தார். தவெக ஆட்சிப் பொறுப்பேற்றதைத் தொடர்ந்து, லட்சக்கணக்கான இளைஞர்கள் கட்சியில் இணைய ஆர்வம் காட்டி வருகின்றனர். புதிய இணையதளம் மற்றும் மொபைல் ஆப் மூலமாக 2026-க்குள் 2 கோடி உறுப்பினர்களைச் சேர்க்க கட்சி இலக்கு நிர்ணயித்துள்ளது. கிராமங்கள் மற்றும் வார்டுகள் தோறும் முகாம்கள் நடத்த தொண்டர்களுக்கு அறிவுறுத்தப்பட்டுள்ளது.",
-        image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Marina_Beach_Chennai.jpg",
         category: "Welfare Activities",
         date: "2026-05-20",
-        is_featured: false
+        image_url: "images/classroom.jpg",
+        is_featured: false,
+        title_en: "TVK Free Competitive Exam Study Center launched in East Tambaram by MLA D. Sarathkumar",
+        title_ta: "கிழக்கு தாம்பரத்தில் அரசுத் தேர்வு இலவச பயிலகத்தை திறந்து வைத்தார் சட்டமன்ற உறுப்பினர் டி. சரத்குமார்",
+        content_en: "To support students from economically weaker sections, Tambaram MLA D. Sarathkumar inaugurated a TVK Free Competitive Exam Study Center. The academy provides free coaching, textbooks, and online mock tests for TNPSC, UPSC, and banking examinations, benefiting hundreds of local aspirants.",
+        content_ta: "ஏழை மாணவர்களின் கல்வி நலனை மேம்படுத்தும் நோக்கில், தாம்பரம் தொகுதி தவெக சார்பில் அரசுத் தேர்வுகளுக்கான இலவச பயிலகத்தை சட்டமன்ற உறுப்பினர் டி. சரத்குமார் திறந்து வைத்தார். இதன் மூலம் குரோம்பேட்டை மற்றும் தாம்பரம் பகுதி மாணவர்கள் TNPSC, UPSC தேர்வுகளுக்கு இலவசமாக பயிற்சி பெறலாம்."
       }
     ],
     projects: [
       {
         id: "proj_1",
-        title_en: "TVK Smart Employment Portal & Civil Services Study Centers",
-        title_ta: "தவெக ஸ்மார்ட் வேலைவாய்ப்பு போர்ட்டல் & அரசுத் தேர்வு இலவச பயிலகம்",
-        description_en: "Setting up 50 free digital study centers across key districts in Tamil Nadu to provide materials and coaching for civil service exams.",
-        description_ta: "தமிழகம் முழுவதும் 50 நவீன இலவச டிஜிட்டல் பயிலகங்களைத் தொடங்கி, போட்டித் தேர்வுகளுக்குத் தயாராகும் மாணவர்களுக்கு இலவசப் பயிற்சிகளும் நூலக வசதிகளும் வழங்குதல்.",
+        title_en: "Selaiyur & Mudichur Lake Desilting & Ecological Restoration",
+        title_ta: "சேலையூர் & முடிச்சூர் ஏரி தூர்வாருதல் மற்றும் சுற்றுச்சூழல் சீரமைப்பு",
+        description_en: "Deepening, strengthening of bunds, and creation of walking tracks at Selaiyur and Mudichur lakes to increase water storage and recharge groundwater.",
+        description_ta: "தாம்பரத்தின் முக்கிய குடிநீர் ஆதாரங்களான சேலையூர் மற்றும் முடிச்சூர் ஏரிகளை தூர்வாரி, கரைகளைப் பலப்படுத்தி, நடைபாதை அமைக்கும் சுற்றுச்சூழல் மேம்பாட்டுத் திட்டம்.",
         status: "ongoing",
-        location_en: "All 38 Districts of Tamil Nadu",
-        location_ta: "தமிழகத்தின் அனைத்து 38 மாவட்டங்கள்",
-        impact_en: "Empowers 2,00,000+ government job aspirants",
-        impact_ta: "2,00,000-க்கும் மேற்பட்ட அரசு வேலை தேடும் இளைஞர்கள் பயன்பெறுவர்"
+        location_en: "Tambaram Constituency",
+        location_ta: "தாம்பரம் சட்டமன்ற தொகுதி",
+        impact_en: "Prevents flood in 20+ residential colonies and increases groundwater tables",
+        impact_ta: "20-க்கும் மேற்பட்ட குடியிருப்பு பகுதிகளில் வெள்ளத்தடுப்பு மற்றும் நிலத்தடி நீர் உயர்வு"
       },
       {
         id: "proj_2",
-        title_en: "Ecological Restoration of River Basins & Urban Water Bodies",
-        title_ta: "ஆற்றுப் படுகைகள் மற்றும் நகர்ப்புற நீர்நிலைகள் சுற்றுச்சூழல் சீரமைப்புத் திட்டம்",
-        description_en: "Desiltation and ecological restoration of major river channels including Cauvery, Adyar, and Cooum river basins to prevent water-logging and increase groundwater recharge.",
-        description_ta: "வெள்ளநீர் தேங்குவதைத் தடுக்கவும் நிலத்தடி நீர்மட்டத்தை உயர்த்தவும் காவேரி, அடையாறு, கூவம் உள்ளிட்ட முக்கிய ஆற்றுப் படுகைகள் மற்றும் ஏரிகளைத் தூர்வாரி தூய்மைப்படுத்துதல்.",
-        status: "ongoing",
-        location_en: "Trichy, Chennai & Madurai Districts",
-        location_ta: "திருச்சி, சென்னை & மதுரை மாவட்டங்கள்",
-        impact_en: "Protects millions of citizens from monsoon floods",
-        impact_ta: "மழைக்கால வெள்ளப் பாதிப்புகளில் இருந்து கோடிக்கணக்கான மக்களைப் பாதுகாக்கும்"
+        title_en: "Establishment of TVK Free Civil Services Coaching Center",
+        title_ta: "தவெக ஐ.ஏ.எஸ் மற்றும் அரசுத் தேர்வு இலவச பயிலகம் அமைத்தல்",
+        description_en: "Setting up a state-of-the-art coaching center with library resources in East Tambaram for civil services and TNPSC aspirants.",
+        description_ta: "தாம்பரம் பகுதி இளைஞர்கள் போட்டித் தேர்வுகளில் வெற்றி பெற கிழக்கு தாம்பரத்தில் நவீன டிஜிட்டல் நூலகத்துடன் கூடிய இலவச பயிலகம் அமைக்கும் பணி.",
+        status: "completed",
+        location_en: "East Tambaram, Chennai",
+        location_ta: "கிழக்கு தாம்பரம், சென்னை",
+        impact_en: "Supports 500+ local students annually with professional mentoring",
+        impact_ta: "ஆண்டுதோறும் 500-க்கும் மேற்பட்ட உள்ளூர் மாணவர்கள் பயன் பெறுவர்"
       },
       {
         id: "proj_3",
-        title_en: "TVK Chief Minister's Grievance Redressal Digitization (CM-GRID)",
-        title_ta: "முதல்வரின் டிஜிட்டல் குறைதீர்ப்பு மேலாண்மைத் திட்டம் (CM-GRID)",
-        description_en: "Integrating block-level municipal public feedback systems directly with the CM desk via automated file-tracking and dashboard notifications.",
-        description_ta: "வார்டு மற்றும் பஞ்சாயத்து அளவிலான பொதுமக்களின் குறைகளை நேரடியாக முதல்வர் அலுவலகத்துடன் இணைக்கும் அதிநவீன டிஜிட்டல் மனு கண்காணிப்புத் திட்டம்.",
+        title_en: "MLA Public Grievance Digital Tracking System (Tambaram Ward Offices)",
+        title_ta: "சட்டமன்ற உறுப்பினர் குறைதீர்ப்பு முகாம் டிஜிட்டல் கண்காணிப்பு திட்டம்",
+        description_en: "Digitizing the grievance submission process across all 5 wards in Tambaram, connecting petitions directly to the MLA table for swift action.",
+        description_ta: "தாம்பரம் தொகுதியில் சமர்ப்பிக்கப்படும் மக்கள் மனுக்களை சட்டமன்ற உறுப்பினரின் நேரடி கண்காணிப்பில் டிஜிட்டல் முறையில் கண்காணிக்கும் திட்டம்.",
         status: "completed",
-        location_en: "Statewide roll-out in Secretariat",
-        location_ta: "தலைமைச் செயலகம், மாநில அளவிலான வெளியீடு",
-        impact_en: "Resolves public petitions within 15 working days",
-        impact_ta: "பொதுமக்களின் மனுக்களுக்கு 15 வேலை நாட்களுக்குள் தீர்வு காணப்படும்"
+        location_en: "All Ward Offices, Tambaram",
+        location_ta: "தாம்பரம் மாநகராட்சி வார்டு அலுவலகங்கள்",
+        impact_en: "Ensures resolution of civic complaints within 15 working days",
+        impact_ta: "15 நாட்களுக்குள் குடிநீர், சாலை பிரச்சனைகளுக்கு தீர்வு காணுதல்"
       }
     ],
     gallery: [
       {
         id: "gal_1",
-        caption_en: "Chief Minister Thalapathy Vijay taking the oath of office at the Fort St. George Secretariat",
-        caption_ta: "தலைமைச் செயலகத்தில் தமிழக முதலமைச்சராக தளபதி விஜய் உறுதிமொழி எடுத்துப் பொறுப்பேற்ற நிகழ்வு",
-        image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Fort_St_George_Chennai.JPG",
-        date: "2026-05-15"
+        caption_en: "Tambaram MLA D. Sarathkumar reviewing desilting operations at Mudichur lake bunds",
+        caption_ta: "முடிச்சூர் ஏரி மதகுகள் மற்றும் தூர்வாரும் பணிகளை நேரில் பார்வையிட்டு ஆய்வு செய்யும் சட்டமன்ற உறுப்பினர் டி. சரத்குமார்",
+        image_url: "images/lake.jpg",
+        date: "2026-05-28"
       },
       {
         id: "gal_2",
-        caption_en: "Lakhs of TVK cadres gathering at the historic Tiruchirappalli thanksgiving public meeting",
-        caption_ta: "திருச்சியில் நடைபெற்ற பிரம்மாண்ட நன்றி அறிவிப்பு மாநாட்டில் திரண்ட தவெக தொண்டர்கள் மற்றும் பொதுமக்கள் வெள்ளம்",
-        image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Srirangam_temple_gopuram.jpg",
-        date: "2026-06-01"
+        caption_en: "Distribution of free books and coaching materials to competitive exam students",
+        caption_ta: "அரசுத் தேர்வு இலவச பயிலக மாணவர்களுக்கு பாடப்புத்தகங்கள் மற்றும் பயிற்சி கையேடுகளை வழங்கிய அமைச்சர்",
+        image_url: "images/classroom.jpg",
+        date: "2026-05-25"
       },
       {
         id: "gal_3",
-        caption_en: "CM Vijay inspecting ongoing canal clearance and ecological projects in Perambur",
-        caption_ta: "பெரம்பூர் தொகுதியில் நடைபெற்று வரும் கால்வாய் தூர்வாரும் தூய்மைப் பணிகளை நேரில் பார்வையிட்டு ஆய்வு செய்த முதல்வர்",
-        image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Marina_Beach_Chennai.jpg",
-        date: "2026-05-24"
+        caption_en: "Medical camp team conducting free checkups and distributing health kits in Tambaram",
+        caption_ta: "தாம்பரம் தவெக சார்பில் நடைபெற்ற இலவச பன்னோக்கு மருத்துவ முகாமில் சிகிச்சை பெறும் முதியவர்கள்",
+        image_url: "images/medical.jpg",
+        date: "2026-05-23"
       },
       {
         id: "gal_4",
-        caption_en: "CM Vijay chairing the first State Cabinet meeting to clear student welfare and education schemes",
-        caption_ta: "மாணவர்கள் நலன் மற்றும் அரசு வேலைவாய்ப்பு சீர்திருத்தக் கோப்புகளில் கையெழுத்திட முதலமைச்சரின் தலைமையில் நடைபெற்ற அமைச்சரவைக் கூட்டம்",
-        image_url: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Kapaleeshwarar_Temple_Chennai.jpg",
-        date: "2026-05-18"
+        caption_en: "MLA D. Sarathkumar planting tree saplings along Selaiyur main roads",
+        caption_ta: "சேலையூர் பகுதியில் மரக்கன்றுகளை நட்டு மாபெரும் பசுமை இயக்கத்தை தொடங்கி வைத்த சட்டமன்ற உறுப்பினர்",
+        image_url: "images/cleanliness.jpg",
+        date: "2026-05-20"
       }
     ],
     videos: [
       {
         id: "vid_1",
-        title_en: "CM Thalapathy Vijay Address at Trichy Thanksgiving Rally - Full Speech",
-        title_ta: "திருச்சி தவெக நன்றி அறிவிப்பு மாநாட்டில் முதல்வர் விஜயின் முழு உரை",
+        title_en: "Tambaram MLA D. Sarathkumar Press Meet on Storm Water Drain Works & Flood Preparedness",
+        title_ta: "தாம்பரம் தொகுதி வெள்ளத்தடுப்பு பணிகள் குறித்து சட்டமன்ற உறுப்பினர் டி. சரத்குமார் செய்தியாளர் சந்திப்பு",
         video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        thumbnail_url: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Vijay_at_the_Nadigar_Sangam_Protest.jpg"
+        thumbnail_url: "images/lake.jpg"
       },
       {
         id: "vid_2",
-        title_en: "First Cabinet Meeting chaired by CM Vijay - Press Briefing",
-        title_ta: "தமிழக முதல்வர் விஜய் தலைமையிலான முதல் அமைச்சரவைக் கூட்டத்தின் செய்தியாளர் சந்திப்பு",
+        title_en: "CM Thalapathy Vijay Address on State Welfare Schemes & Youth Employment Policies",
+        title_ta: "தவெக அரசின் மாநில மக்கள் நலத்திட்டங்கள் குறித்து முதல்வர் தளபதி விஜயின் கொள்கை உரை",
         video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        thumbnail_url: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Fort_St_George_Chennai.JPG"
+        thumbnail_url: "images/vijay.jpg"
       }
     ],
     grievances: [
       {
         id: "griev_1",
         name: "K. Ranganathan",
-        email: "ranga.perambur@gmail.com",
+        email: "ranga.tambaram@gmail.com",
         phone: "+91 98400 98765",
-        ward_no: "Ward 12 (Perambur)",
+        ward_no: "Ward 12 (East Tambaram)",
         grievance_type: "Roads & Traffic",
-        description: "The main approach road to Perambur subway has deep potholes that collect water. Please relay the road and clear storm water drains.",
+        description: "The main approach road near East Tambaram railway station has deep potholes. Please inspect and relay the road.",
         date: "2026-06-01",
         status: "reviewed"
       },
       {
         id: "griev_2",
         name: "Meenakshi Sundaram",
-        email: "meena.trichy@yahoo.com",
+        email: "meena.selaiyur@yahoo.com",
         phone: "+91 97900 12345",
-        ward_no: "Ward 5 (Trichy East)",
-        grievance_type: "Water Supply",
-        description: "Drinking water distribution is irregular. Kindly inspect and ensure regular supply.",
+        ward_no: "Ward 14 (Selaiyur)",
+        grievance_type: "Garbage Clearance",
+        description: "Regular garbage collection is not happening on Kamaraj Street. Kindly address this issue.",
         date: "2026-05-30",
         status: "pending"
       }
@@ -201,17 +201,19 @@ const TVKDb = (() => {
     try {
       const parsed = JSON.parse(db);
       
-      // Force migration if old D. Sarathkumar data is found or if social links or logo filename are outdated
+      // Force migration if old Vijay data is found (meaning we are running the TVK Sarathkumar rebranding)
       const needsMigration = !parsed.config || 
-                             (parsed.config.mla_name_en && parsed.config.mla_name_en.includes("Sarathkumar")) || 
+                             (parsed.config.mla_name_en && parsed.config.mla_name_en.includes("Vijay")) || 
                              !parsed.config.facebook || 
                              parsed.config.facebook === "#" || 
-                             parsed.config.facebook.includes("tambaram") ||
+                             !parsed.config.mla_image_url ||
+                             parsed.config.mla_image_url.includes("vijay.jpg") ||
                              !parsed.config.leader_image_url ||
-                             parsed.config.leader_image_url.includes("tvk_logo.png");
+                             parsed.config.leader_image_url.includes("tvk_logo.png") ||
+                             (parsed.config.mla_image_url && parsed.config.mla_image_url.includes("wikipedia.org"));
                              
       if (needsMigration) {
-        console.log("Forcing re-seed for TVK CM Vijay news portal");
+        console.log("Forcing re-seed for TVK D. Sarathkumar Tambaram MLA constituency portal");
         localStorage.setItem(STORAGE_KEY, JSON.stringify(seedData));
         return seedData;
       }

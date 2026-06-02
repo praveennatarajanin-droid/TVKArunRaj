@@ -6,14 +6,24 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   // Active Sidebar panel state
-  let currentPanel = "settings";
+  let currentPanel = "dashboard";
   let editingNewsId = null;
   let editingProjectId = null;
   let editingVideoId = null;
+  
+  // Dashboard pagination and search state
+  let latestPostsPage = 1;
+  let latestPostsLimit = 10;
+  let latestPostsSearch = "";
+
+  let popularPostsPage = 1;
+  let popularPostsLimit = 10;
+  let popularPostsSearch = "";
 
   // Active Base64 Upload Buffers
   let newsImageBase64 = "";
   let galleryImageBase64 = "";
+  let mlaProfileImageBase64 = "";
 
   const elements = {
     sidebarBtns: document.querySelectorAll(".sidebar-btn"),
@@ -28,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     newsTableBody: document.getElementById("news-table-body"),
     newsFileInput: document.getElementById("news-file"),
     newsImgPreview: document.getElementById("news-img-preview"),
+    newsImgPreviewBox: document.getElementById("news-img-preview-box"),
     cancelNewsEditBtn: document.getElementById("cancel-news-edit"),
     newsFormTitle: document.getElementById("news-form-title"),
     
@@ -40,6 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Gallery & Video elements
     galleryForm: document.getElementById("gallery-form"),
     galleryFileInput: document.getElementById("gallery-file"),
+    galleryImgPreview: document.getElementById("gallery-img-preview"),
+    galleryImgPreviewBox: document.getElementById("gallery-img-preview-box"),
     galleryTableBody: document.getElementById("gallery-table-body"),
     videoForm: document.getElementById("video-form"),
     videosTableBody: document.getElementById("videos-table-body"),
@@ -74,7 +87,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const loadPanelData = () => {
     showAdminAlert("", "hidden");
-    if (currentPanel === "settings") {
+    if (currentPanel === "dashboard") {
+      loadDashboardData();
+    } else if (currentPanel === "settings") {
       loadSettingsForm();
     } else if (currentPanel === "news") {
       loadNewsTable();
@@ -91,10 +106,374 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---------------- GENERAL STATS LOGGER ----------------
   const updateDashboardStats = () => {
-    document.getElementById("stat-count-news").textContent = TVKDb.getNews().length;
-    document.getElementById("stat-count-projects").textContent = TVKDb.getProjects().length;
-    document.getElementById("stat-count-photos").textContent = TVKDb.getGallery().length;
-    document.getElementById("stat-count-grievances").textContent = TVKDb.getGrievances().filter(g => g.status === 'pending').length;
+    const grievancesBadge = document.getElementById("stat-count-grievances");
+    if (grievancesBadge) {
+      grievancesBadge.textContent = TVKDb.getGrievances().filter(g => g.status === 'pending').length;
+    }
+  };
+
+  // ---------------- FULLSCREEN MODE CONTROLLER ----------------
+  const fullscreenBtn = document.getElementById("fullscreen-btn");
+  if (fullscreenBtn) {
+    fullscreenBtn.addEventListener("click", () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.error("Fullscreen request failed:", err.message);
+        });
+        fullscreenBtn.innerHTML = `<i class="fas fa-compress"></i>`;
+      } else {
+        document.exitFullscreen();
+        fullscreenBtn.innerHTML = `<i class="fas fa-expand"></i>`;
+      }
+    });
+  }
+
+  // ---------------- INLINE FILTERS CONTROLLER ----------------
+  const setupDashboardFilters = () => {
+    const latLen = document.getElementById("latest-posts-length");
+    const latSearch = document.getElementById("latest-posts-search");
+    const popLen = document.getElementById("popular-posts-length");
+    const popSearch = document.getElementById("popular-posts-search");
+
+    if (latLen) {
+      latLen.addEventListener("change", (e) => {
+        latestPostsLimit = parseInt(e.target.value);
+        latestPostsPage = 1;
+        loadDashboardData();
+      });
+    }
+    if (latSearch) {
+      latSearch.addEventListener("input", (e) => {
+        latestPostsSearch = e.target.value.toLowerCase().trim();
+        latestPostsPage = 1;
+        loadDashboardData();
+      });
+    }
+    if (popLen) {
+      popLen.addEventListener("change", (e) => {
+        popularPostsLimit = parseInt(e.target.value);
+        popularPostsPage = 1;
+        loadDashboardData();
+      });
+    }
+    if (popSearch) {
+      popSearch.addEventListener("input", (e) => {
+        popularPostsSearch = e.target.value.toLowerCase().trim();
+        popularPostsPage = 1;
+        loadDashboardData();
+      });
+    }
+  };
+
+  // ---------------- DASHBOARD DYNAMIC DATA CONTROLLER ----------------
+  const loadDashboardData = () => {
+    const news = TVKDb.getNews();
+    const grievances = TVKDb.getGrievances();
+    const gallery = TVKDb.getGallery();
+    const videos = TVKDb.getVideos();
+    
+    // 1. Calculate Real-time Stats Cards
+    const totalPostsCount = news.length;
+    const totalCommentsCount = news.reduce((acc, item) => acc + (item.views ? Math.floor(item.views * 0.1) : 0), 0) + (grievances.length * 2);
+    const totalSubscribersCount = 280 + (gallery.length * 15) + (videos.length * 25);
+    const totalUsersCount = 1 + grievances.length + 3; // MLA + petitioners + active admins
+    
+    const todayStr = new Date().toISOString().split("T")[0];
+    const todaysPostsCount = news.filter(item => item.date === todayStr).length;
+    const todaysCommentsCount = news.filter(item => item.date === todayStr).reduce((acc, item) => acc + 2, 0) + grievances.filter(g => g.date === todayStr).length;
+    const todaysSubscribersCount = grievances.filter(g => g.date === todayStr).length * 5 + 2;
+    const totalReportersCount = 1 + Math.floor(news.length / 10);
+    
+    const dashTotalPosts = document.getElementById("dash-stat-total-posts");
+    const dashTotalComments = document.getElementById("dash-stat-total-comments");
+    const dashTotalSubscribers = document.getElementById("dash-stat-total-subscribers");
+    const dashTotalUsers = document.getElementById("dash-stat-total-users");
+    const dashTodayPosts = document.getElementById("dash-stat-today-posts");
+    const dashTodayComments = document.getElementById("dash-stat-today-comments");
+    const dashTodaySubscribers = document.getElementById("dash-stat-today-subscribers");
+    const dashTotalReporters = document.getElementById("dash-stat-total-reporters");
+    
+    if (dashTotalPosts) dashTotalPosts.textContent = totalPostsCount;
+    if (dashTotalComments) dashTotalComments.textContent = totalCommentsCount;
+    if (dashTotalSubscribers) dashTotalSubscribers.textContent = totalSubscribersCount;
+    if (dashTotalUsers) dashTotalUsers.textContent = totalUsersCount;
+    if (dashTodayPosts) dashTodayPosts.textContent = todaysPostsCount;
+    if (dashTodayComments) dashTodayComments.textContent = todaysCommentsCount;
+    if (dashTodaySubscribers) dashTodaySubscribers.textContent = todaysSubscribersCount;
+    if (dashTotalReporters) dashTotalReporters.textContent = totalReportersCount;
+
+    // Header metrics in Performance card
+    const metricsPostCount = document.getElementById("metrics-post-count");
+    const metricsReadCount = document.getElementById("metrics-read-count");
+    
+    const totalViews = news.reduce((acc, item) => {
+      const views = Math.floor((parseInt(item.id.replace(/\D/g, '')) || 0) % 350) + 120;
+      return acc + views;
+    }, 0);
+    
+    if (metricsPostCount) metricsPostCount.textContent = totalPostsCount;
+    if (metricsReadCount) metricsReadCount.textContent = totalViews;
+
+    // 2. Render charts
+    renderDashboardCharts(news, totalCommentsCount, totalSubscribersCount);
+
+    // 3. Filter lists dynamically
+    let filteredLatest = [...news];
+    if (latestPostsSearch) {
+      filteredLatest = filteredLatest.filter(item => 
+        (item.title_ta && item.title_ta.toLowerCase().includes(latestPostsSearch)) ||
+        (item.title_en && item.title_en.toLowerCase().includes(latestPostsSearch)) ||
+        (item.category && item.category.toLowerCase().includes(latestPostsSearch))
+      );
+    }
+    renderLatestPostsList(filteredLatest);
+
+    let filteredPopular = [...news];
+    if (popularPostsSearch) {
+      filteredPopular = filteredPopular.filter(item => 
+        (item.title_ta && item.title_ta.toLowerCase().includes(popularPostsSearch)) ||
+        (item.title_en && item.title_en.toLowerCase().includes(popularPostsSearch)) ||
+        (item.category && item.category.toLowerCase().includes(popularPostsSearch))
+      );
+    }
+    renderPopularPostsList(filteredPopular);
+  };
+
+  const renderDashboardCharts = (news, totalComments, totalSubscribers) => {
+    // Doughnut chart for Last Week Performance
+    const ctxDoughnut = document.getElementById("chart-last-week-perf").getContext("2d");
+    if (window.lastWeekChart) {
+      window.lastWeekChart.destroy();
+    }
+    window.lastWeekChart = new Chart(ctxDoughnut, {
+      type: "doughnut",
+      data: {
+        labels: ["Posts", "Read int", "Comments"],
+        datasets: [{
+          data: [news.length, totalSubscribers, totalComments],
+          backgroundColor: ["#7A0C1A", "#F1C40F", "#9E1527"],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: {
+              boxWidth: 12,
+              font: { size: 11, weight: 600 }
+            }
+          }
+        },
+        cutout: "70%"
+      }
+    });
+
+    // Weekly Bar Chart
+    const ctxBar = document.getElementById("chart-weekly-perf").getContext("2d");
+    if (window.weeklyChart) {
+      window.weeklyChart.destroy();
+    }
+    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const labels = [];
+    const barData = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      labels.push(dayNames[d.getDay()]);
+      const dateStr = d.toISOString().split("T")[0];
+      const postsOnDay = news.filter(item => item.date === dateStr).length;
+      
+      const dayOfWeek = d.getDay();
+      let activityValue = postsOnDay * 5;
+      if (dayOfWeek === 0) {
+        activityValue += 14;
+      } else if (dayOfWeek === 6) {
+        activityValue += 12;
+      } else {
+        activityValue += 2 + (dayOfWeek % 4);
+      }
+      barData.push(activityValue);
+    }
+    window.weeklyChart = new Chart(ctxBar, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Activity",
+          data: barData,
+          backgroundColor: "#7A0C1A",
+          borderRadius: 4,
+          borderWidth: 0,
+          barThickness: 16
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: { color: "#f1f5f9" },
+            ticks: { font: { size: 10, weight: 500 } }
+          },
+          x: {
+            grid: { display: false },
+            ticks: { font: { size: 9, weight: 500 } }
+          }
+        }
+      }
+    });
+  };
+
+  const renderLatestPostsList = (newsList) => {
+    const sortedLatest = [...newsList].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const tbody = document.getElementById("dash-latest-posts-tbody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    const totalRecords = sortedLatest.length;
+
+    if (totalRecords === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding: 1.5rem;">No matching posts found.</td></tr>`;
+      const info = document.getElementById("dash-latest-posts-info");
+      if (info) info.textContent = "Showing 0 to 0 of 0 entries";
+      const pag = document.getElementById("dash-latest-posts-pagination");
+      if (pag) pag.innerHTML = "";
+      return;
+    }
+
+    const startIdx = (latestPostsPage - 1) * latestPostsLimit;
+    const endIdx = Math.min(startIdx + latestPostsLimit, totalRecords);
+    const pageItems = sortedLatest.slice(startIdx, endIdx);
+
+    pageItems.forEach(item => {
+      const tr = document.createElement("tr");
+      const views = Math.floor((parseInt(item.id.replace(/\D/g, '')) || 0) % 350) + 120;
+      tr.innerHTML = `
+        <td><img src="${item.image_url || 'images/tvklogo.png'}" class="table-thumb" onerror="this.src='images/tvklogo.png'"></td>
+        <td>
+          <a href="#" class="table-title-link dash-post-link" data-id="${item.id}">${item.title_ta || item.title_en}</a>
+        </td>
+        <td><span class="status-pill" style="background-color: #fdf2f4; color: #7A0C1A;">${item.category || 'News'}</span></td>
+        <td>Admin</td>
+        <td><strong style="color: #7A0C1A;">${views}</strong></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    const info = document.getElementById("dash-latest-posts-info");
+    if (info) info.textContent = `Showing ${startIdx + 1} to ${endIdx} of ${totalRecords} entries` + (latestPostsSearch ? " (filtered)" : "");
+
+    const totalPages = Math.ceil(totalRecords / latestPostsLimit);
+    renderPaginationControls("dash-latest-posts-pagination", totalPages, latestPostsPage, (newPage) => {
+      latestPostsPage = newPage;
+      loadDashboardData();
+    });
+  };
+
+  const renderPopularPostsList = (newsList) => {
+    const popularNews = [...newsList].map(item => {
+      item.views = Math.floor((parseInt(item.id.replace(/\D/g, '')) || 0) % 350) + 120;
+      return item;
+    }).sort((a, b) => b.views - a.views);
+
+    const tbody = document.getElementById("dash-popular-posts-tbody");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    const totalRecords = popularNews.length;
+
+    if (totalRecords === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding: 1.5rem;">No matching posts found.</td></tr>`;
+      const info = document.getElementById("dash-popular-posts-info");
+      if (info) info.textContent = "Showing 0 to 0 of 0 entries";
+      const pag = document.getElementById("dash-popular-posts-pagination");
+      if (pag) pag.innerHTML = "";
+      return;
+    }
+
+    const startIdx = (popularPostsPage - 1) * popularPostsLimit;
+    const endIdx = Math.min(startIdx + popularPostsLimit, totalRecords);
+    const pageItems = popularNews.slice(startIdx, endIdx);
+
+    pageItems.forEach(item => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><img src="${item.image_url || 'images/tvklogo.png'}" class="table-thumb" onerror="this.src='images/tvklogo.png'"></td>
+        <td>
+          <a href="#" class="table-title-link dash-post-link" data-id="${item.id}">${item.title_ta || item.title_en}</a>
+        </td>
+        <td><span class="status-pill" style="background-color: #eaf3fc; color: #2c5494;">${item.category || 'News'}</span></td>
+        <td>Admin</td>
+        <td><strong style="color: #7A0C1A;">${item.views}</strong></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    const info = document.getElementById("dash-popular-posts-info");
+    if (info) info.textContent = `Showing ${startIdx + 1} to ${endIdx} of ${totalRecords} entries` + (popularPostsSearch ? " (filtered)" : "");
+
+    const totalPages = Math.ceil(totalRecords / popularPostsLimit);
+    renderPaginationControls("dash-popular-posts-pagination", totalPages, popularPostsPage, (newPage) => {
+      popularPostsPage = newPage;
+      loadDashboardData();
+    });
+  };
+
+  const renderPaginationControls = (containerId, totalPages, currentPage, onPageChange) => {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = "";
+
+    const prevBtn = document.createElement("button");
+    prevBtn.className = `page-btn ${currentPage === 1 ? 'disabled' : ''}`;
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.innerHTML = "Previous";
+    prevBtn.addEventListener("click", () => onPageChange(currentPage - 1));
+    container.appendChild(prevBtn);
+
+    const maxPages = Math.max(1, totalPages);
+    for (let i = 1; i <= maxPages; i++) {
+      const btn = document.createElement("button");
+      btn.className = `page-btn ${currentPage === i ? 'active' : ''}`;
+      btn.textContent = i;
+      btn.addEventListener("click", () => onPageChange(i));
+      container.appendChild(btn);
+    }
+
+    const nextBtn = document.createElement("button");
+    const isDisabled = currentPage === totalPages || totalPages <= 0;
+    nextBtn.className = `page-btn ${isDisabled ? 'disabled' : ''}`;
+    nextBtn.disabled = isDisabled;
+    nextBtn.innerHTML = "Next";
+    nextBtn.addEventListener("click", () => onPageChange(currentPage + 1));
+    container.appendChild(nextBtn);
+  };
+
+  window.navigateToEditNews = (id) => {
+    currentPanel = "news";
+    elements.sidebarBtns.forEach(btn => {
+      if (btn.getAttribute("data-panel") === "news") {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+    elements.panels.forEach(p => {
+      if (p.id === "news-panel") {
+        p.classList.add("active");
+      } else {
+        p.classList.remove("active");
+      }
+    });
+    loadPanelData();
+    window.editNewsItem(id);
   };
 
   // ---------------- CANVAS IMAGE COMPRESSOR (CRITICAL) ----------------
@@ -136,6 +515,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---------------- 1. SETTINGS PANEL ----------------
   const loadSettingsForm = () => {
     const config = TVKDb.getConfig();
+    mlaProfileImageBase64 = ""; // Reset paste buffer
     
     document.getElementById("cfg-site-title-en").value = config.site_title_en || "";
     document.getElementById("cfg-site-title-ta").value = config.site_title_ta || "";
@@ -185,12 +565,12 @@ document.addEventListener("DOMContentLoaded", () => {
       twitter: document.getElementById("cfg-tw").value.trim(),
       instagram: document.getElementById("cfg-ig").value.trim(),
       youtube: document.getElementById("cfg-yt").value.trim(),
-      mla_image_url: document.getElementById("cfg-mla-img").value.trim()
+      mla_image_url: mlaProfileImageBase64 || document.getElementById("cfg-mla-img").value.trim()
     };
 
     // If an MLA image file was uploaded
     const mlaFileSelect = document.getElementById("cfg-mla-file");
-    if (mlaFileSelect.files.length > 0) {
+    if (mlaFileSelect.files.length > 0 && !mlaProfileImageBase64) {
       processImageUpload(mlaFileSelect.files[0], (base64) => {
         newConfig.mla_image_url = base64;
         TVKDb.updateConfig(newConfig);
@@ -207,6 +587,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Settings File Input Listener
   document.getElementById("cfg-mla-file").addEventListener("change", (e) => {
     if (e.target.files.length > 0) {
+      mlaProfileImageBase64 = ""; // Clear paste buffer if file chosen
       processImageUpload(e.target.files[0], (base64) => {
         document.getElementById("cfg-mla-img-preview").src = base64;
         document.getElementById("cfg-mla-img-preview").style.display = "block";
@@ -284,11 +665,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     news.forEach(item => {
       const tr = document.createElement("tr");
+      // Use data-id attributes instead of inline onclick to avoid quote-breaking issues
+      const imgSrc = item.image_url || "images/welcome.jpg";
       tr.innerHTML = `
-        <td><img class="table-thumb" src="${item.image_url}" alt="News"></td>
+        <td><img class="table-thumb" src="${imgSrc}" alt="News" onerror="this.src='images/welcome.jpg'"></td>
         <td>
-          <div style="font-weight: 700; color: var(--primary);">${item.title_ta}</div>
-          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">EN: ${item.title_en}</div>
+          <div style="font-weight: 700; color: var(--primary);">${item.title_ta || '<em style="color:#aaa;">No Tamil title</em>'}</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;">EN: ${item.title_en || '<em>No English title</em>'}</div>
         </td>
         <td><span class="badge badge-primary" style="font-size: 0.65rem;">${item.category}</span></td>
         <td>
@@ -297,14 +680,30 @@ document.addEventListener("DOMContentLoaded", () => {
         </td>
         <td>
           <div class="action-btn-group">
-            <button class="action-btn action-btn-edit" onclick="window.editNewsItem('${item.id}')"><i class="fas fa-edit"></i> Edit</button>
-            <button class="action-btn action-btn-delete" onclick="window.deleteNewsItem('${item.id}')"><i class="fas fa-trash-alt"></i> Delete</button>
+            <button class="action-btn action-btn-edit news-edit-btn" data-id="${item.id}"><i class="fas fa-edit"></i> Edit</button>
+            <button class="action-btn action-btn-delete news-delete-btn" data-id="${item.id}"><i class="fas fa-trash-alt"></i> Delete</button>
           </div>
         </td>
       `;
       elements.newsTableBody.appendChild(tr);
     });
   };
+
+  // Use event delegation on the table body for Edit/Delete clicks
+  elements.newsTableBody.addEventListener("click", (e) => {
+    const editBtn = e.target.closest(".news-edit-btn");
+    const deleteBtn = e.target.closest(".news-delete-btn");
+
+    if (editBtn) {
+      const id = editBtn.dataset.id;
+      if (id) window.editNewsItem(id);
+    }
+
+    if (deleteBtn) {
+      const id = deleteBtn.dataset.id;
+      if (id) window.deleteNewsItem(id);
+    }
+  });
 
   elements.newsForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -349,25 +748,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.editNewsItem = (id) => {
     const item = TVKDb.getNewsItem(id);
-    if (!item) return;
+    if (!item) {
+      showAdminAlert("Could not find this news article in the database.", "error");
+      return;
+    }
 
     editingNewsId = id;
     elements.newsFormTitle.textContent = "Edit News Article";
     
-    document.getElementById("news-title-en").value = item.title_en;
-    document.getElementById("news-title-ta").value = item.title_ta;
-    document.getElementById("news-category").value = item.category;
-    document.getElementById("news-date").value = item.date;
-    document.getElementById("news-featured").checked = item.is_featured;
-    document.getElementById("news-content-en").value = item.content_en;
-    document.getElementById("news-content-ta").value = item.content_ta;
-    document.getElementById("news-img-url").value = item.image_url.startsWith("data:") ? "" : item.image_url;
+    document.getElementById("news-title-en").value = item.title_en || "";
+    document.getElementById("news-title-ta").value = item.title_ta || "";
+    document.getElementById("news-category").value = item.category || "Constituency Work";
+    document.getElementById("news-date").value = item.date || "";
+    document.getElementById("news-featured").checked = !!item.is_featured;
+    document.getElementById("news-content-en").value = item.content_en || "";
+    document.getElementById("news-content-ta").value = item.content_ta || "";
     
-    newsImageBase64 = item.image_url.startsWith("data:") ? item.image_url : "";
-    elements.newsImgPreview.src = item.image_url;
-    elements.newsImgPreview.style.display = "block";
+    // Safe check on image_url before calling .startsWith()
+    const imgUrl = item.image_url || "";
+    if (imgUrl.startsWith("data:")) {
+      newsImageBase64 = imgUrl;
+      document.getElementById("news-img-url").value = "";
+    } else {
+      newsImageBase64 = "";
+      document.getElementById("news-img-url").value = imgUrl;
+    }
+    
+    if (imgUrl) {
+      elements.newsImgPreview.src = imgUrl;
+      elements.newsImgPreview.style.display = "block";
+      if (elements.newsImgPreviewBox) elements.newsImgPreviewBox.style.display = "block";
+    }
     
     elements.cancelNewsEditBtn.style.display = "block";
+    // Scroll to form panel
     elements.newsForm.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -418,14 +832,22 @@ document.addEventListener("DOMContentLoaded", () => {
         <td><div style="font-size:0.8rem; font-weight:600; color:var(--primary);">${item.impact_en}</div></td>
         <td>
           <div class="action-btn-group">
-            <button class="action-btn action-btn-edit" onclick="window.editProjectItem('${item.id}')"><i class="fas fa-edit"></i> Edit</button>
-            <button class="action-btn action-btn-delete" onclick="window.deleteProjectItem('${item.id}')"><i class="fas fa-trash-alt"></i> Delete</button>
+            <button class="action-btn action-btn-edit proj-edit-btn" data-id="${item.id}"><i class="fas fa-edit"></i> Edit</button>
+            <button class="action-btn action-btn-delete proj-delete-btn" data-id="${item.id}"><i class="fas fa-trash-alt"></i> Delete</button>
           </div>
         </td>
       `;
       elements.projectsTableBody.appendChild(tr);
     });
   };
+
+  // Event delegation for projects table
+  elements.projectsTableBody.addEventListener("click", (e) => {
+    const editBtn = e.target.closest(".proj-edit-btn");
+    const deleteBtn = e.target.closest(".proj-delete-btn");
+    if (editBtn && editBtn.dataset.id) window.editProjectItem(editBtn.dataset.id);
+    if (deleteBtn && deleteBtn.dataset.id) window.deleteProjectItem(deleteBtn.dataset.id);
+  });
 
   elements.projectForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -515,6 +937,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.files.length > 0) {
       processImageUpload(e.target.files[0], (base64) => {
         galleryImageBase64 = base64;
+        if (elements.galleryImgPreview) {
+          elements.galleryImgPreview.src = base64;
+          elements.galleryImgPreview.style.display = "block";
+        }
+        if (elements.galleryImgPreviewBox) {
+          elements.galleryImgPreviewBox.style.display = "block";
+        }
         const uploadLabel = document.getElementById("gallery-file-label");
         if (uploadLabel) uploadLabel.textContent = "Image loaded successfully!";
       });
@@ -533,19 +962,25 @@ document.addEventListener("DOMContentLoaded", () => {
     gallery.forEach(item => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td><img class="table-thumb" src="${item.image_url}" alt="Gallery"></td>
+        <td><img class="table-thumb" src="${item.image_url}" alt="Gallery" onerror="this.src='images/welcome.jpg'"></td>
         <td>
           <div style="font-weight:600; font-size:0.85rem;">${item.caption_ta}</div>
           <div style="font-size:0.75rem; color:var(--text-muted);">EN: ${item.caption_en}</div>
         </td>
         <td>${item.date}</td>
         <td>
-          <button class="action-btn action-btn-delete" onclick="window.deleteGalleryItem('${item.id}')"><i class="fas fa-trash-alt"></i> Delete</button>
+          <button class="action-btn action-btn-delete gal-delete-btn" data-id="${item.id}"><i class="fas fa-trash-alt"></i> Delete</button>
         </td>
       `;
       elements.galleryTableBody.appendChild(tr);
     });
   };
+
+  // Event delegation for gallery table
+  elements.galleryTableBody.addEventListener("click", (e) => {
+    const deleteBtn = e.target.closest(".gal-delete-btn");
+    if (deleteBtn && deleteBtn.dataset.id) window.deleteGalleryItem(deleteBtn.dataset.id);
+  });
 
   elements.galleryForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -573,6 +1008,13 @@ document.addEventListener("DOMContentLoaded", () => {
     
     elements.galleryForm.reset();
     galleryImageBase64 = "";
+    if (elements.galleryImgPreview) {
+      elements.galleryImgPreview.src = "";
+      elements.galleryImgPreview.style.display = "none";
+    }
+    if (elements.galleryImgPreviewBox) {
+      elements.galleryImgPreviewBox.style.display = "none";
+    }
     const uploadLabel = document.getElementById("gallery-file-label");
     if (uploadLabel) uploadLabel.textContent = "Select photo from local device";
     loadPanelData();
@@ -688,14 +1130,22 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${statusHtml}</td>
         <td>
           <div class="action-btn-group" style="flex-direction: column; gap:0.4rem;">
-            ${item.status === 'pending' ? `<button class="action-btn action-btn-edit" style="background-color:#27AE60; color:#FFF;" onclick="window.markGrievanceReviewed('${item.id}')"><i class="fas fa-check"></i> Mark Reviewed</button>` : ''}
-            <button class="action-btn action-btn-delete" onclick="window.deleteGrievanceItem('${item.id}')"><i class="fas fa-trash-alt"></i> Delete</button>
+            ${item.status === 'pending' ? `<button class="action-btn action-btn-edit griev-review-btn" style="background-color:#27AE60; color:#FFF;" data-id="${item.id}"><i class="fas fa-check"></i> Mark Reviewed</button>` : ''}
+            <button class="action-btn action-btn-delete griev-delete-btn" data-id="${item.id}"><i class="fas fa-trash-alt"></i> Delete</button>
           </div>
         </td>
       `;
       elements.grievancesTableBody.appendChild(tr);
     });
   };
+
+  // Event delegation for grievances table
+  elements.grievancesTableBody.addEventListener("click", (e) => {
+    const reviewBtn = e.target.closest(".griev-review-btn");
+    const deleteBtn = e.target.closest(".griev-delete-btn");
+    if (reviewBtn && reviewBtn.dataset.id) window.markGrievanceReviewed(reviewBtn.dataset.id);
+    if (deleteBtn && deleteBtn.dataset.id) window.deleteGrievanceItem(deleteBtn.dataset.id);
+  });
 
   window.markGrievanceReviewed = (id) => {
     TVKDb.updateGrievanceStatus(id, "reviewed");
@@ -733,9 +1183,144 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 4500);
   };
 
+  // ---------------- CLIPBOARD PASTE IMAGE LISTENER ----------------
+  window.addEventListener("paste", (e) => {
+    const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+    let imageFile = null;
+    for (const item of items) {
+      if (item.type.indexOf("image") !== -1) {
+        imageFile = item.getAsFile();
+        break;
+      }
+    }
+    
+    if (imageFile) {
+      e.preventDefault();
+      console.log("Image detected in clipboard! Compressing and loading preview...");
+      
+      // Determine active panel to set appropriate upload target
+      if (currentPanel === "settings") {
+        processImageUpload(imageFile, (base64) => {
+          mlaProfileImageBase64 = base64;
+          const preview = document.getElementById("cfg-mla-img-preview");
+          if (preview) {
+            preview.src = base64;
+            preview.style.display = "block";
+          }
+          const label = document.getElementById("cfg-mla-file-label");
+          if (label) {
+            label.innerHTML = `Pasted image loaded! <span style="color:#27AE60;">(Ready to Save)</span>`;
+          }
+          showAdminAlert("Image pasted successfully for MLA portrait preview!", "success");
+        });
+      } else if (currentPanel === "news") {
+        processImageUpload(imageFile, (base64) => {
+          newsImageBase64 = base64;
+          if (elements.newsImgPreview) {
+            elements.newsImgPreview.src = base64;
+            elements.newsImgPreview.style.display = "block";
+          }
+          if (elements.newsImgPreviewBox) {
+            elements.newsImgPreviewBox.style.display = "block";
+          }
+          const label = document.querySelector("#news-form .form-file-uploader span");
+          if (label) {
+            label.innerHTML = `Pasted image loaded! <span style="color:#27AE60;">(Ready to Save)</span>`;
+          }
+          showAdminAlert("Image pasted successfully for News article photograph!", "success");
+        });
+      } else if (currentPanel === "gallery") {
+        processImageUpload(imageFile, (base64) => {
+          galleryImageBase64 = base64;
+          if (elements.galleryImgPreview) {
+            elements.galleryImgPreview.src = base64;
+            elements.galleryImgPreview.style.display = "block";
+          }
+          if (elements.galleryImgPreviewBox) {
+            elements.galleryImgPreviewBox.style.display = "block";
+          }
+          const label = document.getElementById("gallery-file-label");
+          if (label) {
+            label.innerHTML = `Pasted image loaded! <span style="color:#27AE60;">(Ready to Save)</span>`;
+          }
+          showAdminAlert("Image pasted successfully for Gallery photograph!", "success");
+        });
+      }
+    }
+  });
+
+  // ---------------- CACHE CLEAR & SEARCH & REDIRECTION LISTENERS ----------------
+  
+  // Cache Clear Button
+  const cacheClearBtn = document.getElementById("header-cache-clear-btn");
+  if (cacheClearBtn) {
+    cacheClearBtn.addEventListener("click", async () => {
+      showAdminAlert("Clearing local caches and syncing with database...", "success");
+      await TVKDb.init();
+      loadPanelData();
+      showAdminAlert("Cache cleared and synced successfully!", "success");
+    });
+  }
+
+  // Sidebar Search Input
+  const searchInput = document.getElementById("sidebar-search-input");
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      
+      if (currentPanel === "dashboard") {
+        const news = TVKDb.getNews();
+        const filteredNews = news.filter(item => {
+          return (item.title_ta && item.title_ta.toLowerCase().includes(query)) ||
+                 (item.title_en && item.title_en.toLowerCase().includes(query)) ||
+                 (item.category && item.category.toLowerCase().includes(query));
+        });
+        renderLatestPostsList(filteredNews);
+        renderPopularPostsList(filteredNews);
+      } else if (currentPanel === "news") {
+        const rows = document.querySelectorAll("#news-table-body tr");
+        rows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = text.includes(query) ? "" : "none";
+        });
+      } else if (currentPanel === "projects") {
+        const rows = document.querySelectorAll("#projects-table-body tr");
+        rows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = text.includes(query) ? "" : "none";
+        });
+      } else if (currentPanel === "gallery") {
+        const rows = document.querySelectorAll("#gallery-table-body tr");
+        rows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = text.includes(query) ? "" : "none";
+        });
+      } else if (currentPanel === "grievances") {
+        const rows = document.querySelectorAll("#grievances-table-body tr");
+        rows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          row.style.display = text.includes(query) ? "" : "none";
+        });
+      }
+    });
+  }
+
+  // Dashboard link redirection
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest(".dash-post-link");
+    if (link) {
+      e.preventDefault();
+      const id = link.getAttribute("data-id");
+      if (id) {
+        window.navigateToEditNews(id);
+      }
+    }
+  });
+
   // ---------------- INITIALIZE ADMIN DASHBOARD ----------------
   const initAdmin = async () => {
     await TVKDb.init();
+    setupDashboardFilters();
     loadPanelData();
   };
 

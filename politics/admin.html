@@ -9,8 +9,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Dashboard Styling System -->
+  <!-- Chart.js for beautiful performance metrics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Dashboard Styling System -->
   <style>
-    /* Sleek administrative control dashboard styles */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
     
     :root {
@@ -19,13 +22,13 @@
       --primary-dark: #580812;
       --secondary: #F1C40F;
       --dark-bg: #120204;
-      --light-bg: #F4F6F7;
+      --light-bg: #f4f6f9;
       --card-bg: #FFFFFF;
-      --text-dark: #2C3E50;
-      --text-muted: #7F8C8D;
-      --border-color: #E2E8F0;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #cbd5e1;
+      --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
       --font-family: 'Inter', sans-serif;
     }
     
@@ -39,276 +42,291 @@
       font-family: var(--font-family);
       background-color: var(--light-bg);
       color: var(--text-dark);
-      display: flex;
       min-height: 100vh;
-    }
-    
-    /* ---------------- SIDEBAR NAVIGATION ---------------- */
-    .sidebar {
-      width: 280px;
-      background-color: var(--dark-bg);
-      color: #FFF;
       display: flex;
       flex-direction: column;
-      border-right: 3px solid var(--secondary);
+      overflow-x: hidden;
+    }
+
+    /* ---------------- HEADER BAR ---------------- */
+    .top-header {
+      background-color: #ffffff;
+      height: 60px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 250px;
       flex-shrink: 0;
     }
-    
-    .sidebar-header {
-      padding: 2rem 1.5rem;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+
+    .brand-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: #1e293b;
+      letter-spacing: -0.2px;
+    }
+
+    .header-toggle-btn {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      color: #64748b;
+      cursor: pointer;
+      margin-left: 0.5rem;
+      margin-right: 1.5rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .header-toggle-btn:hover {
+      background-color: #f1f5f9;
+      color: #1e293b;
+    }
+
+    .header-center {
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
-    
-    .sidebar-header i {
-      color: var(--secondary);
-      font-size: 1.5rem;
+
+    .header-btn {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.15s ease;
     }
-    
-    .sidebar-header h2 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.15rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      line-height: 1.2;
+
+    .header-btn:hover {
+      background-color: #f8fafc;
+      border-color: #cbd5e1;
+      color: #0f172a;
     }
-    
-    .sidebar-menu {
-      padding: 1.5rem 0;
+
+    #header-cache-clear-btn {
+      background-color: #fef9e7;
+      color: #b7950b;
+      border: 1px solid #f9e79f;
+    }
+
+    #header-cache-clear-btn:hover {
+      background-color: #fcf3cf;
+    }
+
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .header-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      transition: background-color 0.15s ease;
+    }
+
+    .header-profile:hover {
+      background-color: #f1f5f9;
+    }
+
+    .header-profile img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+    }
+
+    .profile-info {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
-      flex-grow: 1;
+      text-align: left;
+      line-height: 1.2;
     }
-    
+
+    .profile-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .profile-role {
+      font-size: 0.7rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    /* ---------------- APP LAYOUT CONTAINER ---------------- */
+    .app-layout {
+      display: flex;
+      flex-grow: 1;
+      height: calc(100vh - 60px);
+    }
+
+    /* ---------------- SIDEBAR NAVIGATION ---------------- */
+    .left-sidebar {
+      width: 250px;
+      background-color: #ffffff;
+      border-right: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow-y: auto;
+      padding-top: 0.75rem;
+    }
+
+    .sidebar-search {
+      padding: 0.5rem 1rem 1rem 1rem;
+    }
+
+    .sidebar-search input {
+      width: 100%;
+      padding: 0.5rem 0.85rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      outline: none;
+      background-color: #f8fafc;
+      transition: all 0.15s ease;
+    }
+
+    .sidebar-search input:focus {
+      border-color: var(--primary);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 2px rgba(122, 12, 26, 0.1);
+    }
+
+    .sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      padding: 0 0.5rem 1rem 0.5rem;
+      gap: 0.1rem;
+    }
+
     .sidebar-btn {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      padding: 1rem 1.5rem;
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
+      padding: 0.7rem 1rem;
+      color: #475569;
       background: transparent;
       border: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
       width: 100%;
       text-align: left;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      border-radius: 6px;
+      transition: all 0.15s ease;
       position: relative;
     }
-    
+
+    .sidebar-btn i:first-child {
+      width: 20px;
+      margin-right: 0.75rem;
+      font-size: 1rem;
+      color: #64748b;
+      text-align: center;
+    }
+
     .sidebar-btn:hover {
-      color: #FFF;
-      background-color: rgba(255,255,255,0.04);
+      background-color: #f8fafc;
+      color: #0f172a;
     }
-    
+
     .sidebar-btn.active {
-      color: var(--secondary);
-      background-color: rgba(122, 12, 26, 0.2);
+      background-color: #fdf2f4;
+      color: var(--primary);
+      font-weight: 600;
     }
-    
+
+    .sidebar-btn.active i:first-child {
+      color: var(--primary);
+    }
+
     .sidebar-btn.active::before {
       content: '';
       position: absolute;
       left: 0;
       top: 0;
-      height: 100%;
-      width: 4px;
-      background-color: var(--secondary);
+      bottom: 0;
+      width: 3px;
+      background-color: var(--primary);
+      border-radius: 9999px;
     }
-    
+
+    .submenu-caret {
+      margin-left: auto;
+      font-size: 0.7rem;
+      color: #94a3b8;
+    }
+
     .sidebar-btn-badge {
       margin-left: auto;
-      background-color: var(--primary);
-      color: #FFF;
+      background-color: #ef4444;
+      color: #ffffff;
       font-size: 0.7rem;
-      padding: 0.15rem 0.5rem;
+      padding: 0.1rem 0.4rem;
       border-radius: 9999px;
       font-weight: 700;
-      border: 1px solid var(--secondary);
     }
-    
-    .view-site-btn {
-      margin: 1.5rem;
-      background-color: var(--secondary);
-      color: var(--dark-bg);
-      text-decoration: none;
-      padding: 0.85rem;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      text-align: center;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    
-    .view-site-btn:hover {
-      background-color: #FFF;
-      transform: translateY(-2px);
-    }
-    
-    /* ---------------- MAIN DASHBOARD WINDOW ---------------- */
-    .main-content {
+
+    /* ---------------- MAIN CONTENT WRAPPER ---------------- */
+    .main-content-wrapper {
       flex-grow: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
+      background-color: #f4f6f9;
       display: flex;
       flex-direction: column;
-      overflow-y: auto;
     }
-    
-    .main-navbar {
-      background-color: #FFF;
-      padding: 1.25rem 2.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: var(--shadow-sm);
-      border-bottom: 1px solid var(--border-color);
-    }
-    
-    .main-navbar-title h3 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
-    
-    .main-navbar-title p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 0.15rem;
-      font-weight: 500;
-    }
-    
-    .mla-avatar-badge {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    
-    .mla-avatar-badge img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--primary);
-    }
-    
-    .mla-avatar-info h5 {
-      font-size: 0.85rem;
-      font-weight: 700;
-    }
-    
-    .mla-avatar-info p {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    
-    .dashboard-view {
-      padding: 2.5rem;
-      max-width: 1200px;
-      width: 100%;
-      margin: 0 auto;
-    }
-    
-    /* Stat cards widget board */
-    .stat-widget-board {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    
-    .stat-widget-card {
-      background-color: #FFF;
-      border-radius: 10px;
-      padding: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-color);
-    }
-    
-    .stat-widget-info h4 {
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
-    
-    .stat-widget-info p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      text-transform: uppercase;
-      margin-top: 0.15rem;
-    }
-    
-    .stat-widget-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-      background-color: #FDF2F4;
-      color: var(--primary);
-      border: 1px solid rgba(122, 12, 26, 0.1);
-    }
-    
-    /* Admin Alerts */
-    .custom-alert {
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      margin-bottom: 2rem;
-      font-weight: 600;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      box-shadow: var(--shadow-sm);
-    }
-    
-    .custom-alert-success {
-      background-color: #E8F8F0;
-      color: #27AE60;
-      border: 1px solid #2ECC71;
-    }
-    
-    .custom-alert-error {
-      background-color: #FDF2F4;
-      color: var(--primary);
-      border: 1px solid var(--primary-light);
-    }
-    
+
     /* ---------------- DYNAMIC PANELS VIEW STATE ---------------- */
     .admin-panel {
       display: none;
+      flex-grow: 1;
     }
     
     .admin-panel.active {
       display: block;
-      animation: viewFadeIn 0.25s ease;
+      animation: viewFadeIn 0.2s ease;
     }
     
     @keyframes viewFadeIn {
-      from { opacity: 0; transform: translateY(5px); }
+      from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
     
     .panel-header {
-      border-bottom: 2px solid var(--border-color);
+      border-bottom: 1px solid #e2e8f0;
       padding-bottom: 0.75rem;
       margin-bottom: 1.5rem;
       display: flex;
@@ -320,50 +338,302 @@
       font-family: 'Outfit', sans-serif;
       font-size: 1.25rem;
       font-weight: 800;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      color: #1e293b;
+      letter-spacing: -0.2px;
     }
-    
-    /* Admin Forms Card grid */
+
+    /* ---------------- DASHBOARD PANEL CARDS ---------------- */
+    .dashboard-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(0,0,0,0.01);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    }
+
+    .stat-card-icon {
+      font-size: 2.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 8px;
+      background-color: rgba(255,255,255,0.45);
+      flex-shrink: 0;
+    }
+
+    .stat-card-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      text-align: left;
+    }
+
+    .stat-card-details p {
+      font-size: 0.85rem;
+      font-weight: 600;
+      opacity: 0.8;
+      margin-bottom: 0;
+      color: inherit !important;
+      text-transform: none;
+    }
+
+    .stat-card-details h4 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0;
+      color: inherit !important;
+    }
+
+    /* Colors exactly matching the mockup */
+    .card-total-posts { background-color: #fdf2f4; color: var(--primary); }
+    .card-total-comments { background-color: #eaf3fc; color: #2c5494; }
+    .card-total-subscribers { background-color: #e2fafc; color: #1b8798; }
+    .card-total-users { background-color: #fceaf3; color: #9e2b5e; }
+    .card-today-posts { background-color: #f3eafc; color: #7c2b9e; }
+    .card-today-comments { background-color: #eaf8fc; color: #237e96; }
+    .card-today-subscribers { background-color: #fcf7ea; color: #996e1b; }
+    .card-total-reporters { background-color: #fdf2f4; color: var(--primary); }
+
+    /* Performance Charts Row */
+    .dashboard-charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-card {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+      border: 1px solid #e5e7eb;
+    }
+
+    .chart-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid #f3f4f6;
+      padding-bottom: 0.5rem;
+    }
+
+    .chart-card-header h5 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .chart-metrics {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    .chart-metrics span {
+      display: flex;
+      flex-direction: column;
+      text-align: right;
+    }
+
+    .chart-metrics span strong {
+      color: #1e293b;
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    /* Lists Section Grid */
+    .dashboard-lists-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .list-card {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+      border: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .list-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #f3f4f6;
+      padding-bottom: 0.5rem;
+    }
+
+    .list-card-header h5 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    /* Table Filters Row inside Card */
+    .table-filters-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .entries-select-wrapper {
+      font-size: 0.8rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 500;
+    }
+
+    .entries-select {
+      padding: 0.25rem 0.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      outline: none;
+      font-size: 0.8rem;
+      background-color: #ffffff;
+      color: #1e293b;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .table-search-wrapper {
+      font-size: 0.8rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 500;
+    }
+
+    .table-search-input {
+      padding: 0.3rem 0.65rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      outline: none;
+      font-size: 0.8rem;
+      background-color: #ffffff;
+      transition: all 0.15s ease;
+      width: 150px;
+    }
+
+    .table-search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(122, 12, 26, 0.1);
+    }
+
+    /* Pagination Styling matching the screenshot */
+    .table-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 1rem;
+      font-size: 0.8rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .pagination {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .page-btn {
+      padding: 0.25rem 0.55rem;
+      border: 1px solid #e2e8f0;
+      background-color: #ffffff;
+      color: #475569;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.1s ease;
+    }
+
+    .page-btn:hover {
+      background-color: #f1f5f9;
+      color: #0f172a;
+    }
+
+    .page-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .page-btn.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: #f8fafc;
+    }
+
+    /* ---------------- FORMS & CARD BLOCKS ---------------- */
     .admin-grid-layout {
       display: grid;
       grid-template-columns: 1.2fr 1.8fr;
-      gap: 2rem;
+      gap: 1.5rem;
       align-items: start;
     }
     
     .admin-grid-layout-full {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 1.5rem;
     }
     
     .card-block {
-      background-color: #FFF;
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-color);
-      margin-bottom: 2rem;
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+      border: 1px solid #e5e7eb;
+      margin-bottom: 1.5rem;
     }
     
     .card-block-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 1.25rem;
-      border-bottom: 1px solid var(--border-color);
+      color: #7A0C1A;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #e2e8f0;
       padding-bottom: 0.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     
-    /* Standard Admin Form Fields */
     .form-group {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
     }
     
     .form-row {
@@ -376,91 +646,64 @@
       display: block;
       font-size: 0.8rem;
       font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 0.4rem;
+      color: #334155;
+      margin-bottom: 0.3rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
     
     .form-input {
       width: 100%;
-      padding: 0.7rem 0.85rem;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
       font-size: 0.85rem;
-      transition: border-color 0.2s ease;
+      outline: none;
+      transition: border-color 0.15s ease;
     }
     
     .form-input:focus {
-      outline: none;
       border-color: var(--primary);
-    }
-    
-    .form-input[disabled] {
-      background-color: #F8FAFC;
-      color: #94A3B8;
-      cursor: not-allowed;
     }
     
     .form-checkbox-group {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      margin: 1.5rem 0;
+      margin: 1rem 0;
     }
-    
-    .form-checkbox-group input {
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-    }
-    
+
     .form-file-uploader {
       position: relative;
-      border: 2px dashed var(--border-color);
-      border-radius: 6px;
-      padding: 1.5rem;
+      border: 2px dashed #cbd5e1;
+      border-radius: 4px;
+      padding: 1rem;
       text-align: center;
       cursor: pointer;
-      background-color: #FAFBFB;
-      transition: all 0.2s ease;
+      background-color: #f8fafc;
+      transition: all 0.15s ease;
     }
     
     .form-file-uploader:hover {
       border-color: var(--primary);
-      background-color: #FFF;
+      background-color: #ffffff;
     }
     
     .form-file-uploader input[type="file"] {
       position: absolute;
       inset: 0;
       opacity: 0;
-      width: 100%;
-      height: 100%;
       cursor: pointer;
     }
     
-    .form-file-uploader i {
-      font-size: 2rem;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
-    }
-    
-    .form-file-uploader span {
-      display: block;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-    
     .image-preview-box {
-      margin-top: 1rem;
+      margin-top: 0.75rem;
       width: 100%;
-      height: 180px;
-      border-radius: 6px;
+      height: 150px;
+      border-radius: 4px;
       overflow: hidden;
       display: none;
-      border: 1px solid var(--border-color);
+      border: 1px solid #e2e8f0;
     }
     
     .image-preview-box img {
@@ -469,26 +712,25 @@
       object-fit: cover;
     }
     
-    /* Standard Admin Buttons */
     .btn {
-      padding: 0.75rem 1.25rem;
+      padding: 0.5rem 1rem;
       font-family: 'Outfit', sans-serif;
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       text-transform: uppercase;
-      border-radius: 6px;
+      border-radius: 4px;
       border: none;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
     
     .btn-primary {
       background-color: var(--primary);
-      color: #FFF;
+      color: #ffffff;
     }
     
     .btn-primary:hover {
@@ -496,41 +738,33 @@
     }
     
     .btn-secondary {
-      background-color: #FFF;
-      color: var(--text-dark);
-      border: 1px solid var(--border-color);
+      background-color: #ffffff;
+      color: #334155;
+      border: 1px solid #cbd5e1;
     }
     
     .btn-secondary:hover {
-      background-color: #F8FAFC;
+      background-color: #f1f5f9;
     }
     
     .btn-danger {
-      background-color: #E74C3C;
-      color: #FFF;
+      background-color: #ef4444;
+      color: #ffffff;
     }
     
     .btn-danger:hover {
-      background-color: #C0392B;
-    }
-    
-    .btn-success {
-      background-color: #2ECC71;
-      color: #FFF;
-    }
-    
-    .btn-success:hover {
-      background-color: #27AE60;
+      background-color: #dc2626;
     }
     
     .btn-full {
       width: 100%;
     }
-    
-    /* ---------------- DATA TABLES IN THE PANELS ---------------- */
+
+    /* ---------------- DATA TABLES ---------------- */
     .table-container {
       width: 100%;
       overflow-x: auto;
+      margin-bottom: 0.5rem;
     }
     
     .admin-table {
@@ -541,41 +775,92 @@
     }
     
     .admin-table th {
-      background-color: #F8FAFC;
-      padding: 0.75rem 1rem;
+      background-color: #f8fafc;
+      padding: 0.65rem 0.75rem;
       font-weight: 700;
-      color: var(--text-dark);
-      border-bottom: 2px solid var(--border-color);
+      color: #475569;
+      border-bottom: 2px solid #e2e8f0;
       text-transform: uppercase;
       font-size: 0.75rem;
       letter-spacing: 0.5px;
     }
-    
-    .admin-table td {
-      padding: 1rem;
-      border-bottom: 1px solid var(--border-color);
-      vertical-align: middle;
+
+    .sort-icon {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      margin-left: 0.25rem;
     }
     
-    .admin-table tr:last-child td {
-      border-bottom: none;
+    .admin-table td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+    }
+
+    .admin-table tbody tr:nth-child(even) {
+      background-color: #f8fafc;
     }
     
     .table-thumb {
-      width: 55px;
-      height: 40px;
+      width: 50px;
+      height: 38px;
       border-radius: 4px;
       object-fit: cover;
-      border: 1px solid var(--border-color);
+      border: 1px solid #e2e8f0;
     }
     
     .status-pill {
       display: inline-block;
-      padding: 0.2rem 0.5rem;
+      padding: 0.15rem 0.45rem;
       border-radius: 4px;
       font-weight: 700;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       text-transform: uppercase;
+    }
+
+    /* Custom Toast Alerts */
+    .custom-alert {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      animation: toastSlideIn 0.2s ease;
+    }
+
+    @keyframes toastSlideIn {
+      from { transform: translateY(15px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .custom-alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .custom-alert-error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .table-title-link {
+      font-weight: 600;
+      color: #2563eb;
+      text-decoration: none;
+      line-height: 1.4;
+      display: block;
+    }
+    .table-title-link:hover {
+      text-decoration: underline;
     }
     
     .action-btn-group {
@@ -615,102 +900,286 @@
       background-color: #E74C3C;
       color: #FFF;
     }
+
+    /* Premium Footer */
+    .admin-footer {
+      margin-top: auto;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: #64748b;
+      font-weight: 500;
+    }
   </style>
 </head>
 <body>
 
-  <!-- 1. LEFT SIDEBAR PANEL CONTROLLER -->
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <i class="fas fa-lock"></i>
-      <h2>TVK CM PORTAL<br><span style="color: var(--secondary); font-size: 0.75rem;">ADMIN PANEL</span></h2>
+  <!-- Top Header Bar -->
+  <header class="top-header">
+    <div class="header-brand">
+      <img src="images/tvklogo.png" alt="TVK Logo" style="height:36px; width:36px; object-fit:contain;">
+      <span class="brand-text">TVK <span style="color: var(--secondary);">TAMBARAM</span></span>
     </div>
-    
-    <div class="sidebar-menu">
-      <button class="sidebar-btn active" data-panel="settings">
-        <i class="fas fa-sliders-h"></i> Configuration Settings
-      </button>
-      <button class="sidebar-btn" data-panel="news">
-        <i class="far fa-newspaper"></i> News Articles
-      </button>
-      <button class="sidebar-btn" data-panel="projects">
-        <i class="fas fa-tasks"></i> TVK Projects
-      </button>
-      <button class="sidebar-btn" data-panel="gallery">
-        <i class="far fa-image"></i> Photos & Videos
-      </button>
-      <button class="sidebar-btn" data-panel="grievances">
-        <i class="far fa-envelope-open"></i> Grievances Inbox
-        <span class="sidebar-btn-badge" id="stat-count-grievances">0</span>
-      </button>
+    <button class="header-toggle-btn"><i class="fas fa-bars"></i></button>
+    <div class="header-center">
+      <button class="header-btn" id="header-cache-clear-btn"><i class="fas fa-broom"></i> Cache Clear</button>
+      <a href="index.html" class="header-btn" target="_blank"><i class="fas fa-globe"></i> Website <i class="fas fa-external-link-alt" style="font-size:0.75rem;"></i></a>
     </div>
-    
-    <!-- Link back to live home page for testing -->
-    <a href="index.html" class="view-site-btn">
-      <i class="fas fa-external-link-alt"></i> View Live Site
-    </a>
-  </aside>
+    <div class="header-right">
+      <button class="header-btn" id="fullscreen-btn" style="border:none; background:none; font-size:1.1rem; color:#64748b; cursor:pointer;" title="Toggle Fullscreen"><i class="fas fa-expand"></i></button>
+      <div class="header-profile">
+        <img src="images/tvklogo.png" alt="Admin Avatar" id="dashboard-mla-avatar">
+        <div class="profile-info">
+          <span class="profile-name">Admin</span>
+          <span class="profile-role">Admin</span>
+        </div>
+        <i class="fas fa-chevron-down" style="font-size: 0.75rem; color: #64748b; margin-left: 0.25rem;"></i>
+      </div>
+    </div>
+  </header>
 
-  <!-- 2. MAIN DASHBOARD CONTENT AREA -->
-  <main class="main-content">
-    
-    <!-- Top Nav Indicator Bar -->
-    <nav class="main-navbar">
-      <div class="main-navbar-title">
-        <h3>TVK CM Governance Dashboard</h3>
-        <p>Interactive Client-Side Persistence Database Controller</p>
+  <div class="app-layout">
+    <!-- Left Sidebar -->
+    <aside class="left-sidebar">
+      <div class="sidebar-search">
+        <input type="text" id="sidebar-search-input" placeholder="Write Search...">
       </div>
-      <div class="mla-avatar-badge">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Vijay_at_the_Nadigar_Sangam_Protest.jpg" alt="CM Avatar" id="dashboard-mla-avatar">
-        <div class="mla-avatar-info">
-          <h5>Thalapathy Vijay</h5>
-          <p>TVK President / CM</p>
-        </div>
-      </div>
-    </nav>
-    
-    <!-- Primary View Dashboard Layout container -->
-    <div class="dashboard-view">
+      <nav class="sidebar-menu">
+        <button class="sidebar-btn active" data-panel="dashboard">
+          <i class="fas fa-chart-line"></i> Dashboard
+        </button>
+        <button class="sidebar-btn" data-panel="theme">
+          <i class="fas fa-magic"></i> Theme <i class="fas fa-chevron-down submenu-caret"></i>
+        </button>
+        <button class="sidebar-btn" data-panel="news">
+          <i class="far fa-newspaper"></i> Post <i class="fas fa-chevron-down submenu-caret"></i>
+        </button>
+        <button class="sidebar-btn" data-panel="gallery">
+          <i class="far fa-image"></i> Media Library
+        </button>
+        <button class="sidebar-btn" data-panel="menu">
+          <i class="fas fa-bars"></i> Menu <i class="fas fa-chevron-down submenu-caret"></i>
+        </button>
+        <button class="sidebar-btn" data-panel="settings">
+          <i class="fas fa-sliders-h"></i> Settings <i class="fas fa-chevron-down submenu-caret"></i>
+        </button>
+        <button class="sidebar-btn" data-panel="categories">
+          <i class="fas fa-folder-open"></i> Categories <i class="fas fa-chevron-down submenu-caret"></i>
+        </button>
+        <button class="sidebar-btn" data-panel="archive">
+          <i class="fas fa-archive"></i> Archive <i class="fas fa-chevron-down submenu-caret"></i>
+        </button>
+        <button class="sidebar-btn" data-panel="advertisement">
+          <i class="fas fa-ad"></i> Advertisement <i class="fas fa-chevron-down submenu-caret"></i>
+        </button>
+        <button class="sidebar-btn" data-panel="rss">
+          <i class="fas fa-rss"></i> RSS Feeds <i class="fas fa-chevron-down submenu-caret"></i>
+        </button>
+        <button class="sidebar-btn" data-panel="grievances">
+          <i class="far fa-envelope-open"></i> Reporter <i class="fas fa-chevron-down submenu-caret"></i>
+          <span class="sidebar-btn-badge" id="stat-count-grievances">0</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content Container -->
+    <main class="main-content-wrapper">
       
-      <!-- Stats widgets row -->
-      <section class="stat-widget-board">
-        <div class="stat-widget-card">
-          <div class="stat-widget-info">
-            <h4 id="stat-count-news">0</h4>
-            <p>News Articles</p>
-          </div>
-          <div class="stat-widget-icon"><i class="far fa-newspaper"></i></div>
+      <!-- Alert banner placeholder -->
+      <div id="admin-alert" class="custom-alert" style="display: none;"></div>
+
+      <!-- PANEL 0: DASHBOARD PANEL -->
+      <section class="admin-panel active" id="dashboard-panel">
+        <div class="panel-header">
+          <h3>Dashboard Overview</h3>
+          <i class="fas fa-chart-line" style="color: var(--primary);"></i>
         </div>
-        <div class="stat-widget-card">
-          <div class="stat-widget-info">
-            <h4 id="stat-count-projects">0</h4>
-            <p>Active Works</p>
+
+        <!-- Dynamic Stat Cards Grid -->
+        <div class="dashboard-stats-grid">
+          <div class="stat-card card-total-posts">
+            <div class="stat-card-icon"><i class="fas fa-list-check"></i></div>
+            <div class="stat-card-details">
+              <p>Total Posts</p>
+              <h4 id="dash-stat-total-posts">0</h4>
+            </div>
           </div>
-          <div class="stat-widget-icon"><i class="fas fa-tasks"></i></div>
+          <div class="stat-card card-total-comments">
+            <div class="stat-card-icon"><i class="fas fa-comments"></i></div>
+            <div class="stat-card-details">
+              <p>Total Comments</p>
+              <h4 id="dash-stat-total-comments">0</h4>
+            </div>
+          </div>
+          <div class="stat-card card-total-subscribers">
+            <div class="stat-card-icon"><i class="fas fa-list-ul"></i></div>
+            <div class="stat-card-details">
+              <p>Total Subscribers</p>
+              <h4 id="dash-stat-total-subscribers">0</h4>
+            </div>
+          </div>
+          <div class="stat-card card-total-users">
+            <div class="stat-card-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-card-details">
+              <p>Total Users</p>
+              <h4 id="dash-stat-total-users">1</h4>
+            </div>
+          </div>
+          <div class="stat-card card-today-posts">
+            <div class="stat-card-icon"><i class="fas fa-edit"></i></div>
+            <div class="stat-card-details">
+              <p>Todays Posts</p>
+              <h4 id="dash-stat-today-posts">0</h4>
+            </div>
+          </div>
+          <div class="stat-card card-today-comments">
+            <div class="stat-card-icon"><i class="fas fa-comment-dots"></i></div>
+            <div class="stat-card-details">
+              <p>Today Comments</p>
+              <h4 id="dash-stat-today-comments">0</h4>
+            </div>
+          </div>
+          <div class="stat-card card-today-subscribers">
+            <div class="stat-card-icon"><i class="fas fa-network-wired"></i></div>
+            <div class="stat-card-details">
+              <p>Today Subscribers</p>
+              <h4 id="dash-stat-today-subscribers">0</h4>
+            </div>
+          </div>
+          <div class="stat-card card-total-reporters">
+            <div class="stat-card-icon"><i class="fas fa-file-invoice"></i></div>
+            <div class="stat-card-details">
+              <p>Total Reporters</p>
+              <h4 id="dash-stat-total-reporters">1</h4>
+            </div>
+          </div>
         </div>
-        <div class="stat-widget-card">
-          <div class="stat-widget-info">
-            <h4 id="stat-count-photos">0</h4>
-            <p>Gallery Photos</p>
+
+        <!-- Performance Charts Grid -->
+        <div class="dashboard-charts-grid">
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h5>Last Week Performance</h5>
+            </div>
+            <div style="height: 250px; position: relative;">
+              <canvas id="chart-last-week-perf"></canvas>
+            </div>
           </div>
-          <div class="stat-widget-icon"><i class="far fa-image"></i></div>
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h5>Performance</h5>
+              <div class="chart-metrics">
+                <span>Posts <strong id="metrics-post-count">0</strong></span>
+                <span>Read count <strong id="metrics-read-count">0</strong></span>
+              </div>
+            </div>
+            <div style="height: 250px; position: relative;">
+              <canvas id="chart-weekly-perf"></canvas>
+            </div>
+          </div>
         </div>
-        <div class="stat-widget-card">
-          <div class="stat-widget-info">
-            <h4 id="stat-count-grievances">0</h4>
-            <p>Pending Petitions</p>
+
+        <!-- Lists Grid (Latest & Popular Posts) -->
+        <div class="dashboard-lists-grid">
+          <!-- Column 1: Latest Posts -->
+          <div class="list-card">
+            <div class="list-card-header">
+              <h5>Latest Posts</h5>
+            </div>
+            
+            <!-- Dynamic Filters -->
+            <div class="table-filters-row">
+              <div class="entries-select-wrapper">
+                Show 
+                <select class="entries-select" id="latest-posts-length">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                </select>
+                entries
+              </div>
+              <div class="table-search-wrapper">
+                Search: <input type="text" class="table-search-input" id="latest-posts-search" placeholder="Type to filter...">
+              </div>
+            </div>
+
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Image <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
+                    <th>Title <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
+                    <th>Category <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
+                    <th>Reporter <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
+                    <th>Read <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
+                  </tr>
+                </thead>
+                <tbody id="dash-latest-posts-tbody">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <div id="dash-latest-posts-info">Showing 1 to 10 of 0 entries</div>
+              <div class="pagination" id="dash-latest-posts-pagination">
+                <!-- Paginated dynamically -->
+              </div>
+            </div>
           </div>
-          <div class="stat-widget-icon"><i class="far fa-envelope-open"></i></div>
+
+          <!-- Column 2: Popular Posts -->
+          <div class="list-card">
+            <div class="list-card-header">
+              <h5>Popular Posts</h5>
+            </div>
+            
+            <!-- Dynamic Filters -->
+            <div class="table-filters-row">
+              <div class="entries-select-wrapper">
+                Show 
+                <select class="entries-select" id="popular-posts-length">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="25">25</option>
+                </select>
+                entries
+              </div>
+              <div class="table-search-wrapper">
+                Search: <input type="text" class="table-search-input" id="popular-posts-search" placeholder="Type to filter...">
+              </div>
+            </div>
+
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Image <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
+                    <th>Title <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
+                    <th>Category <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
+                    <th>Reporter <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
+                    <th>Read <span class="sort-icon"><i class="fas fa-sort"></i></span></th>
+                  </tr>
+                </thead>
+                <tbody id="dash-popular-posts-tbody">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <div id="dash-popular-posts-info">Showing 1 to 10 of 0 entries</div>
+              <div class="pagination" id="dash-popular-posts-pagination">
+                <!-- Paginated dynamically -->
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- Alert Notification Banner placeholder -->
-      <div id="admin-alert" class="custom-alert" style="display: none;"></div>
-
-      <!-- ---------------- PANELS ---------------- -->
-
       <!-- PANEL 1: CONFIGURATION SETTINGS -->
-      <section class="admin-panel active" id="settings-panel">
+      <section class="admin-panel" id="settings-panel">
         <div class="panel-header">
           <h3>Configuration Settings</h3>
           <i class="fas fa-sliders-h" style="color: var(--primary);"></i>
@@ -763,7 +1232,7 @@
                   <label class="form-label">Choose Real Photo from Computer</label>
                   <div class="form-file-uploader">
                     <i class="far fa-image"></i>
-                    <span id="cfg-mla-file-label">Select portrait photo</span>
+                    <span id="cfg-mla-file-label">Select portrait photo <strong style="color: var(--primary);">[or Paste Ctrl+V here]</strong></span>
                     <input type="file" id="cfg-mla-file" accept="image/*">
                   </div>
                 </div>
@@ -892,7 +1361,7 @@
                 <label class="form-label">Upload Real Event Photograph</label>
                 <div class="form-file-uploader">
                   <i class="far fa-image"></i>
-                  <span>Drag & Drop or click to upload local photo</span>
+                  <span>Drag & Drop or click to upload local photo <strong style="color: var(--primary);">[or Paste Ctrl+V here]</strong></span>
                   <input type="file" id="news-file" accept="image/*">
                 </div>
                 <div class="image-preview-box" id="news-img-preview-box">
@@ -1059,8 +1528,11 @@
                   <label class="form-label">Choose Event Photograph</label>
                   <div class="form-file-uploader">
                     <i class="far fa-image"></i>
-                    <span id="gallery-file-label">Select photo from local device</span>
+                    <span id="gallery-file-label">Select photo from local device <strong style="color: var(--primary);">[or Paste Ctrl+V here]</strong></span>
                     <input type="file" id="gallery-file" accept="image/*">
+                  </div>
+                  <div class="image-preview-box" id="gallery-img-preview-box">
+                    <img src="" id="gallery-img-preview" alt="Upload preview">
                   </div>
                 </div>
                 <div class="form-group">
@@ -1177,8 +1649,13 @@
         </div>
       </section>
 
-    </div>
-  </main>
+      <!-- Footer -->
+      <footer class="admin-footer">
+        <div class="footer-left">© 2026 ADARSH TVK Co 2025. All Rights Reserved.</div>
+        <div class="footer-right">Designed by: Our Tech Team</div>
+      </footer>
+    </main>
+  </div>
 
   <!-- Seed data controller script -->
   <script src="js/db.js"></script>
