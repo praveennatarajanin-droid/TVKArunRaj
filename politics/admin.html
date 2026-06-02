@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TVK Tambaram MLA - Administrative Control Dashboard</title>
+  <title>TVK Tiruchengodu MLA - Administrative Control Dashboard</title>
   
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -285,8 +285,15 @@
 
     .submenu-caret {
       margin-left: auto;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       color: #94a3b8;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s ease;
+    }
+
+    .sidebar-btn.open .submenu-caret,
+    .sidebar-dropdown-btn.open .submenu-caret {
+      transform: rotate(-90deg);
+      color: var(--primary);
     }
 
     .sidebar-btn-badge {
@@ -913,6 +920,214 @@
       color: #64748b;
       font-weight: 500;
     }
+
+    /* Submenu Navigation Styles */
+    .sidebar-submenu {
+      display: none;
+      flex-direction: column;
+      gap: 0.15rem;
+      padding-left: 1.5rem;
+      margin-top: 0.1rem;
+      margin-bottom: 0.5rem;
+      transition: all 0.3s ease;
+      background-color: #fdf5f6;
+      border-left: 3px solid var(--primary);
+      border-radius: 0 4px 4px 0;
+      padding-bottom: 0.35rem;
+      padding-top: 0.25rem;
+    }
+    .sidebar-sub-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.45rem 0.75rem;
+      color: #475569;
+      background: transparent;
+      border: none;
+      font-size: 0.825rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+      border-radius: 4px;
+    }
+    .sidebar-sub-btn:hover {
+      color: var(--primary) !important;
+      background-color: rgba(122, 12, 26, 0.05);
+    }
+    .sidebar-sub-btn.active {
+      color: var(--primary) !important;
+      background-color: rgba(122, 12, 26, 0.1);
+      font-weight: 700;
+    }
+    .sidebar-sub-btn i.fa-circle {
+      font-size: 0.35rem;
+      color: var(--primary) !important;
+      opacity: 0.6;
+      transition: all 0.2s ease;
+    }
+    .sidebar-sub-btn:hover i.fa-circle,
+    .sidebar-sub-btn.active i.fa-circle {
+      color: var(--secondary) !important;
+      opacity: 1;
+    }
+    .submenu-caret {
+      margin-left: auto;
+      font-size: 0.75rem;
+      transition: transform 0.2s ease;
+    }
+    .sidebar-dropdown-btn.open .submenu-caret {
+      transform: rotate(90deg);
+    }
+
+    /* Mock Text Editor Toolbar Styles */
+    .editor-container {
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+      background-color: #FFF;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+    }
+    .editor-toolbar-mock {
+      background-color: #f8fafc;
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+    }
+    .editor-toolbar-mock .tool-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      padding: 0.25rem 0.45rem;
+      font-size: 0.8rem;
+      color: #475569;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .editor-toolbar-mock .tool-btn:hover {
+      background-color: #e2e8f0;
+      color: #0f172a;
+      border-color: #cbd5e1;
+    }
+    .editor-toolbar-mock .tool-divider {
+      width: 1px;
+      height: 18px;
+      background-color: #cbd5e1;
+      margin: 0 0.15rem;
+    }
+    .editor-textarea {
+      width: 100%;
+      border: none;
+      padding: 1rem;
+      font-size: 0.9rem;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 220px;
+      color: var(--text-dark);
+    }
+    .editor-textarea:focus {
+      outline: none;
+    }
+
+    /* Custom Form Layout for Add New Post Grid */
+    .add-post-row-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .add-post-row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .add-post-row-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .add-post-row-1 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    @media (max-width: 1024px) {
+      .add-post-row-4, .add-post-row-3, .add-post-row-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 768px) {
+      .add-post-row-4, .add-post-row-3, .add-post-row-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* AI Writer Button Sleek Accent */
+    .btn-ai-writer {
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      color: #fff;
+      font-weight: 700;
+      border: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.2);
+    }
+    .btn-ai-writer:hover {
+      background: linear-gradient(135deg, #6d28d9, #4338ca);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px -1px rgba(124, 58, 237, 0.35);
+    }
+    .btn-ai-writer:active {
+      transform: translateY(0);
+    }
+
+    /* Checkbox Group Layout grid */
+    .checkboxes-grid-layout {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+      background-color: #fafbfc;
+      padding: 1.25rem;
+      border: 1px dashed var(--border-color);
+      border-radius: 6px;
+    }
+    @media (max-width: 768px) {
+      .checkboxes-grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-checkbox-inline {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+    }
+    .form-checkbox-inline input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+    .form-checkbox-inline label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      user-select: none;
+      margin: 0;
+    }
   </style>
 </head>
 <body>
@@ -921,7 +1136,7 @@
   <header class="top-header">
     <div class="header-brand">
       <img src="images/tvklogo.png" alt="TVK Logo" style="height:36px; width:36px; object-fit:contain;">
-      <span class="brand-text">TVK <span style="color: var(--secondary);">TAMBARAM</span></span>
+      <span class="brand-text">TVK <span style="color: var(--secondary);">TIRUCHENGODU</span></span>
     </div>
     <button class="header-toggle-btn"><i class="fas fa-bars"></i></button>
     <div class="header-center">
@@ -948,40 +1163,142 @@
         <input type="text" id="sidebar-search-input" placeholder="Write Search...">
       </div>
       <nav class="sidebar-menu">
+        <!-- Dashboard -->
         <button class="sidebar-btn active" data-panel="dashboard">
           <i class="fas fa-chart-line"></i> Dashboard
         </button>
-        <button class="sidebar-btn" data-panel="theme">
-          <i class="fas fa-magic"></i> Theme <i class="fas fa-chevron-down submenu-caret"></i>
+
+        <!-- Post -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="news" type="button">
+          <i class="far fa-newspaper"></i> Post <i class="fas fa-chevron-left submenu-caret"></i>
         </button>
-        <button class="sidebar-btn" data-panel="news">
-          <i class="far fa-newspaper"></i> Post <i class="fas fa-chevron-down submenu-caret"></i>
+        <div class="sidebar-submenu" id="submenu-news">
+          <button class="sidebar-sub-btn" data-panel="add-post" type="button">
+            <i class="fas fa-circle"></i> Add Post
+          </button>
+          <button class="sidebar-sub-btn" data-panel="news" data-subfilter="all" type="button">
+            <i class="fas fa-circle"></i> Post List
+          </button>
+          <button class="sidebar-sub-btn" data-panel="news" data-subfilter="breaking" type="button">
+            <i class="fas fa-circle"></i> Breaking Post
+          </button>
+          <button class="sidebar-sub-btn" data-panel="news" data-subfilter="story" type="button">
+            <i class="fas fa-circle"></i> Story manage
+          </button>
+          <button class="sidebar-sub-btn" data-panel="news" data-subfilter="comments" type="button">
+            <i class="fas fa-circle"></i> Post Comments
+          </button>
+        </div>
+
+        <!-- 1. Media Library (Dropdown) -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="media" type="button">
+          <i class="fas fa-photo-video"></i> Media Library <i class="fas fa-chevron-left submenu-caret"></i>
         </button>
-        <button class="sidebar-btn" data-panel="gallery">
-          <i class="far fa-image"></i> Media Library
+        <div class="sidebar-submenu" id="submenu-media">
+          <button class="sidebar-sub-btn" data-panel="gallery" data-subfilter="upload" type="button">
+            <i class="fas fa-circle"></i> Photo Upload
+          </button>
+          <button class="sidebar-sub-btn" data-panel="gallery" data-subfilter="list" type="button">
+            <i class="fas fa-circle"></i> Photo List
+          </button>
+        </div>
+
+        <!-- 2. Menu (Dropdown) -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="menu-options" type="button">
+          <i class="fas fa-bars"></i> Menu <i class="fas fa-chevron-left submenu-caret"></i>
         </button>
-        <button class="sidebar-btn" data-panel="menu">
-          <i class="fas fa-bars"></i> Menu <i class="fas fa-chevron-down submenu-caret"></i>
+        <div class="sidebar-submenu" id="submenu-menu-options">
+          <button class="sidebar-sub-btn" data-panel="settings" type="button">
+            <i class="fas fa-circle"></i> Header Navigation
+          </button>
+          <button class="sidebar-sub-btn" data-panel="settings" type="button">
+            <i class="fas fa-circle"></i> Footer Links
+          </button>
+        </div>
+
+        <!-- 3. Ai Writer (Dropdown) -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="ai-options" type="button">
+          <i class="fas fa-brain"></i> Ai Writer <i class="fas fa-chevron-left submenu-caret"></i>
         </button>
-        <button class="sidebar-btn" data-panel="settings">
-          <i class="fas fa-sliders-h"></i> Settings <i class="fas fa-chevron-down submenu-caret"></i>
+        <div class="sidebar-submenu" id="submenu-ai-options">
+          <button class="sidebar-sub-btn" data-panel="add-post" type="button">
+            <i class="fas fa-circle"></i> AI Article Generator
+          </button>
+          <button class="sidebar-sub-btn" data-panel="add-post" type="button">
+            <i class="fas fa-circle"></i> AI Auto Translator
+          </button>
+        </div>
+
+        <!-- 4. Categories (Dropdown) -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="categories-options" type="button">
+          <i class="fas fa-tags"></i> Categories <i class="fas fa-chevron-left submenu-caret"></i>
         </button>
-        <button class="sidebar-btn" data-panel="categories">
-          <i class="fas fa-folder-open"></i> Categories <i class="fas fa-chevron-down submenu-caret"></i>
+        <div class="sidebar-submenu" id="submenu-categories-options">
+          <button class="sidebar-sub-btn" data-panel="news" data-subfilter="all" type="button">
+            <i class="fas fa-circle"></i> Category Management
+          </button>
+        </div>
+
+        <!-- 5. Archive (Dropdown) -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="archive-options" type="button">
+          <i class="fas fa-archive"></i> Archive <i class="fas fa-chevron-left submenu-caret"></i>
         </button>
-        <button class="sidebar-btn" data-panel="archive">
-          <i class="fas fa-archive"></i> Archive <i class="fas fa-chevron-down submenu-caret"></i>
+        <div class="sidebar-submenu" id="submenu-archive-options">
+          <button class="sidebar-sub-btn" data-panel="news" data-subfilter="all" type="button">
+            <i class="fas fa-circle"></i> Archive Logs
+          </button>
+        </div>
+
+        <!-- 6. Advertisement (Dropdown) -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="adv-options" type="button">
+          <i class="fas fa-bullhorn"></i> Advertisement <i class="fas fa-chevron-left submenu-caret"></i>
         </button>
-        <button class="sidebar-btn" data-panel="advertisement">
-          <i class="fas fa-ad"></i> Advertisement <i class="fas fa-chevron-down submenu-caret"></i>
+        <div class="sidebar-submenu" id="submenu-adv-options">
+          <button class="sidebar-sub-btn" data-panel="dashboard" type="button">
+            <i class="fas fa-circle"></i> Ad Placements
+          </button>
+        </div>
+
+        <!-- 7. Rss Feeds (Dropdown) -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="rss-options" type="button">
+          <i class="fas fa-rss"></i> Rss Feeds <i class="fas fa-chevron-left submenu-caret"></i>
         </button>
-        <button class="sidebar-btn" data-panel="rss">
-          <i class="fas fa-rss"></i> RSS Feeds <i class="fas fa-chevron-down submenu-caret"></i>
+        <div class="sidebar-submenu" id="submenu-rss-options">
+          <button class="sidebar-sub-btn" data-panel="dashboard" type="button">
+            <i class="fas fa-circle"></i> RSS Config
+          </button>
+        </div>
+
+        <!-- 8. Reporter (Dropdown) -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="reporter-options" type="button">
+          <i class="fas fa-user"></i> Reporter <i class="fas fa-chevron-left submenu-caret"></i>
+          <span class="sidebar-btn-badge" id="stat-count-grievances" style="margin-left:0.5rem;">0</span>
         </button>
-        <button class="sidebar-btn" data-panel="grievances">
-          <i class="far fa-envelope-open"></i> Reporter <i class="fas fa-chevron-down submenu-caret"></i>
-          <span class="sidebar-btn-badge" id="stat-count-grievances">0</span>
+        <div class="sidebar-submenu" id="submenu-reporter-options">
+          <button class="sidebar-sub-btn" data-panel="grievances" type="button">
+            <i class="fas fa-circle"></i> Petitions Inbox
+          </button>
+        </div>
+
+        <!-- 9. Opinions (Dropdown) -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="opinions-options" type="button">
+          <i class="fas fa-comments"></i> Opinions <i class="fas fa-chevron-left submenu-caret"></i>
         </button>
+        <div class="sidebar-submenu" id="submenu-opinions-options">
+          <button class="sidebar-sub-btn" data-panel="dashboard" type="button">
+            <i class="fas fa-circle"></i> Citizen Feedback
+          </button>
+        </div>
+
+        <!-- 10. Polls (Dropdown) -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="polls-options" type="button">
+          <i class="fas fa-check-square"></i> Polls <i class="fas fa-chevron-left submenu-caret"></i>
+        </button>
+        <div class="sidebar-submenu" id="submenu-polls-options">
+          <button class="sidebar-sub-btn" data-panel="dashboard" type="button">
+            <i class="fas fa-circle"></i> Public Polls
+          </button>
+        </div>
       </nav>
     </aside>
 
@@ -1314,106 +1631,310 @@
         </form>
       </section>
 
-      <!-- PANEL 2: MANAGE NEWS ARTICLES -->
-      <section class="admin-panel" id="news-panel">
+      <!-- PANEL 2A: ADD NEW POST (HIGH-FIDELITY CMS) -->
+      <section class="admin-panel" id="add-post-panel">
         <div class="panel-header">
-          <h3>Manage News & Press Articles</h3>
-          <i class="far fa-newspaper" style="color: var(--primary);"></i>
+          <h3>Add New Post</h3>
+          <i class="fas fa-edit" style="color: var(--primary);"></i>
         </div>
-        
-        <div class="admin-grid-layout">
-          <!-- Form to create/edit -->
+
+        <form id="add-post-form">
           <div class="card-block">
-            <div class="card-block-title" id="news-form-title">Create News Article</div>
-            
-            <form id="news-form">
+            <div class="card-block-title">Create New TVK News Entry</div>
+
+            <!-- Row 1: Language, Category, Sub Category, Category Position -->
+            <div class="add-post-row-4">
               <div class="form-group">
-                <label class="form-label">Article Title (English)</label>
-                <input type="text" class="form-input" id="news-title-en" required placeholder="Enter English heading">
+                <label class="form-label">Language *</label>
+                <select class="form-input" id="ap-language" required>
+                  <option value="ta" selected>Tamil (தமிழ்)</option>
+                  <option value="en">English</option>
+                </select>
               </div>
-              
               <div class="form-group">
-                <label class="form-label">Article Title (Tamil)</label>
-                <input type="text" class="form-input" id="news-title-ta" required placeholder="Enter Tamil heading">
+                <label class="form-label">Category *</label>
+                <select class="form-input" id="ap-category" required>
+                  <option value="Constituency Work" selected>Constituency Work</option>
+                  <option value="Welfare Activities">Welfare Activities</option>
+                  <option value="Press Releases">Press Releases</option>
+                </select>
               </div>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Category</label>
-                  <select class="form-input" id="news-category" required>
-                    <option value="Constituency Work">Constituency Work</option>
-                    <option value="Welfare Activities">Welfare Activities</option>
-                    <option value="Press Releases">Press Releases</option>
-                  </select>
+              <div class="form-group">
+                <label class="form-label">Sub Category</label>
+                <select class="form-input" id="ap-subcategory">
+                  <option value="Tiruchengodu Town">Tiruchengodu Town</option>
+                  <option value="Kailasampalayam">Kailasampalayam</option>
+                  <option value="Mallasamudram">Mallasamudram</option>
+                  <option value="Elachipalayam">Elachipalayam</option>
+                  <option value="Kokkarayanpettai">Kokkarayanpettai</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Category Position</label>
+                <select class="form-input" id="ap-position">
+                  <option value="1" selected>Position 1</option>
+                  <option value="2">Position 2</option>
+                  <option value="3">Position 3</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 2: Home Position, Release Date, Short Head -->
+            <div class="add-post-row-3">
+              <div class="form-group">
+                <label class="form-label">Home Position</label>
+                <select class="form-input" id="ap-home-position">
+                  <option value="Main Feed" selected>Main Feed</option>
+                  <option value="Slider">Slider Carousel</option>
+                  <option value="Sidebar">Sidebar Highlight</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Release Date *</label>
+                <input type="date" class="form-input" id="ap-date" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Short Head</label>
+                <input type="text" class="form-input" id="ap-shorthead" placeholder="e.g. MLA Action">
+              </div>
+            </div>
+
+            <!-- Row 3: Head Line -->
+            <div class="add-post-row-1">
+              <div class="form-group">
+                <label class="form-label">Head Line *</label>
+                <input type="text" class="form-input" id="ap-headline" required placeholder="Enter primary press release headline">
+              </div>
+            </div>
+
+            <!-- Row 4: Details (Rich Text Area Mock with AI Writer Button) -->
+            <div class="add-post-row-1">
+              <div class="form-group">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.5rem;">
+                  <label class="form-label" style="margin-bottom:0;">Details *</label>
+                  <button type="button" class="btn btn-ai-writer" id="ap-ai-writer-btn" style="padding: 0.35rem 0.75rem; font-size: 0.75rem; border-radius: 4px; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+                    <i class="fas fa-magic"></i> Ai Writer
+                  </button>
                 </div>
-                <div class="form-group">
-                  <label class="form-label">Publish Date</label>
-                  <input type="date" class="form-input" id="news-date">
+                
+                <div class="editor-container">
+                  <div class="editor-toolbar-mock">
+                    <button type="button" class="tool-btn" title="Source Code"><i class="fas fa-code"></i></button>
+                    <button type="button" class="tool-btn" title="Save draft"><i class="far fa-save"></i></button>
+                    <div class="tool-divider"></div>
+                    <button type="button" class="tool-btn" title="Bold"><i class="fas fa-bold"></i></button>
+                    <button type="button" class="tool-btn" title="Italic"><i class="fas fa-italic"></i></button>
+                    <button type="button" class="tool-btn" title="Underline"><i class="fas fa-underline"></i></button>
+                    <button type="button" class="tool-btn" title="Strikethrough"><i class="fas fa-strikethrough"></i></button>
+                    <div class="tool-divider"></div>
+                    <button type="button" class="tool-btn" title="Unordered List"><i class="fas fa-list-ul"></i></button>
+                    <button type="button" class="tool-btn" title="Ordered List"><i class="fas fa-list-ol"></i></button>
+                    <div class="tool-divider"></div>
+                    <button type="button" class="tool-btn" title="Align Left"><i class="fas fa-align-left"></i></button>
+                    <button type="button" class="tool-btn" title="Align Center"><i class="fas fa-align-center"></i></button>
+                    <button type="button" class="tool-btn" title="Align Right"><i class="fas fa-align-right"></i></button>
+                    <div class="tool-divider"></div>
+                    <button type="button" class="tool-btn" title="Insert Link"><i class="fas fa-link"></i></button>
+                    <button type="button" class="tool-btn" title="Insert Image"><i class="far fa-image"></i></button>
+                  </div>
+                  <textarea class="editor-textarea" id="ap-details" required placeholder="Write constituency news report narrative here..."></textarea>
                 </div>
               </div>
-              
-              <div class="form-checkbox-group">
-                <input type="checkbox" id="news-featured">
-                <label class="form-label" style="margin-bottom:0; display:inline;" for="news-featured">Set as Primary Featured News Story</label>
-              </div>
-              
+            </div>
+
+            <!-- Row 5: Image, Image Alt, Image Title -->
+            <div class="add-post-row-3" style="align-items: end;">
               <div class="form-group">
-                <label class="form-label">Upload Real Event Photograph</label>
-                <div class="form-file-uploader">
+                <label class="form-label">Image Upload *</label>
+                <div class="form-file-uploader" style="padding: 1.25rem;">
                   <i class="far fa-image"></i>
-                  <span>Drag & Drop or click to upload local photo <strong style="color: var(--primary);">[or Paste Ctrl+V here]</strong></span>
-                  <input type="file" id="news-file" accept="image/*">
+                  <span>Drag photo here or <strong style="color:var(--primary);">Paste Ctrl+V</strong></span>
+                  <input type="file" id="ap-file" accept="image/*">
                 </div>
-                <div class="image-preview-box" id="news-img-preview-box">
-                  <img src="" id="news-img-preview" alt="Upload preview">
+                <div class="image-preview-box" id="ap-img-preview-box" style="height: 120px; margin-top: 0.5rem;">
+                  <img src="" id="ap-img-preview" alt="Upload preview">
                 </div>
               </div>
-              
               <div class="form-group">
-                <label class="form-label">Photograph Image Web URL (Alternative to file upload)</label>
-                <input type="text" class="form-input" id="news-img-url" placeholder="https://unsplash.com/...">
+                <label class="form-label">Image Alt</label>
+                <input type="text" class="form-input" id="ap-img-alt" placeholder="e.g. TVK Relief Camp">
               </div>
-              
               <div class="form-group">
-                <label class="form-label">News Content Narrative (English)</label>
-                <textarea class="form-input" id="news-content-en" rows="5" required placeholder="Write detailed story..."></textarea>
+                <label class="form-label">Image Title</label>
+                <input type="text" class="form-input" id="ap-img-title" placeholder="e.g. Welfare event photo">
               </div>
-              
+            </div>
+
+            <!-- Row 6: Custom Url, Seo Title, Reporter -->
+            <div class="add-post-row-3">
               <div class="form-group">
-                <label class="form-label">News Content Narrative (Tamil)</label>
-                <textarea class="form-input" id="news-content-ta" rows="5" required placeholder="தமிழில் விரிவான செய்தியை எழுதவும்..."></textarea>
+                <label class="form-label">Custom Url</label>
+                <input type="text" class="form-input" id="ap-custom-url" placeholder="e.g. mla-welfare-tiruchengodu">
               </div>
-              
-              <div style="display:flex; gap:1rem;">
-                <button type="submit" class="btn btn-primary btn-full"><i class="fas fa-paper-plane"></i> Save Article</button>
-                <button type="button" class="btn btn-secondary" id="cancel-news-edit" style="display:none;">Cancel</button>
+              <div class="form-group">
+                <label class="form-label">Seo Title</label>
+                <input type="text" class="form-input" id="ap-seo-title" placeholder="e.g. Welfare camp details">
               </div>
-            </form>
+              <div class="form-group">
+                <label class="form-label">Reporter *</label>
+                <div style="display:flex; gap:0.5rem; align-items:center;">
+                  <select class="form-input" id="ap-reporter" required style="flex-grow:1;">
+                    <option value="Admin" selected>Admin</option>
+                    <option value="Tiruchengodu Ward Sec">Tiruchengodu Ward Sec</option>
+                    <option value="MLA Office Spokesperson">MLA Office Spokesperson</option>
+                  </select>
+                  <button type="button" class="btn" style="background-color: var(--primary); color: #fff; padding: 0.7rem 0.85rem; border: none; border-radius: 6px; cursor: pointer;"><i class="fas fa-plus"></i></button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 7: Reporter Message -->
+            <div class="add-post-row-1">
+              <div class="form-group">
+                <label class="form-label">Reporter Message</label>
+                <textarea class="form-input" id="ap-reporter-msg" rows="2" placeholder="Internal remarks / verification status notes"></textarea>
+              </div>
+            </div>
+
+            <!-- Row 8: Video Url, Reference -->
+            <div class="add-post-row-2">
+              <div class="form-group">
+                <label class="form-label">Video Url</label>
+                <input type="url" class="form-input" id="ap-video-url" placeholder="e.g. https://www.youtube.com/watch?v=...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Reference</label>
+                <input type="text" class="form-input" id="ap-reference" placeholder="e.g. TVK Press Release Doc">
+              </div>
+            </div>
+
+            <!-- Row 9: Post tag, Meta keyword -->
+            <div class="add-post-row-2">
+              <div class="form-group">
+                <label class="form-label">Post Tag</label>
+                <input type="text" class="form-input" id="ap-tag" placeholder="e.g. welfare, water, tiruchengodu">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Meta Keyword</label>
+                <input type="text" class="form-input" id="ap-keyword" placeholder="e.g. Dr. K. G. Arunraj, TVK News">
+              </div>
+            </div>
+
+            <!-- Row 10: Meta Description -->
+            <div class="add-post-row-1">
+              <div class="form-group">
+                <label class="form-label">Meta Description</label>
+                <textarea class="form-input" id="ap-meta-desc" rows="3" placeholder="Brief SEO description snippet..."></textarea>
+              </div>
+            </div>
+
+            <!-- Row 11: Checkboxes Group (Latest, Breaking, Feature, Recommanded, Status, Schema) -->
+            <div class="checkboxes-grid-layout">
+              <div class="form-checkbox-inline">
+                <input type="checkbox" id="ap-check-latest" checked>
+                <label for="ap-check-latest">Latest post</label>
+              </div>
+              <div class="form-checkbox-inline">
+                <input type="checkbox" id="ap-check-breaking">
+                <label for="ap-check-breaking">Breaking post</label>
+              </div>
+              <div class="form-checkbox-inline">
+                <input type="checkbox" id="ap-check-featured" checked>
+                <label for="ap-check-featured">Feature post</label>
+              </div>
+              <div class="form-checkbox-inline">
+                <input type="checkbox" id="ap-check-recommanded" checked>
+                <label for="ap-check-recommanded">Recommanded post</label>
+              </div>
+              <div class="form-checkbox-inline">
+                <input type="checkbox" id="ap-check-status" checked>
+                <label for="ap-check-status">Status</label>
+              </div>
+              <div class="form-checkbox-inline">
+                <input type="checkbox" id="ap-check-schema">
+                <label for="ap-check-schema">Schema setup <span style="font-size:0.75rem; font-weight:normal; color:#64748b;">(After post publish)</span></label>
+              </div>
+            </div>
+
+            <!-- Row 12: Buttons Reset & Save -->
+            <div style="display:flex; gap:1.25rem; align-items:center; margin-top: 1.5rem;">
+              <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem;"><i class="fas fa-check"></i> Save</button>
+              <button type="button" class="btn btn-danger" id="ap-reset-btn" style="padding: 0.75rem 1.5rem;"><i class="fas fa-undo"></i> Reset</button>
+            </div>
+
           </div>
-          
-          <!-- Tabular list of active news -->
-          <div class="card-block">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
-              <div class="card-block-title" style="margin-bottom: 0;">Active News Listings</div>
-              <button type="button" class="btn btn-primary" id="auto-fetch-news-btn" style="background-color: #27AE60; border-color: #27AE60; font-size: 0.85rem; padding: 0.5rem 1rem; border-radius: 4px; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <i class="fas fa-sync-alt"></i> Auto-Fetch Latest News
+        </form>
+      </section>
+      <!-- PANEL 2: MANAGE NEWS ARTICLES (POST LIST) -->
+      <section class="admin-panel" id="news-panel">
+        <div class="panel-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="margin: 0;">Post list</h3>
+          <button type="button" class="btn btn-filter" id="news-filter-btn" style="background-color:#7A0C1A; color:#F1C40F; border:1px solid #F1C40F; padding:0.5rem 1rem; border-radius:4px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:0.5rem;">
+            <i class="fas fa-filter"></i> Filter
+          </button>
+        </div>
+
+        <div class="card-block" style="padding: 1.5rem; margin-top: 1rem;">
+          <!-- Controls row -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+            <!-- Left: Show entries -->
+            <div style="font-size:0.9rem; color:#475569; display:inline-flex; align-items:center; gap:0.5rem;">
+              Show 
+              <select class="entries-select" id="news-list-length" style="padding:0.35rem 0.5rem; border:1px solid #cbd5e1; border-radius:4px; font-size:0.9rem;">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+              </select>
+              entries
+            </div>
+
+            <!-- Middle: Export buttons (CSV/Excel) -->
+            <div style="display:flex; gap:0.5rem;">
+              <button type="button" class="btn" style="background-color:#1e3a8a; color:#fff; border:none; padding:0.4rem 0.85rem; border-radius:4px; font-size:0.85rem; cursor:pointer; display:inline-flex; align-items:center; gap:0.35rem;" onclick="alert('Exporting as CSV...')">
+                <i class="fas fa-file-csv"></i> CSV
+              </button>
+              <button type="button" class="btn" style="background-color:#16a34a; color:#fff; border:none; padding:0.4rem 0.85rem; border-radius:4px; font-size:0.85rem; cursor:pointer; display:inline-flex; align-items:center; gap:0.35rem;" onclick="alert('Exporting as Excel...')">
+                <i class="fas fa-file-excel"></i> Excel
               </button>
             </div>
-            <div class="table-container">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th>Photo</th>
-                    <th>Heading (Tamil)</th>
-                    <th>Category</th>
-                    <th>Date / Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="news-table-body">
-                  <!-- Rendered dynamically -->
-                </tbody>
-              </table>
+
+            <!-- Right: Search -->
+            <div style="font-size:0.9rem; color:#475569; display:inline-flex; align-items:center; gap:0.5rem;">
+              Search:
+              <input type="text" class="table-search-input" id="news-list-search" placeholder="Search post title..." style="padding:0.4rem 0.75rem; border:1px solid #cbd5e1; border-radius:4px; font-size:0.9rem; width:220px;">
+            </div>
+          </div>
+
+          <!-- Table Container -->
+          <div class="table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px; text-align:center;">Sl</th>
+                  <th style="width: 100px;">Image</th>
+                  <th>Title</th>
+                  <th>Category</th>
+                  <th>Sub category</th>
+                  <th>Hit</th>
+                  <th>Post by</th>
+                  <th>Release date</th>
+                  <th>Post date</th>
+                  <th>Language</th>
+                  <th>Status</th>
+                  <th style="width: 150px; text-align:center;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="news-table-body" style="font-size:0.9rem;">
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Footer of Table -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1.5rem; flex-wrap:wrap; gap:1rem; border-top:1px solid #e2e8f0; padding-top:1.25rem;">
+            <div id="news-list-info" style="font-size:0.9rem; color:#64748b;">Showing 1 to 10 of 10 entries</div>
+            <div class="pagination" id="news-list-pagination">
+              <!-- Paginated dynamically -->
             </div>
           </div>
         </div>
@@ -1434,11 +1955,11 @@
             <form id="project-form">
               <div class="form-group">
                 <label class="form-label">Project Name (English)</label>
-                <input type="text" class="form-input" id="proj-title-en" required placeholder="e.g. East Tambaram Access Road Restoration">
+                <input type="text" class="form-input" id="proj-title-en" required placeholder="e.g. Tiruchengodu Town Access Road Restoration">
               </div>
               <div class="form-group">
                 <label class="form-label">Project Name (Tamil)</label>
-                <input type="text" class="form-input" id="proj-title-ta" required placeholder="e.g. கிழக்கு தாம்பரம் அணுகுசாலை சீரமைப்பு">
+                <input type="text" class="form-input" id="proj-title-ta" required placeholder="e.g. திருச்செங்கோடு நகர் அணுகுசாலை சீரமைப்பு">
               </div>
               
               <div class="form-row">
@@ -1651,7 +2172,7 @@
 
       <!-- Footer -->
       <footer class="admin-footer">
-        <div class="footer-left">© 2026 ADARSH TVK Co 2025. All Rights Reserved.</div>
+        <div class="footer-left">© 2026 TVK TIRUCHENGODU MLA. All Rights Reserved.</div>
         <div class="footer-right">Designed by: Our Tech Team</div>
       </footer>
     </main>

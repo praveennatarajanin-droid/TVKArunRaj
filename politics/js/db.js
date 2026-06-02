@@ -1,197 +1,297 @@
 /**
- * TVK Tambaram MLA - LocalStorage Database Engine (db.js)
+ * TVK Tiruchengodu MLA - LocalStorage Database Engine (db.js)
  * Implements a unified client-side data layer to enable a fully dynamic website 
  * with a comprehensive administrative backend and local photo upload support.
  */
 
 const TVKDb = (() => {
-  const STORAGE_KEY = "tvk_tambaram_database";
+  const STORAGE_KEY = "tvk_tiruchengodu_database";
 
   // Initial Seed Data to make the website look highly authentic and rich on first load
   const seedData = {
-    config: {
-      site_title_en: "TVK Tambaram MLA | D. Sarathkumar Constituency Portal",
-      site_title_ta: "தவெக தாம்பரம் சட்டமன்ற உறுப்பினர் | டி. சரத்குமார் இணையதள முகப்பு",
-      party_name_en: "Tamilaga Vettri Kazhagam (TVK) - Tambaram",
-      party_name_ta: "தமிழக வெற்றி கழகம் (தவெக) - தாம்பரம்",
-      mla_name_en: "D. Sarathkumar",
-      mla_name_ta: "டி. சரத்குமார்",
-      mla_title_en: "Cabinet Minister for Human Resources Management & Tambaram MLA",
-      mla_title_ta: "மனிதவள மேலாண்மைத் துறை அமைச்சர் & தாம்பரம் சட்டமன்ற உறுப்பினர்",
-      marquee_news_en: "🏆 Tambaram MLA D. Sarathkumar inspects Selaiyur and Mudichur lake desilting projects • TVK Membership camp registered 50,000+ members in Tambaram • MLA Grievance cell resolves 1,200+ municipal complaints this month • Free coaching classes launched for TNPSC aspirants at East Tambaram.",
-      marquee_news_ta: "🏆 தாம்பரம் சட்டமன்ற உறுப்பினர் டி. சரத்குமார் சேலையூர் மற்றும் முடிச்சூர் ஏரிகளை நேரில் ஆய்வு செய்தார்! • தாம்பரத்தில் தவெக உறுப்பினர் சேர்க்கை 50,000-ஐ கடந்தது • சட்டமன்ற உறுப்பினர் குறைதீர்ப்பு முகாமில் இம்மாதம் 1,200+ மனுக்களுக்கு தீர்வு • கிழக்கு தாம்பரத்தில் TNPSC போட்டித் தேர்வுகளுக்கான இலவச பயிலகம் துவக்கம்.",
-      phone: "+91 44 2239 5555",
-      email: "tambaram.mla@tvk.org.in",
-      office_address_en: "TVK Constituency Office, No. 12, Duraisamy Reddy Street, East Tambaram, Chennai - 600059",
-      office_address_ta: "தவெக தொகுதி அலுவலகம், எண். 12, துரைசாமி ரெட்டி தெரு, கிழக்கு தாம்பரம், சென்னை - 600059",
-      facebook: "https://facebook.com/tvkofficial",
-      twitter: "https://twitter.com/tvkofficial",
-      instagram: "https://instagram.com/tvkofficial",
-      youtube: "https://youtube.com/c/TVKOfficial",
-      mla_image_url: "images/sarathkumar.png",
-      leader_image_url: "images/tvklogo.png",
-      admin_password: "tvk2026"
+  "config": {
+    "site_title_en": "TVK Tiruchengodu MLA | Minister Dr. K. G. Arunraj Portal",
+    "site_title_ta": "தவெக திருச்செங்கோடு சட்டமன்ற உறுப்பினர் | அமைச்சர் டாக்டர் கே. ஜி. அருண்ராஜ் இணையதளம்",
+    "party_name_en": "Tamilaga Vettri Kazhagam (TVK) - Tiruchengodu",
+    "party_name_ta": "தமிழக வெற்றி கழகம் (தவெக) - திருச்செங்கோடு",
+    "mla_name_en": "Dr. K. G. Arunraj",
+    "mla_name_ta": "டாக்டர் கே. ஜி. அருண்ராஜ்",
+    "mla_title_en": "Minister for Commercial Taxes & Registration & Tiruchengodu MLA",
+    "mla_title_ta": "வணிகவரி மற்றும் பதிவுத் துறை அமைச்சர் & திருச்செங்கோடு சட்டமன்ற உறுப்பினர்",
+    "marquee_news_en": "🏆 Tiruchengodu MLA Minister Dr. K. G. Arunraj inspects Tiruchengodu cooperative handloom weaver workspaces • TVK Membership camp registers 45,000+ new members in Namakkal district • Commercial Taxes & Registration department launches digital e-filing system • Tiruchengodu GH Multi-Specialty Wing building works accelerated.",
+    "marquee_news_ta": "🏆 திருச்செங்கோடு சட்டமன்ற உறுப்பினர் அமைச்சர் டாக்டர் கே. ஜி. அருண்ராஜ் கூட்டுறவு கைத்தறி நெசவாளர் கூடங்களை நேரில் ஆய்வு செய்தார்! • நாமக்கல் மாவட்டத்தில் தவெக உறுப்பினர் சேர்க்கை 45,000-ஐ கடந்தது • வணிகவரி மற்றும் பதிவுத் துறையில் புதிய டிஜிட்டல் e-தாக்கல் தளம் துவக்கம் • திருச்செங்கோடு அரசு மருத்துவமனை பன்னோக்கு பிரிவு கட்டுமான பணிகள் தீவிரம்.",
+    "phone": "+91 4288 255555",
+    "email": "tiruchengodu.mla@tvk.org.in",
+    "office_address_en": "TVK Constituency Office, No. 45, Namakkal Road, Tiruchengodu, Namakkal District - 637211",
+    "office_address_ta": "தவெக தொகுதி அலுவலகம், எண். 45, நாமக்கல் சாலை, திருச்செங்கோடு, நாமக்கல் மாவட்டம் - 637211",
+    "facebook": "https://www.facebook.com/people/Arunraaj-TVK/61579221207463/#",
+    "twitter": "https://x.com/arunraajkg",
+    "instagram": "https://www.instagram.com/arunraajkg/?hl=en",
+    "youtube": "https://youtube.com/c/TVKOfficial",
+    "mla_image_url": "images/arunraj.png",
+    "leader_image_url": "images/tvklogo.png",
+    "admin_password": "tvk2026",
+    "mla_father_en": "Late K. P. Ganesan",
+    "mla_father_ta": "மறைந்த கே. பி. கணேசன்",
+    "mla_age": "46",
+    "mla_voter_en": "Tiruchengodu constituency, Serial no 651 in Part no 91",
+    "mla_voter_ta": "திருச்செங்கோடு தொகுதி, பாகம் 91-ல் வரிசை எண் 651",
+    "mla_prof_en": "Doctor, Ex-IRS Officer (Income Tax), Tax Consultant, Politician",
+    "mla_prof_ta": "டாக்டர் (MBBS), முன்னாள் IRS அதிகாரி, வரி ஆலோசகர், அரசியல்வாதி",
+    "mla_spouse_en": "Doctor, Assistant Professor at Kilpauk Medical College (KMC)",
+    "mla_spouse_ta": "டாக்டர், கீழ்பாக்கம் மருத்துவக் கல்லூரியின் உதவிப் பேராசிரியர் (KMC)",
+    "mla_margin_en": "28,712 votes",
+    "mla_margin_ta": "28,712 வாக்குகள்"
+  },
+  "news": [
+    {
+      "id": "news_1",
+      "category": "Press Releases",
+      "date": "2026-06-01",
+      "image_url": "images/secretariat.jpg",
+      "is_featured": true,
+      "title_en": "Transparent taxation is our primary goal: CM Joseph Vijay & Minister Dr. Arunraj launch e-Tax Initiative",
+      "title_ta": "நேர்மையான, வெளிப்படையான வரி விதிப்பே எங்கள் இலக்கு: முதல்வர் விஜய் & அமைச்சர் டாக்டர் அருண்ராஜ் புதிய தளம் துவக்கம்",
+      "content_en": "Chief Minister Thalapathy Vijay along with Commercial Taxes & Registration Minister Dr. K. G. Arunraj launched the integrated e-Tax filing system at the Secretariat. Drawing from his 15-year administrative experience in the Indian Revenue Service (IRS), Minister Dr. Arunraj announced extensive reforms to digitize deed registration and eliminate middlemen, ensuring transparent citizen-centric services.",
+      "content_ta": "தலைமைச் செயலகத்தில் மாண்புமிகு முதல்வர் தளபதி விஜய் மற்றும் வணிகவரித் துறை அமைச்சர் டாக்டர் கே. ஜி. அருண்ராஜ் ஆகியோர் புதிய ஒருங்கிணைந்த e-வரி தாக்கல் மற்றும் பத்திரப்பதிவு சேவையை துவக்கி வைத்தனர். 15 ஆண்டுகள் IRS அதிகாரியாகப் பணியாற்றிய அனுபவத்தின் அடிப்படையில், வணிகவரி மற்றும் பத்திரப்பதிவுத் துறையை 100% டிஜிட்டல் மயமாக்கி, இடைத்தரகர்களை முழுமையாக ஒழிக்க அமைச்சர் அருண்ராஜ் புதிய சீர்திருத்தங்களை அறிவித்தார்."
     },
-    news: [
-      {
-        id: "news_1",
-        category: "Press Releases",
-        date: "2026-06-01",
-        image_url: "images/secretariat.jpg",
-        is_featured: true,
-        title_en: "Graft-free administration is our prime goal: CM Joseph Vijay at first State Cabinet briefing",
-        title_ta: "ஊழலற்ற நிர்வாகமே எங்கள் முதன்மை இலக்கு: முதல் அமைச்சரவைக் கூட்டத்தில் முதல்வர் விஜய் உறுதி",
-        content_en: "In the first cabinet briefing after taking oath, Chief Minister Thalapathy Vijay announced a series of administrative reforms, emphasizing a graft-free, secular, and transparent government model. TVK cabinet has approved the digitization of all files and automated civic grievance redressal. The CM assured that welfare schemes will reach every citizen without intermediary leakages.",
-        content_ta: "பதவியேற்புக்குப் பிந்தைய முதல் அமைச்சரவைக் கூட்டத்தில் பேசிய மாண்புமிகு முதல்வர் தளபதி விஜய், நேர்மையான, மதச்சார்பற்ற மற்றும் ஊழலற்ற வெளிப்படையான நிர்வாகத்தை மக்கள் நலனுக்காக தவெக அரசு வழங்கும் எனப் பிரகடனம் செய்தார். கோப்புகள் அனைத்தும் டிஜிட்டல் மயமாக்கப்பட்டு, மக்கள் குறைகளுக்கு 15 நாட்களில் தீர்வு காண அமைச்சரவை ஒப்புதல் அளித்துள்ளது."
-      },
-      {
-        id: "news_2",
-        category: "Constituency Work",
-        date: "2026-05-28",
-        image_url: "images/lake.jpg",
-        is_featured: false,
-        title_en: "Tambaram MLA D. Sarathkumar inspects storm water drain construction and desilting at Mudichur",
-        title_ta: "தாம்பரம் சட்டமன்ற உறுப்பினர் டி. சரத்குமார் முடிச்சூரில் பருவமழைக்கு முன் வடிகால் பணிகளை ஆய்வு செய்தார்",
-        content_en: "Tambaram Assembly constituency MLA and Minister D. Sarathkumar conducted a field inspection of desilting and storm water drain works at Mudichur, Selaiyur, and Chromepet. He directed corporation engineers to remove blockages and complete all structural works before the monsoon season to prevent water-logging in residential zones.",
-        content_ta: "தாம்பரம் தொகுதி சட்டமன்ற உறுப்பினரும் அமைச்சருமான டி. சரத்குமார் இன்று முடிச்சூர் மற்றும் சேலையூர் ஏரி இணைப்புக் கால்வாய்கள் தூர்வாரும் பணிகளை நேரில் பார்வையிட்டார். மழைக்காலங்களில் குடியிருப்புப் பகுதிகளில் வெள்ளம் சூழாமல் இருக்க, மழைநீர் வடிகால் பணிகளை உடனடியாக முடிக்க மாநகராட்சி அதிகாரிகளுக்கு அறிவுறுத்தினார்."
-      },
-      {
-        id: "news_3",
-        category: "Welfare Activities",
-        date: "2026-05-25",
-        image_url: "images/medical.jpg",
-        is_featured: false,
-        title_en: "Free multi-specialty medical checkup camp organized by TVK youth wing in West Tambaram",
-        title_ta: "மேற்கு தாம்பரத்தில் தவெக சார்பில் நடைபெற்ற இலவச பன்னோக்கு மருத்துவ ஆலோசனை முகாம்",
-        content_en: "Under the guidance of CM Thalapathy Vijay, a massive free health camp was organized by Tambaram TVK cadres. Over 1,000 residents received free medical checks, consultations, and medicines. Tambaram MLA D. Sarathkumar inaugurated the camp and distributed healthcare aid kits to families.",
-        content_ta: "தவெக தலைவர் முதல்வர் தளபதி விஜய் அவர்களின் அறிவுறுத்தலின்படி, தாம்பரம் தொகுதி தவெக சார்பில் மாபெரும் இலவச மருத்துவ முகாம் நடைபெற்றது. 1,000-க்கும் மேற்பட்ட பயனாளிகளுக்கு இலவச மருத்துவ பரிசோதனைகள் செய்யப்பட்டு மருந்துகள் வழங்கப்பட்டன. முகாமைத் தொடங்கி வைத்த அமைச்சர் டி. சரத்குமார் குடும்பங்களுக்கு நலத்திட்ட உதவிகளை வழங்கினார்."
-      },
-      {
-        id: "news_4",
-        category: "Welfare Activities",
-        date: "2026-05-20",
-        image_url: "images/classroom.jpg",
-        is_featured: false,
-        title_en: "TVK Free Competitive Exam Study Center launched in East Tambaram by MLA D. Sarathkumar",
-        title_ta: "கிழக்கு தாம்பரத்தில் அரசுத் தேர்வு இலவச பயிலகத்தை திறந்து வைத்தார் சட்டமன்ற உறுப்பினர் டி. சரத்குமார்",
-        content_en: "To support students from economically weaker sections, Tambaram MLA D. Sarathkumar inaugurated a TVK Free Competitive Exam Study Center. The academy provides free coaching, textbooks, and online mock tests for TNPSC, UPSC, and banking examinations, benefiting hundreds of local aspirants.",
-        content_ta: "ஏழை மாணவர்களின் கல்வி நலனை மேம்படுத்தும் நோக்கில், தாம்பரம் தொகுதி தவெக சார்பில் அரசுத் தேர்வுகளுக்கான இலவச பயிலகத்தை சட்டமன்ற உறுப்பினர் டி. சரத்குமார் திறந்து வைத்தார். இதன் மூலம் குரோம்பேட்டை மற்றும் தாம்பரம் பகுதி மாணவர்கள் TNPSC, UPSC தேர்வுகளுக்கு இலவசமாக பயிற்சி பெறலாம்."
-      }
-    ],
-    projects: [
-      {
-        id: "proj_1",
-        title_en: "Selaiyur & Mudichur Lake Desilting & Ecological Restoration",
-        title_ta: "சேலையூர் & முடிச்சூர் ஏரி தூர்வாருதல் மற்றும் சுற்றுச்சூழல் சீரமைப்பு",
-        description_en: "Deepening, strengthening of bunds, and creation of walking tracks at Selaiyur and Mudichur lakes to increase water storage and recharge groundwater.",
-        description_ta: "தாம்பரத்தின் முக்கிய குடிநீர் ஆதாரங்களான சேலையூர் மற்றும் முடிச்சூர் ஏரிகளை தூர்வாரி, கரைகளைப் பலப்படுத்தி, நடைபாதை அமைக்கும் சுற்றுச்சூழல் மேம்பாட்டுத் திட்டம்.",
-        status: "ongoing",
-        location_en: "Tambaram Constituency",
-        location_ta: "தாம்பரம் சட்டமன்ற தொகுதி",
-        impact_en: "Prevents flood in 20+ residential colonies and increases groundwater tables",
-        impact_ta: "20-க்கும் மேற்பட்ட குடியிருப்பு பகுதிகளில் வெள்ளத்தடுப்பு மற்றும் நிலத்தடி நீர் உயர்வு"
-      },
-      {
-        id: "proj_2",
-        title_en: "Establishment of TVK Free Civil Services Coaching Center",
-        title_ta: "தவெக ஐ.ஏ.எஸ் மற்றும் அரசுத் தேர்வு இலவச பயிலகம் அமைத்தல்",
-        description_en: "Setting up a state-of-the-art coaching center with library resources in East Tambaram for civil services and TNPSC aspirants.",
-        description_ta: "தாம்பரம் பகுதி இளைஞர்கள் போட்டித் தேர்வுகளில் வெற்றி பெற கிழக்கு தாம்பரத்தில் நவீன டிஜிட்டல் நூலகத்துடன் கூடிய இலவச பயிலகம் அமைக்கும் பணி.",
-        status: "completed",
-        location_en: "East Tambaram, Chennai",
-        location_ta: "கிழக்கு தாம்பரம், சென்னை",
-        impact_en: "Supports 500+ local students annually with professional mentoring",
-        impact_ta: "ஆண்டுதோறும் 500-க்கும் மேற்பட்ட உள்ளூர் மாணவர்கள் பயன் பெறுவர்"
-      },
-      {
-        id: "proj_3",
-        title_en: "MLA Public Grievance Digital Tracking System (Tambaram Ward Offices)",
-        title_ta: "சட்டமன்ற உறுப்பினர் குறைதீர்ப்பு முகாம் டிஜிட்டல் கண்காணிப்பு திட்டம்",
-        description_en: "Digitizing the grievance submission process across all 5 wards in Tambaram, connecting petitions directly to the MLA table for swift action.",
-        description_ta: "தாம்பரம் தொகுதியில் சமர்ப்பிக்கப்படும் மக்கள் மனுக்களை சட்டமன்ற உறுப்பினரின் நேரடி கண்காணிப்பில் டிஜிட்டல் முறையில் கண்காணிக்கும் திட்டம்.",
-        status: "completed",
-        location_en: "All Ward Offices, Tambaram",
-        location_ta: "தாம்பரம் மாநகராட்சி வார்டு அலுவலகங்கள்",
-        impact_en: "Ensures resolution of civic complaints within 15 working days",
-        impact_ta: "15 நாட்களுக்குள் குடிநீர், சாலை பிரச்சனைகளுக்கு தீர்வு காணுதல்"
-      }
-    ],
-    gallery: [
-      {
-        id: "gal_1",
-        caption_en: "Tambaram MLA D. Sarathkumar reviewing desilting operations at Mudichur lake bunds",
-        caption_ta: "முடிச்சூர் ஏரி மதகுகள் மற்றும் தூர்வாரும் பணிகளை நேரில் பார்வையிட்டு ஆய்வு செய்யும் சட்டமன்ற உறுப்பினர் டி. சரத்குமார்",
-        image_url: "images/lake.jpg",
-        date: "2026-05-28"
-      },
-      {
-        id: "gal_2",
-        caption_en: "Distribution of free books and coaching materials to competitive exam students",
-        caption_ta: "அரசுத் தேர்வு இலவச பயிலக மாணவர்களுக்கு பாடப்புத்தகங்கள் மற்றும் பயிற்சி கையேடுகளை வழங்கிய அமைச்சர்",
-        image_url: "images/classroom.jpg",
-        date: "2026-05-25"
-      },
-      {
-        id: "gal_3",
-        caption_en: "Medical camp team conducting free checkups and distributing health kits in Tambaram",
-        caption_ta: "தாம்பரம் தவெக சார்பில் நடைபெற்ற இலவச பன்னோக்கு மருத்துவ முகாமில் சிகிச்சை பெறும் முதியவர்கள்",
-        image_url: "images/medical.jpg",
-        date: "2026-05-23"
-      },
-      {
-        id: "gal_4",
-        caption_en: "MLA D. Sarathkumar planting tree saplings along Selaiyur main roads",
-        caption_ta: "சேலையூர் பகுதியில் மரக்கன்றுகளை நட்டு மாபெரும் பசுமை இயக்கத்தை தொடங்கி வைத்த சட்டமன்ற உறுப்பினர்",
-        image_url: "images/cleanliness.jpg",
-        date: "2026-05-20"
-      }
-    ],
-    videos: [
-      {
-        id: "vid_1",
-        title_en: "Tambaram MLA D. Sarathkumar Press Meet on Storm Water Drain Works & Flood Preparedness",
-        title_ta: "தாம்பரம் தொகுதி வெள்ளத்தடுப்பு பணிகள் குறித்து சட்டமன்ற உறுப்பினர் டி. சரத்குமார் செய்தியாளர் சந்திப்பு",
-        video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        thumbnail_url: "images/lake.jpg"
-      },
-      {
-        id: "vid_2",
-        title_en: "CM Thalapathy Vijay Address on State Welfare Schemes & Youth Employment Policies",
-        title_ta: "தவெக அரசின் மாநில மக்கள் நலத்திட்டங்கள் குறித்து முதல்வர் தளபதி விஜயின் கொள்கை உரை",
-        video_url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        thumbnail_url: "images/vijay.jpg"
-      }
-    ],
-    grievances: [
-      {
-        id: "griev_1",
-        name: "K. Ranganathan",
-        email: "ranga.tambaram@gmail.com",
-        phone: "+91 98400 98765",
-        ward_no: "Ward 12 (East Tambaram)",
-        grievance_type: "Roads & Traffic",
-        description: "The main approach road near East Tambaram railway station has deep potholes. Please inspect and relay the road.",
-        date: "2026-06-01",
-        status: "reviewed"
-      },
-      {
-        id: "griev_2",
-        name: "Meenakshi Sundaram",
-        email: "meena.selaiyur@yahoo.com",
-        phone: "+91 97900 12345",
-        ward_no: "Ward 14 (Selaiyur)",
-        grievance_type: "Garbage Clearance",
-        description: "Regular garbage collection is not happening on Kamaraj Street. Kindly address this issue.",
-        date: "2026-05-30",
-        status: "pending"
-      }
-    ]
-  };
+    {
+      "id": "news_2",
+      "category": "Constituency Work",
+      "date": "2026-05-28",
+      "image_url": "images/lake.jpg",
+      "is_featured": false,
+      "title_en": "Minister Dr. Arunraj inspects Tiruchengodu lake desilting and water-channel cleaning",
+      "title_ta": "திருச்செங்கோட்டில் பருவமழைக்கு முன் ஏரிகள் மற்றும் வாய்க்கால்கள் தூர்வாரும் பணிகளை அமைச்சர் ஆய்வு செய்தார்",
+      "content_en": "Tiruchengodu constituency MLA and Minister Dr. K. G. Arunraj inspected municipal desilting and storm water drain renovation works near the Tiruchengodu giri valar path. He directed engineers to ensure that rainwaters channel directly into local irrigation lakes without stagnation, protecting residential zones.",
+      "content_ta": "திருச்செங்கோடு சட்டமன்ற உறுப்பினரும் அமைச்சருமான டாக்டர் கே. ஜி. அருண்ராஜ் இன்று கிரிவலப் பாதை அருகே ஏரி மற்றும் வாய்க்கால்கள் தூர்வாரும் பணிகளை நேரில் ஆய்வு செய்தார். குடியிருப்பு பகுதிகளில் தண்ணீர் தேங்காமல் நேரடியாக நீர்நிலைகளுக்குச் செல்லும் வகையில் வடிகால் பணிகளை விரைந்து முடிக்க மாநகராட்சி அதிகாரிகளுக்கு உத்தரவிட்டார்."
+    },
+    {
+      "id": "news_3",
+      "category": "Welfare Activities",
+      "date": "2026-05-25",
+      "image_url": "images/medical.jpg",
+      "is_featured": false,
+      "title_en": "Free multi-specialty health camp organized by TVK medical wing in Tiruchengodu rural wards",
+      "title_ta": "திருச்செங்கோடு கிராமப்புற வார்டுகளில் தவெக சார்பில் நடைபெற்ற இலவச பன்னோக்கு மருத்துவ முகாம்",
+      "content_en": "Under the guidance of CM Thalapathy Vijay, a massive free health camp was organized by TVK in Tiruchengodu. Minister Dr. Arunraj (himself a medical doctor) along with a team of specialist doctors, including KMC assistant professors, provided free consultations, tests, and medicine distributions to over 1,200 local residents.",
+      "content_ta": "தவெக தலைவர் மாண்புமிகு முதல்வர் தளபதி விஜய் அவர்களின் அறிவுறுத்தலின்படி, திருச்செங்கோட்டில் மாபெரும் இலவச மருத்துவ முகாம் நடைபெற்றது. மருத்துவருமான அமைச்சர் டாக்டர் அருண்ராஜ் இம்முகாமைத் தொடங்கி வைத்து, கீழ்பாக்கம் மருத்துவக் கல்லூரி சிறப்பு மருத்துவர்களுடன் இணைந்து 1,200-க்கும் மேற்பட்ட ஏழை எளிய மக்களுக்கு மருத்துவப் பரிசோதனைகள் மற்றும் இலவச மருந்துகளை வழங்கினார்."
+    },
+    {
+      "id": "news_4",
+      "category": "Welfare Activities",
+      "date": "2026-05-20",
+      "image_url": "images/classroom.jpg",
+      "is_featured": false,
+      "title_en": "TVK Free UPSC & TNPSC Study Center launched in Tiruchengodu by Minister Dr. Arunraj",
+      "title_ta": "திருச்செங்கோட்டில் போட்டித் தேர்வு தவெக இலவச பயிலகத்தை துவக்கி வைத்தார் அமைச்சர் டாக்டர் அருண்ராஜ்",
+      "content_en": "Drawing from his journey of clearing the UPSC exam and serving in the IRS, Minister Dr. Arunraj launched a TVK Free Competitive Exam Study Academy. The center provides free coaching, digital study rooms, and mock test materials for Namakkal district youths preparing for government services.",
+      "content_ta": "தாமாகவே UPSC தேர்வெழுதி IRS அதிகாரியாக சாதித்த தனது சொந்த அனுபவத்தின் அடிப்படையில், திருச்செங்கோடு பகுதி ஏழை மாணவர்கள் அரசுப் பணிகளைப் பெற தவெக சார்பில் இலவச அரசுத் தேர்வு பயிலகத்தை அமைச்சர் டாக்டர் அருண்ராஜ் துவக்கி வைத்தார். இதன் மூலம் Namakkal மாவட்டத்தைச் சேர்ந்த நூற்றுக்கணக்கான மாணவர்கள் இலவசமாக பயிற்சி பெறலாம்."
+    },
+    {
+      "id": "news_5",
+      "category": "Constituency Work",
+      "date": "2026-05-18",
+      "image_url": "images/gopuram.jpg",
+      "is_featured": false,
+      "title_en": "Historic Tiruchengodu Arthanareeswarar Temple annual festival celebrated; Minister reviews facilities",
+      "title_ta": "வரலாற்று சிறப்புமிக்க திருச்செங்கோடு அர்த்தநாரீஸ்வரர் கோவில் தேரோட்டம்; வசதிகளை ஆய்வு செய்தார் அமைச்சர்",
+      "content_en": "The annual Chithirai festival of the historic Tiruchengodu Sri Arthanareeswarar Temple was celebrated with grand chariot processions. Minister Dr. K. G. Arunraj participated in special prayers and directed local authorities to arrange continuous drinking water, sanitation facilities, and transport services for lakhs of visiting devotees.",
+      "content_ta": "வரலாற்றுச் சிறப்புமிக்க திருச்செங்கோடு ஸ்ரீ அர்த்தநாரீஸ்வரர் கோவில் சித்திரைத் திருவிழா தேரோட்டம் விமரிசையாக நடைபெற்றது. இதில் கலந்துகொண்டு சுவாமி தரிசனம் செய்த அமைச்சர் டாக்டர் கே. ஜி. அருண்ராஜ், பக்தர்களின் வசதிக்காக குடிநீர், தூய்மை மற்றும் போக்குவரத்துப் பணிகளை விரிவுபடுத்த அதிகாரிகளுக்கு அறிவுறுத்தினார்."
+    },
+    {
+      "id": "news_6",
+      "category": "Press Releases",
+      "date": "2026-05-15",
+      "image_url": "images/classroom.jpg",
+      "is_featured": false,
+      "title_en": "TVK Membership Drive Reaches 1 Lakh in Namakkal District",
+      "title_ta": "நாமக்கல் மாவட்டத்தில் தவெக உறுப்பினர் சேர்க்கை 1 லட்சத்தை கடந்தது",
+      "content_en": "Under the dynamic leadership of CM Thalapathy Vijay and the direct supervision of Minister Dr. Arunraj, the TVK membership drive in Namakkal district achieved a historic milestone of 1 lakh members. A massive celebration was held at the Tiruchengodu constituency office.",
+      "content_ta": "மாண்புமிகு முதல்வர் தளபதி விஜய் அவர்களின் வழிகாட்டுதலின்படி, அமைச்சர் டாக்டர் அருண்ராஜ் அவர்களின் நேரடி மேற்பார்வையில் நாமக்கல் மாவட்டத்தில் தவெக உறுப்பினர் சேர்க்கை 1 லட்சத்தை கடந்து சாதனை படைத்துள்ளது. இது தொடர்பான மாபெரும் கொண்டாட்டம் திருச்செங்கோடு அலுவலகத்தில் நடைபெற்றது."
+    },
+    {
+      "id": "news_7",
+      "category": "Constituency Work",
+      "date": "2026-05-10",
+      "image_url": "images/lake.jpg",
+      "is_featured": false,
+      "title_en": "Dr. Arunraj inspects Tiruchengodu Government Hospital works",
+      "title_ta": "திருச்செங்கோடு அரசு மருத்துவமனை பணிகளை டாக்டர் அருண்ராஜ் ஆய்வு செய்தார்",
+      "content_en": "To ensure quality healthcare for rural populations, Minister Dr. Arunraj inspected the ongoing construction of the Multi-Specialty Wing at the Tiruchengodu Government Hospital. He ordered officials to expedite the works before the monsoon.",
+      "content_ta": "கிராமப்புற மக்களுக்கு தரமான மருத்துவ சேவை கிடைப்பதை உறுதி செய்ய, திருச்செங்கோடு அரசு மருத்துவமனையில் கட்டப்பட்டு வரும் பன்னோக்கு சிறப்பு சிகிச்சை பிரிவு பணிகளை அமைச்சர் டாக்டர் அருண்ராஜ் ஆய்வு செய்தார். பருவமழைக்கு முன் பணிகளை விரைந்து முடிக்க அதிகாரிகளுக்கு உத்தரவிட்டார்."
+    },
+    {
+      "id": "news_8",
+      "category": "Welfare Activities",
+      "date": "2026-05-05",
+      "image_url": "images/medical.jpg",
+      "is_featured": false,
+      "title_en": "TVK Women's Wing organizes self-employment training",
+      "title_ta": "தவெக மகளிர் அணி சார்பில் சுயதொழில் பயிற்சி முகாம்",
+      "content_en": "Empowering rural women, the TVK Women's Wing organized a free self-employment and tailoring training camp in Kailasampalayam. Sewing machines were distributed to 200 women by Minister Dr. Arunraj.",
+      "content_ta": "கிராமப்புற பெண்களின் வாழ்வாதாரத்தை மேம்படுத்தும் நோக்கில், தவெக மகளிர் அணி சார்பில் கைலாசம்பாளையத்தில் இலவச சுயதொழில் மற்றும் தையல் பயிற்சி முகாம் நடைபெற்றது. 200 பெண்களுக்கு தையல் இயந்திரங்களை அமைச்சர் டாக்டர் அருண்ராஜ் வழங்கினார்."
+    },
+    {
+      "id": "news_9",
+      "category": "Constituency Work",
+      "date": "2026-04-28",
+      "image_url": "images/cleanliness.jpg",
+      "is_featured": false,
+      "title_en": "Drinking water pipeline extension in Elachipalayam ward completed",
+      "title_ta": "எலாச்சிபாளையம் வார்டில் புதிய குடிநீர் குழாய் அமைக்கும் பணி நிறைவு",
+      "content_en": "A long-pending demand of Elachipalayam ward residents was fulfilled as the new Cauvery drinking water pipeline extension was completed and inaugurated today.",
+      "content_ta": "எலாச்சிபாளையம் வார்டு மக்களின் நீண்ட கால கோரிக்கையான புதிய காவிரி குடிநீர் குழாய் விரிவாக்கப் பணிகள் நிறைவடைந்து இன்று மக்கள் பயன்பாட்டிற்கு திறக்கப்பட்டது."
+    },
+    {
+      "id": "news_10",
+      "category": "Welfare Activities",
+      "date": "2026-04-22",
+      "image_url": "images/gopuram.jpg",
+      "is_featured": false,
+      "title_en": "TVK Youth Wing conducts mega blood donation camp",
+      "title_ta": "தவெக இளைஞரணி சார்பில் மாபெரும் ரத்த தான முகாம்",
+      "content_en": "In celebration of Thalapathy Vijay's birthday, a mega blood donation camp was organized in Tiruchengodu. Over 500 youth donated blood, which was handed over to the Government Blood Bank.",
+      "content_ta": "தளபதி விஜய் அவர்களின் பிறந்தநாளை முன்னிட்டு, திருச்செங்கோட்டில் மாபெரும் ரத்த தான முகாம் நடைபெற்றது. 500-க்கும் மேற்பட்ட இளைஞர்கள் ரத்த தானம் செய்தனர்."
+    },
+    {
+      "id": "news_11",
+      "category": "Welfare Activities",
+      "date": "2026-04-15",
+      "image_url": "images/secretariat.jpg",
+      "is_featured": false,
+      "title_en": "Minister Dr. Arunraj distributes welfare schemes to 500 weavers",
+      "title_ta": "500 நெசவாளர்களுக்கு நலத்திட்ட உதவிகளை வழங்கினார் அமைச்சர்",
+      "content_en": "Supporting the traditional handloom industry, solar power kits and modern looms were distributed to 500 weaver families in Tiruchengodu.",
+      "content_ta": "பாரம்பரிய கைத்தறி நெசவுத் தொழிலை மேம்படுத்தும் நோக்கில், திருச்செங்கோட்டை சேர்ந்த 500 நெசவாளர் குடும்பங்களுக்கு சூரிய சக்தி கருவிகள் மற்றும் நவீன தறிகள் வழங்கப்பட்டன."
+    },
+    {
+      "id": "news_6",
+      "category": "Constituency Work",
+      "date": "2026-05-15",
+      "image_url": "images/cleanliness.jpg",
+      "is_featured": false,
+      "title_en": "Cooperative Handloom Weaver modernization schemes launched in Tiruchengodu by Minister Dr. Arunraj",
+      "title_ta": "கூட்டுறவு கைத்தறி நெசவாளர்களுக்கான புதிய நவீன உதவித் திட்டங்களை அமைச்சர் அருண்ராஜ் துவக்கினார்",
+      "content_en": "Tiruchengodu constituency houses thousands of handloom weaving families. Minister Dr. Arunraj initiated the cooperative modernization drive, providing solar-powered loompads and subsidized electrical warp rollers, which will double daily production capacity and secure livelihoods for traditional weavers.",
+      "content_ta": "திருச்செங்கோடு பகுதியின் முக்கிய வாழ்வாதாரமாக விளங்கும் கைத்தறி நெசவுத் தொழிலை மேம்படுத்த, கூட்டுறவு சங்கங்கள் மூலம் சூரிய ஒளி நெசவுச் சாதனங்கள் மற்றும் மானிய விலையிலான நவீன கருவிகளை நெசவாளர் குடும்பங்களுக்கு அமைச்சர் டாக்டர் அருண்ராஜ் வழங்கிப் பணிகளைத் தொடங்கி வைத்தார்."
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj_1",
+      "title_en": "Tiruchengodu Handloom Cooperative Modernization & Weaver Support Scheme",
+      "title_ta": "திருச்செங்கோடு கூட்டுறவு கைத்தறி நெசவாளர் நவீனமயமாக்கல் மற்றும் உதவித் திட்டம்",
+      "description_en": "Upgrading and modernizing traditional handloom units with automatic solar-assisted weavers and introducing a direct cooperative-to-consumer digital registry for local handlooms.",
+      "description_ta": "திருச்செங்கோட்டின் பாரம்பரிய கைத்தறி கூடங்களை சோலார் தொழில்நுட்பத்துடன் நவீனப்படுத்தி, நெசவாளர்களுக்கு நேரடியாக விற்பனை லாபம் கிடைக்கச் செய்யும் டிஜிட்டல் கூட்டுறவுத் திட்டம்.",
+      "status": "ongoing",
+      "location_en": "Tiruchengodu Weaver Colonies",
+      "location_ta": "திருச்செங்கோடு நெசவாளர் குடியிருப்புகள்",
+      "impact_en": "Directly doubles daily earnings for 3,500+ weaving families",
+      "impact_ta": "3,500-க்கும் மேற்பட்ட நெசவாளர் குடும்பங்களின் தினசரி வருவாயை இருமடங்காக உயர்த்தும்"
+    },
+    {
+      "id": "proj_2",
+      "title_en": "Establishment of TVK Free Civil Services Academy & Digital Library",
+      "title_ta": "தவெக ஐ.ஏ.எஸ் மற்றும் அரசுத் தேர்வு இலவச பயிலகம் & டிஜிட்டல் நூலகம்",
+      "description_en": "A state-of-the-art coaching center initiated under Ex-IRS Minister Dr. Arunraj's guidance, providing free competitive coaching and digital resource access in Tiruchengodu.",
+      "description_ta": "முன்னாள் IRS அதிகாரியான அமைச்சர் டாக்டர் அருண்ராஜின் மேற்பார்வையில், அரசுப் பணித் தேர்வுகளுக்கான உயர்தர இலவசப் பயிற்சி மற்றும் டிஜிட்டல் நூலகம் அமைக்கும் பணி.",
+      "status": "completed",
+      "location_en": "Namakkal Road, Tiruchengodu",
+      "location_ta": "நாமக்கல் சாலை, திருச்செங்கோடு",
+      "impact_en": "Benefits 600+ rural competitive exam aspirants annually",
+      "impact_ta": "ஆண்டுதோறும் 600-க்கும் மேற்பட்ட கிராமப்புற போட்டித் தேர்வு மாணவர்கள் பயன் பெறுவர்"
+    },
+    {
+      "id": "proj_3",
+      "title_en": "Tiruchengodu Government Hospital Multi-Specialty Wing Expansion",
+      "title_ta": "திருச்செங்கோடு அரசு மருத்துவமனை பன்னோக்கு சிறப்புப் பிரிவு கட்டுமான பணி",
+      "description_en": "Expanding infrastructure at the Tiruchengodu GH to include a dedicated pediatric care wing, dialysis center, and fully equipped emergency trauma wards.",
+      "description_ta": "திருச்செங்கோடு அரசு தலைமை மருத்துவமனையில் பன்னோக்கு சிறப்பு சிகிச்சை வார்டு, டயாலிசிஸ் மையம் மற்றும் அவசரக்கால தீவிர சிகிச்சைப் பிரிவு கட்டுமானத் திட்டம்.",
+      "status": "ongoing",
+      "location_en": "Government Hospital, Tiruchengodu",
+      "location_ta": "அரசு மருத்துவமனை, திருச்செங்கோடு",
+      "impact_en": "Provides tertiary care locally, avoiding long journeys to Salem or Erode",
+      "impact_ta": "சேலம் அல்லது ஈரோடு செல்ல வேண்டிய அவசியமின்றி உள்ளூரிலேயே உயர்தர சிகிச்சை அளித்தல்"
+    }
+  ],
+  "gallery": [
+    {
+      "id": "gal_1",
+      "caption_en": "Minister Dr. Arunraj interacting with cooperative weavers at Tiruchengodu handloom unit",
+      "caption_ta": "திருச்செங்கோடு கைத்தறி நெசவாளர் கூடங்களில் நெசவாளர்களின் குறைகளைக் கேட்டறிந்து கலந்துரையாடும் அமைச்சர்",
+      "image_url": "images/cleanliness.jpg",
+      "date": "2026-05-28"
+    },
+    {
+      "id": "gal_2",
+      "caption_en": "Minister K. G. Arunraj reviewing storm water drain desilting near Giri Valar path",
+      "caption_ta": "திருச்செங்கோடு கிரிவலப் பாதை அருகே மழைநீர் வடிகால் மற்றும் தூர்வாரும் பணிகளை ஆய்வு செய்யும் அமைச்சர்",
+      "image_url": "images/lake.jpg",
+      "date": "2026-05-25"
+    },
+    {
+      "id": "gal_3",
+      "caption_en": "Dr. Arunraj at the free medical camp consult room examining elderly patients",
+      "caption_ta": "திருச்செங்கோடு இலவச பன்னோக்கு தவெக மருத்துவ முகாமில் மக்களுக்கு மருத்துவ பரிசோதனை செய்யும் அமைச்சர்",
+      "image_url": "images/medical.jpg",
+      "date": "2026-05-23"
+    },
+    {
+      "id": "gal_4",
+      "caption_en": "Minister inaugurating the free UPSC & TNPSC competitive exam coaching registry",
+      "caption_ta": "அரசுத் தேர்வு இலவச பயிலகத்தை திறந்து வைத்து மாணவர்களின் சேர்க்கையைப் பதிவு செய்யும் அமைச்சர்",
+      "image_url": "images/classroom.jpg",
+      "date": "2026-05-20"
+    }
+  ],
+  "videos": [
+    {
+        "id": "vid_1",
+        "title_en": "Dr. K. G. Arunraj Latest Interview",
+        "title_ta": "டாக்டர் கே. ஜி. அருண்ராஜ் பேட்டி",
+        "video_url": "https://www.youtube.com/embed/s4a47eu-SIE",
+        "thumbnail_url": "images/arunraj.png",
+        "date": "2026-06-01"
+    }
+],
+  "grievances": [],
+  "comments": [
+    {
+      "id": "comment_1",
+      "news_id": "news_2",
+      "name": "Senthil Kumar",
+      "content": "திருச்செங்கோடு ஏரி தூர்வாரும் பணி மிகவும் பாராட்டத்தக்கது! சட்டமன்ற உறுப்பினர் அவர்களுக்கு நன்றி.",
+      "date": "2026-05-29",
+      "status": "pending"
+    },
+    {
+      "id": "comment_2",
+      "news_id": "news_4",
+      "name": "Priya Dharshini",
+      "content": "This free competitive exam coaching center is extremely helpful for students from poor families. Thank you TVK!",
+      "date": "2026-05-26",
+      "status": "approved"
+    },
+    {
+      "id": "comment_3",
+      "news_id": "news_1",
+      "name": "Dr. Anbarasan",
+      "content": "Transparent and clean administration is exactly what Tamil Nadu needs. Great statement by CM Thalapathy Vijay.",
+      "date": "2026-06-02",
+      "status": "approved"
+    },
+    {
+      "id": "comment_4",
+      "news_id": "news_3",
+      "name": "Rajesh Kannan",
+      "content": "இலவச மருத்துவ முகாம் மூலம் பல ஏழை மக்கள் பயன்பெற்றனர். தவெக இளைஞர் அணிக்கு வாழ்த்துகள்!",
+      "date": "2026-05-25",
+      "status": "pending"
+    }
+  ]
+};
 
-  /**
-   * Safe retrieval of database from localStorage. If database is not found,
-   * seeds the database with our premium sample content.
-   */
   const getDb = () => {
     let db = localStorage.getItem(STORAGE_KEY);
     if (!db) {
@@ -201,19 +301,14 @@ const TVKDb = (() => {
     try {
       const parsed = JSON.parse(db);
       
-      // Force migration if old Vijay data is found (meaning we are running the TVK Sarathkumar rebranding)
+      // Force migration if old candidate data is found (meaning we are running the TVK Arunraj rebranding)
       const needsMigration = !parsed.config || 
-                             (parsed.config.mla_name_en && parsed.config.mla_name_en.includes("Vijay")) || 
-                             !parsed.config.facebook || 
-                             parsed.config.facebook === "#" || 
-                             !parsed.config.mla_image_url ||
-                             parsed.config.mla_image_url.includes("vijay.jpg") ||
-                             !parsed.config.leader_image_url ||
-                             parsed.config.leader_image_url.includes("tvk_logo.png") ||
-                             (parsed.config.mla_image_url && parsed.config.mla_image_url.includes("wikipedia.org"));
+                             !parsed.config.mla_name_en || 
+                             !parsed.config.mla_name_en.includes("Arunraj") ||
+                             !parsed.config.mla_father_en;
                              
       if (needsMigration) {
-        console.log("Forcing re-seed for TVK D. Sarathkumar Tambaram MLA constituency portal");
+        console.log("Forcing re-seed for TVK Dr. K. G. Arunraj Tiruchengodu MLA constituency portal");
         localStorage.setItem(STORAGE_KEY, JSON.stringify(seedData));
         return seedData;
       }
@@ -243,6 +338,10 @@ const TVKDb = (() => {
       }
       if (!parsed.grievances || !Array.isArray(parsed.grievances)) {
         parsed.grievances = [ ...seedData.grievances ];
+        repaired = true;
+      }
+      if (!parsed.comments || !Array.isArray(parsed.comments)) {
+        parsed.comments = [ ...seedData.comments ];
         repaired = true;
       }
 
@@ -547,6 +646,35 @@ const TVKDb = (() => {
     deleteGrievance: (id) => {
       const db = getDb();
       db.grievances = db.grievances.filter(g => g.id !== id);
+      saveDb(db);
+      return true;
+    },
+    
+    // ---------------- COMMENTS METHODS ----------------
+    getComments: () => {
+      return getDb().comments.sort((a, b) => new Date(b.date) - new Date(a.date));
+    },
+    saveComment: (comment) => {
+      const db = getDb();
+      let updatedComment = { ...comment };
+      
+      if (updatedComment.id) {
+        const idx = db.comments.findIndex(c => c.id === updatedComment.id);
+        if (idx !== -1) {
+          db.comments[idx] = { ...db.comments[idx], ...updatedComment };
+        }
+      } else {
+        updatedComment.id = "comment_" + Date.now();
+        updatedComment.date = updatedComment.date || new Date().toISOString().split("T")[0];
+        updatedComment.status = updatedComment.status || "pending";
+        db.comments.push(updatedComment);
+      }
+      saveDb(db);
+      return updatedComment;
+    },
+    deleteComment: (id) => {
+      const db = getDb();
+      db.comments = db.comments.filter(c => c.id !== id);
       saveDb(db);
       return true;
     },

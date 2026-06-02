@@ -1,7 +1,7 @@
 {
-  "name": "tvk-tambaram-mla-website",
+  "name": "tvk-tiruchengodu-mla-website",
   "version": "1.0.0",
-  "description": "Dynamic TVK Tambaram MLA D. Sarathkumar Website & Admin Portal",
+  "description": "Dynamic TVK Tiruchengodu MLA Dr. K. G. Arunraj Website & Admin Portal",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
