@@ -3154,6 +3154,7 @@ button, input, textarea, select {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-shrink: 0;
 }
 
 .admin-nav-btn {
@@ -3170,12 +3171,41 @@ button, input, textarea, select {
   align-items: center;
   gap: 0.35rem;
   transition: var(--transition-smooth);
+  white-space: nowrap;
 }
 
 .admin-nav-btn:hover {
   background: var(--gold-gradient);
   color: #000;
   border-color: var(--secondary);
+}
+
+/* Tamil-specific responsive navigation adjustments to prevent overlap on desktop */
+@media (min-width: 769px) {
+  html[lang="ta"] .navbar .container {
+    max-width: 1400px !important;
+  }
+  html[lang="ta"] .nav-links a {
+    padding: 0.9rem 0.75rem !important;
+    font-size: 0.78rem !important;
+    gap: 0.3rem !important;
+  }
+  html[lang="ta"] .admin-nav-btn {
+    padding: 0.45rem 0.75rem !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+@media (max-width: 1250px) and (min-width: 769px) {
+  html[lang="ta"] .nav-links a {
+    padding: 0.9rem 0.5rem !important;
+    font-size: 0.72rem !important;
+    gap: 0.2rem !important;
+  }
+  html[lang="ta"] .admin-nav-btn {
+    padding: 0.4rem 0.5rem !important;
+    font-size: 0.72rem !important;
+  }
 }
 
 /* Light / Dark Mode Toggle button style */
@@ -4400,11 +4430,6 @@ html, body {
   gap: 1rem !important;
 }
 
-/* 7. Strip forced minimum heights on hero elements */
-.hero-col-featured {
-  min-height: auto !important;
-  height: max-content !important;
-}
 
 
 /* OVERRIDE: Limit sidebar height to prevent it from outgrowing the main column and creating a white void */

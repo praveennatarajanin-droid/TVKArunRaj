@@ -1,84 +1,23 @@
 const fs = require('fs');
 
-let css = fs.readFileSync('css/style.css', 'utf8');
+let style = fs.readFileSync('css/style.css', 'utf8');
 
-const layoutFixCss = `
+// Reduce global section padding to tighten the layout
+style = style.replace(/\.section-padding\s*\{\s*padding:\s*4rem 0;\s*\}/g, '.section-padding {\n  padding: 2.5rem 0;\n}');
 
-/* ==========================================================================
-   GLOBAL LAYOUT AUDIT & WHITESPACE REMOVAL
-   ========================================================================== */
+// Also there might be a margin-bottom of 2rem on section-title, let's keep it but maybe it's fine.
+// Any other huge paddings? Let's reduce padding in mla-profile-section or stats-banner if they have custom ones.
+// I will append a utility to specifically trim whitespace if needed, but reducing section-padding should fix most of it.
 
-/* 1. Prevent Grid Stretching (Fixes the massive blank white column issue) */
-.news-portal-wrapper,
-.video-center-layout,
-.profile-layout,
-.hero-grid {
-  align-items: start !important; 
-}
+fs.writeFileSync('css/style.css', style);
+console.log("Reduced global section padding from 4rem to 2.5rem");
 
-/* 2. Sticky Sidebar (Allows sidebar to scroll cleanly with main content) */
-.news-sidebar-column {
-  position: sticky !important;
-  top: 100px !important;
-  height: max-content; /* Ensure the sticky sidebar collapses to its content */
-}
+// Let's also check index.html for any inline margins that are too big.
+let html = fs.readFileSync('index.html', 'utf8');
+html = html.replace(/margin-bottom: 3rem;/g, 'margin-bottom: 1.5rem;');
+html = html.replace(/margin-bottom: 2rem;/g, 'margin-bottom: 1rem;');
+// We also have multiple empty lines in index.html which don't affect layout but let's clean them up.
+html = html.replace(/\n\s*\n\s*\n/g, '\n\n'); 
 
-/* 3. Aggressive Padding Reduction (Desktop & General) */
-/* Old padding was up to 4rem, which is too much. */
-.section-padding {
-  padding: 3rem 0 !important; /* Slightly tighter on desktop */
-}
-
-@media (max-width: 1024px) {
-  .section-padding {
-    padding: 2rem 0 !important; /* Tablet */
-  }
-}
-
-@media (max-width: 768px) {
-  .section-padding {
-    padding: 1.25rem 0 !important; /* Mobile */
-  }
-}
-
-/* 4. Empty Container Collapse */
-/* If a widget or container has no content, it vanishes completely instead of holding space */
-.sidebar-widget:empty,
-.editorial-col:empty,
-.video-list-sidebar:empty,
-.recommended-item:empty,
-.mega-dropdown-grid:empty {
-  display: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  height: 0 !important;
-}
-
-/* 5. Fix oversized margins and wrappers */
-.news-main-column,
-.editorial-top-block,
-.editorial-list-columns {
-  gap: 1.5rem !important; /* Reduced from 2rem or 2.5rem */
-}
-
-.recommended-posts {
-  margin-bottom: 1.5rem !important;
-}
-
-/* 6. Footer spacing optimization */
-.footer-grid {
-  gap: 2rem !important;
-}
-.footer-col {
-  gap: 1rem !important;
-}
-
-/* 7. Strip forced minimum heights on hero elements */
-.hero-col-featured {
-  min-height: auto !important;
-  height: max-content !important;
-}
-`;
-
-fs.appendFileSync('css/style.css', layoutFixCss);
-console.log("Applied layout tighten CSS.");
+fs.writeFileSync('index.html', html);
+console.log("Reduced inline margins in index.html and cleaned up empty lines");

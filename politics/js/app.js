@@ -246,6 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---------------- TRANSLATION INJECTOR ----------------
   const updateLanguageUI = () => {
     loadDataFromDb();
+    document.documentElement.setAttribute("lang", currentLang);
     const t = uiTranslations[currentLang];
     
     // Translate plain textual nodes (matching IDs with data-i18n attributes)
@@ -938,6 +939,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const openNewsModal = (id) => {
     window.location.href = `news.html?id=${id}`;
   };
+  window.openNewsModal = openNewsModal;
 
   const openLightbox = (id) => {
     const item = allGallery.find(g => g.id === id);
@@ -962,45 +964,50 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.modalBody.innerHTML = "";
   };
 
-  elements.modalClose.onclick = closeModal;
-  elements.modalOverlay.onclick = (e) => {
-    if (e.target === elements.modalOverlay) closeModal();
-  };
+  if (elements.modalClose) elements.modalClose.onclick = closeModal;
+  if (elements.modalOverlay) {
+    elements.modalOverlay.onclick = (e) => {
+      if (e.target === elements.modalOverlay) closeModal();
+    };
+  }
 
   // ---------------- CITIZEN GRIEVANCE PORTAL HANDLING ----------------
-  elements.grievanceForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const t = uiTranslations[currentLang];
-    
-    const name = document.getElementById("grievance-name").value.trim();
-    const phone = document.getElementById("grievance-phone").value.trim();
-    const email = document.getElementById("grievance-email").value.trim();
-    const ward = document.getElementById("grievance-ward").value;
-    const type = document.getElementById("grievance-type").value;
-    const description = document.getElementById("grievance-desc").value.trim();
+  if (elements.grievanceForm) {
+    elements.grievanceForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const t = uiTranslations[currentLang];
+      
+      const name = document.getElementById("grievance-name").value.trim();
+      const phone = document.getElementById("grievance-phone").value.trim();
+      const email = document.getElementById("grievance-email").value.trim();
+      const ward = document.getElementById("grievance-ward").value;
+      const type = document.getElementById("grievance-type").value;
+      const description = document.getElementById("grievance-desc").value.trim();
 
-    if (!name || !phone || !ward || !type || !description) {
-      showGrievanceAlert(t.form_error, "error");
-      return;
-    }
+      if (!name || !phone || !ward || !type || !description) {
+        showGrievanceAlert(t.form_error, "error");
+        return;
+      }
 
-    const petition = {
-      name,
-      phone,
-      email,
-      ward_no: ward,
-      grievance_type: type,
-      description
-    };
+      const petition = {
+        name,
+        phone,
+        email,
+        ward_no: ward,
+        grievance_type: type,
+        description
+      };
 
-    const saved = TVKDb.addGrievance(petition);
-    
-    // Success feedback
-    showGrievanceAlert(`${t.form_success} <strong>${saved.id}</strong>`, "success");
-    elements.grievanceForm.reset();
-  });
+      const saved = TVKDb.addGrievance(petition);
+      
+      // Success feedback
+      showGrievanceAlert(`${t.form_success} <strong>${saved.id}</strong>`, "success");
+      elements.grievanceForm.reset();
+    });
+  }
 
   const showGrievanceAlert = (msg, status) => {
+    if (!elements.grievanceAlert) return;
     elements.grievanceAlert.className = `custom-alert custom-alert-${status}`;
     elements.grievanceAlert.innerHTML = `
       <i class="${status === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'}"></i>
@@ -1013,21 +1020,23 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // ---------------- NEWSLETTER FORM HANDLING ----------------
-  elements.newsletterForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const t = uiTranslations[currentLang];
-    const email = elements.newsletterInput.value.trim();
-    
-    if (email) {
-      elements.newsletterBtn.textContent = "✓";
-      elements.newsletterInput.value = "";
-      elements.newsletterInput.setAttribute("disabled", "true");
-      setTimeout(() => {
-        elements.newsletterBtn.textContent = t.footer_newsletter_btn;
-        elements.newsletterInput.removeAttribute("disabled");
-      }, 3000);
-    }
-  });
+  if (elements.newsletterForm) {
+    elements.newsletterForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const t = uiTranslations[currentLang];
+      const email = elements.newsletterInput ? elements.newsletterInput.value.trim() : "";
+      
+      if (email && elements.newsletterBtn && elements.newsletterInput) {
+        elements.newsletterBtn.textContent = "✓";
+        elements.newsletterInput.value = "";
+        elements.newsletterInput.setAttribute("disabled", "true");
+        setTimeout(() => {
+          if (elements.newsletterBtn) elements.newsletterBtn.textContent = t.footer_newsletter_btn;
+          if (elements.newsletterInput) elements.newsletterInput.removeAttribute("disabled");
+        }, 3000);
+      }
+    });
+  }
 
   // ---------------- DYNAMIC STATS VALUE COUNTER ----------------
   const animateStatsCounters = () => {
