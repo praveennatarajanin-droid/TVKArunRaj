@@ -10,6 +10,14 @@
   
   <!-- Core Design System stylesheet -->
   <link rel="stylesheet" href="css/style.css">
+  <!-- Google Analytics Integration -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3TTBN9ZV8T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3TTBN9ZV8T');
+  </script>
 </head>
 <body>
 
@@ -148,7 +156,11 @@
         </div>
         
         <div class="nav-item-dropdown">
-          <a href="#grievance">உதவி மையம்</a>
+          <a href="#grievance" data-i18n="nav_grievance">உதவி மையம்</a>
+        </div>
+
+        <div class="nav-item-dropdown">
+          <a href="#contact" data-i18n="nav_contact">தொடர்புக்கு</a>
         </div>
       </div>
 
@@ -160,6 +172,19 @@
       </div>
     </div>
   </nav>
+
+  <!-- Top Breaking Post Banner -->
+  <div id="top-breaking-post-banner" style="display:none; transition: all 0.3s ease;">
+    <div class="container" id="breaking-banner-inner" style="padding: 0.75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; border-radius: 6px; margin: 1rem auto; box-shadow: var(--shadow-sm);">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <span class="badge badge-primary" id="breaking-banner-category" style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Announcements</span>
+        <span id="breaking-banner-title" style="font-weight: 700; font-size: 0.95rem; color: var(--text-color);">Loading breaking announcement...</span>
+      </div>
+      <button id="close-breaking-banner-btn" style="background: none; border: none; font-size: 1.1rem; cursor: pointer; color: var(--text-muted); opacity: 0.8; transition: opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">&times;</button>
+    </div>
+  </div>
+
+  <main id="homepage-sections-container">
 
   <!-- 4. EDITORIAL NEWSPAPER HERO GRID SECTION -->
   <section class="hero-news-section" id="home">
@@ -197,6 +222,21 @@
             <div class="loading-placeholder">Loading trending...</div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4B. DYNAMIC CATEGORY POSITION FEEDS -->
+  <section class="dynamic-category-feeds-section section-padding" id="dynamic-category-feeds" style="background-color: var(--bg-color); padding: 3rem 0; border-top: 1px solid var(--border-color); display: none;">
+    <div class="container">
+      <div class="category-ribbon-premium" style="margin-bottom: 1.5rem;">
+        <h3 id="category-feeds-section-title">Constituency Category Feeds</h3>
+        <div class="ribbon-actions">
+          <span class="ribbon-decor-tag">Home Page Layout Positions</span>
+        </div>
+      </div>
+      <div id="dynamic-category-feeds-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+        <!-- Dynamic Category Positions Injected Here -->
       </div>
     </div>
   </section>
@@ -660,6 +700,89 @@
     </div>
   </section>
 
+  <!-- 15B. DYNAMIC CONTACT SECTION -->
+  <section class="contact-section section-padding" id="contact" style="background-color: var(--bg-card); border-top: 1px solid var(--border-color); padding: 4rem 0;">
+    <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: start;">
+      <!-- Contact Info Details -->
+      <div class="contact-info-block">
+        <h2 style="font-size: 2rem; color: var(--primary); font-weight: 800; margin-bottom: 0.5rem;" id="contact-view-title">Contact Office</h2>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.6;" id="contact-view-content">Feel free to reach out to us at our constituency office or via any of our online channels.</p>
+        
+        <div class="contact-details-grid" style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="background-color: rgba(122, 12, 26, 0.1); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i class="fas fa-user-tie"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Editor / Representative</div>
+              <div style="font-weight: 700; color: var(--text-color);" id="contact-view-editor">Dr. K. G. Arunraj</div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="background-color: rgba(122, 12, 26, 0.1); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Address</div>
+              <div style="font-weight: 700; color: var(--text-color);" id="contact-view-address">No. 46, South Car Street, Tiruchengodu, Namakkal - 637211</div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="background-color: rgba(122, 12, 26, 0.1); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i class="fas fa-phone-alt"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Phone Numbers</div>
+              <div style="font-weight: 700; color: var(--text-color);">
+                <a id="contact-view-phone-1" href="tel:+914288252444">+91 4288 252 444</a>
+                <span id="contact-view-phone-2" style="margin-left: 0.5rem; color: var(--text-muted);"></span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="background-color: rgba(122, 12, 26, 0.1); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Email Address</div>
+              <div style="font-weight: 700; color: var(--text-color);"><a id="contact-view-email" href="mailto:tiruchengodu.mla@tvk.org.in">tiruchengodu.mla@tvk.org.in</a></div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="background-color: rgba(122, 12, 26, 0.1); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i class="fas fa-globe"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Website</div>
+              <div style="font-weight: 700; color: var(--text-color);"><a href="#" id="contact-view-web-link" target="_blank" style="color: var(--primary);">www.tvk-tiruchengodu.org.in</a></div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="background-color: rgba(122, 12, 26, 0.1); color: var(--primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i class="fas fa-compass"></i>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">Coordinates (Lat, Long)</div>
+              <div style="font-weight: 700; color: var(--text-color);" id="contact-view-coords">11.3791, 77.8967</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Embed Map Panel -->
+      <div class="contact-map-block" style="height: 400px; background-color: #f1f5f9; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: var(--shadow-md);">
+        <iframe id="contact-view-map-iframe" src="" style="border:0; width:100%; height:100%; min-height: 400px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
   <!-- 16. MULTI-COLUMN PRESET FOOTER -->
   <footer class="main-footer">
     <div class="container footer-grid">
@@ -743,6 +866,13 @@
   <script src="js/db.js"></script>
   <!-- Main portal rendering & translation scripts -->
   <script src="js/app.js"></script>
+  <script>
+    if (window.location.search.includes('mode=editor')) {
+      const editorScript = document.createElement('script');
+      editorScript.src = 'js/layout-editor.js';
+      document.body.appendChild(editorScript);
+    }
+  </script>
 </body>
 </html>
 

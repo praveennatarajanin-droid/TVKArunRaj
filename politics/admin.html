@@ -145,6 +145,10 @@
     }
 
     .header-profile {
+      position: relative;
+    }
+
+    .profile-trigger-btn {
       display: flex;
       align-items: center;
       gap: 0.75rem;
@@ -154,11 +158,11 @@
       transition: background-color 0.15s ease;
     }
 
-    .header-profile:hover {
+    .profile-trigger-btn:hover {
       background-color: #f1f5f9;
     }
 
-    .header-profile img {
+    .profile-trigger-btn img {
       width: 36px;
       height: 36px;
       border-radius: 50%;
@@ -1128,9 +1132,671 @@
       user-select: none;
       margin: 0;
     }
+
+    /* ==========================================================================
+       SETTINGS TWO-COLUMN LAYOUT AND FORM REDESIGN
+       ========================================================================== */
+    .settings-panel-container {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      align-items: stretch;
+    }
+
+    .settings-inner-sidebar {
+      width: 250px;
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1rem;
+      flex-shrink: 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: sticky;
+      top: 80px;
+      align-self: start;
+    }
+
+    .settings-inner-content {
+      flex-grow: 1;
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      min-width: 0;
+    }
+
+    .settings-nav-group {
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .settings-nav-group:last-of-type {
+      border-bottom: none;
+    }
+
+    .settings-nav-header {
+      font-family: var(--font-family);
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #334155;
+      padding: 0.6rem 0.5rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: color 0.2s ease;
+    }
+
+    .settings-nav-header:hover {
+      color: var(--primary);
+    }
+
+    .settings-nav-header.active {
+      color: var(--primary);
+    }
+
+    .settings-nav-submenu {
+      display: none;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding-left: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    .settings-nav-item {
+      background: none;
+      border: none;
+      text-align: left;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #64748b;
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .settings-nav-item:hover {
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+
+    .settings-nav-item.active {
+      background-color: #f0fdf4;
+      color: #16a34a !important; /* Green matching the mock highlighted state */
+      font-weight: 700;
+    }
+
+    .settings-nav-link {
+      background: none;
+      border: none;
+      text-align: left;
+      font-family: var(--font-family);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #334155;
+      padding: 0.6rem 0.5rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+    }
+
+    .settings-nav-link:hover {
+      color: var(--primary);
+    }
+
+    /* Tab Panels */
+    .settings-tab-panel {
+      display: none;
+    }
+
+    .settings-tab-panel.active {
+      display: block;
+    }
+
+    .settings-tab-title {
+      font-family: var(--font-family);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* 3-Column Settings Form Grid */
+    .settings-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .settings-grid-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-group-settings {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-label-settings {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+    }
+
+    .required-star {
+      color: #ef4444;
+      margin-left: 0.2rem;
+    }
+
+    .form-input-settings {
+      padding: 0.55rem 0.75rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: #334155;
+      background-color: #fff;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      width: 100%;
+    }
+
+    .form-input-settings:focus {
+      outline: none;
+      border-color: #94a3b8;
+      box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.1);
+    }
+
+    .form-textarea-settings {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* Custom switch / toggle button */
+    .settings-toggle-container {
+      display: flex;
+    }
+
+    .settings-toggle-btn {
+      border: none;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.4rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    /* Toggle Styles */
+    .settings-toggle-btn.alert-danger-toggle {
+      background-color: #ef4444;
+      color: #ffffff;
+    }
+
+    .settings-toggle-btn.alert-danger-toggle:hover {
+      background-color: #dc2626;
+    }
+
+    .settings-toggle-btn.active-success-toggle {
+      background-color: #10b981;
+      color: #ffffff;
+    }
+
+    .settings-toggle-btn.active-success-toggle:hover {
+      background-color: #059669;
+    }
+
+    /* Settings Uploader Wrapper */
+    .settings-uploader-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 0.5rem;
+      background-color: #f8fafc;
+    }
+
+    .settings-uploader-preview {
+      width: 40px;
+      height: 40px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .settings-uploader-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .settings-uploader-preview.preview-landscape {
+      width: 60px;
+      height: 38px;
+    }
+
+    .settings-uploader-preview.preview-logo {
+      width: 90px;
+      height: 32px;
+    }
+
+    .settings-uploader-preview.preview-collapsed {
+      width: 45px;
+      height: 45px;
+    }
+
+    .settings-uploader-preview.preview-wide {
+      width: 100px;
+      height: 32px;
+    }
+
+    .settings-uploader-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      flex-grow: 1;
+    }
+
+    .settings-file-input {
+      display: none;
+    }
+
+    .btn-uploader-choose {
+      background-color: #e2e8f0;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-uploader-choose:hover {
+      background-color: #cbd5e1;
+    }
+
+    .settings-filename {
+      font-size: 0.75rem;
+      color: #64748b;
+      max-width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-uploader-upload {
+      background-color: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      margin-left: auto;
+    }
+
+    .btn-uploader-upload:hover {
+      background-color: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .settings-uploader-hint {
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 0.1rem;
+    }
+
+    /* Wide uploads in column 3 vertical wrappers */
+    .settings-uploader-wrapper.vertical-uploader {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .settings-uploader-wrapper.vertical-uploader .settings-uploader-controls {
+      width: 100%;
+    }
+
+    .settings-uploader-wrapper.vertical-uploader .btn-uploader-upload {
+      margin-left: auto;
+    }
+
+    .btn-submit-settings {
+      background-color: #10b981;
+      color: #ffffff;
+      font-family: var(--font-family);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.6rem 2rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-submit-settings:hover {
+      background-color: #059669;
+    }
+
+    /* Responsive Overrides for settings */
+    @media (max-width: 1024px) {
+      .settings-panel-container {
+        flex-direction: column;
+      }
+      .settings-inner-sidebar {
+        width: 100%;
+      }
+      .settings-form-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .settings-form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ---------------- PROFILE DROPDOWN MENU ---------------- */
+    .header-profile {
+      position: relative;
+    }
+    
+    .profile-dropdown-menu {
+      position: absolute;
+      top: 115%;
+      right: 0;
+      background-color: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      width: 180px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      z-index: 1000;
+      padding: 0.5rem 0;
+      display: none;
+      flex-direction: column;
+    }
+    
+    .profile-dropdown-menu.show {
+      display: flex;
+      animation: dropdownFadeIn 0.15s ease;
+    }
+    
+    @keyframes dropdownFadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .profile-dropdown-menu a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      color: #475569;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    
+    .profile-dropdown-menu a i {
+      width: 16px;
+      text-align: center;
+      color: #94a3b8;
+    }
+    
+    .profile-dropdown-menu a:hover {
+      background-color: #fdf2f4;
+      color: var(--primary);
+    }
+    
+    .profile-dropdown-menu a:hover i {
+      color: var(--primary);
+    }
+    
+    .dropdown-divider {
+      height: 1px;
+      background-color: #e2e8f0;
+      margin: 0.25rem 0;
+    }
+
+    /* ---------------- LOGIN PAGE STYLING ---------------- */
+    .login-container {
+      position: fixed;
+      inset: 0;
+      background-color: #f4f6f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      font-family: var(--font-family);
+      padding: 1.5rem;
+    }
+    
+    .login-card {
+      background-color: #ffffff;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      width: 100%;
+      max-width: 420px;
+      padding: 2.25rem 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .login-logo-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .login-logo {
+      height: 48px;
+      object-fit: contain;
+    }
+    
+    .login-brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    
+    .login-welcome-text {
+      font-size: 0.85rem;
+      color: #475569;
+      line-height: 1.4;
+      font-weight: 500;
+      margin-top: -0.5rem;
+    }
+    
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      text-align: left;
+    }
+    
+    .login-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    
+    .login-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #334155;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    
+    .login-input {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.15s ease;
+      font-family: var(--font-family);
+    }
+    
+    .login-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(122, 12, 26, 0.15);
+    }
+    
+    .login-forgot-link {
+      font-size: 0.75rem;
+      color: #64748b;
+      text-decoration: none;
+      align-self: flex-end;
+      font-weight: 600;
+      transition: color 0.15s ease;
+    }
+    
+    .login-forgot-link:hover {
+      color: var(--primary);
+    }
+    
+    .btn-login-submit {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      transition: background-color 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-login-submit:hover {
+      background-color: var(--primary-light);
+    }
+    
+    .login-error-msg {
+      background-color: #fdf2f4;
+      border: 1px solid #f8d7da;
+      color: #7A0C1A;
+      font-size: 0.8rem;
+      padding: 0.65rem 0.85rem;
+      border-radius: 6px;
+      font-weight: 600;
+      display: none;
+      text-align: left;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Prevent flashing of content for unauthenticated users */
+    body.not-logged-in .top-header,
+    body.not-logged-in .app-layout {
+      display: none !important;
+    }
+    body.logged-in #admin-login-container {
+      display: none !important;
+    }
   </style>
+  <!-- Google Analytics Integration -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3TTBN9ZV8T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3TTBN9ZV8T');
+  </script>
 </head>
 <body>
+  <script>
+    // Prevent FOUC: check auth state immediately before page layouts render
+    if (sessionStorage.getItem('admin_logged_in') === 'true') {
+      document.body.classList.add('logged-in');
+    } else {
+      document.body.classList.add('not-logged-in');
+    }
+  </script>
+
+  <!-- Dynamic TVK Admin Login Screen -->
+  <div class="login-container" id="admin-login-container">
+    <div class="login-card">
+      <div class="login-logo-area">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <img src="images/tvklogo.png" alt="TVK Logo" class="login-logo">
+          <span class="login-brand-title">TVK <span style="color: var(--secondary);">TIRUCHENGODU</span></span>
+        </div>
+      </div>
+      <div class="login-welcome-text">
+        Welcome back, TVK IT WING @ Dr. K. G. Arunraj
+      </div>
+      
+      <div class="login-error-msg" id="login-error-msg">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="login-error-text">Invalid email or password.</span>
+      </div>
+      
+      <form class="login-form" id="admin-login-form">
+        <div class="login-input-group">
+          <label class="login-label">Email address</label>
+          <input type="email" class="login-input" id="login-email" required placeholder="Enter email address" value="tiruchengodu.mla@tvk.org.in">
+        </div>
+        
+        <div class="login-input-group">
+          <label class="login-label">Password</label>
+          <input type="password" class="login-input" id="login-password" required placeholder="Enter password" value="tvk2026">
+        </div>
+        
+        <a href="#" class="login-forgot-link" id="login-forgot-btn">Forgot password</a>
+        
+        <button type="submit" class="btn-login-submit">
+          Sign in
+        </button>
+      </form>
+    </div>
+  </div>
 
   <!-- Top Header Bar -->
   <header class="top-header">
@@ -1138,7 +1804,6 @@
       <img src="images/tvklogo.png" alt="TVK Logo" style="height:36px; width:36px; object-fit:contain;">
       <span class="brand-text">TVK <span style="color: var(--secondary);">TIRUCHENGODU</span></span>
     </div>
-    <button class="header-toggle-btn"><i class="fas fa-bars"></i></button>
     <div class="header-center">
       <button class="header-btn" id="header-cache-clear-btn"><i class="fas fa-broom"></i> Cache Clear</button>
       <a href="index.html" class="header-btn" target="_blank"><i class="fas fa-globe"></i> Website <i class="fas fa-external-link-alt" style="font-size:0.75rem;"></i></a>
@@ -1146,12 +1811,23 @@
     <div class="header-right">
       <button class="header-btn" id="fullscreen-btn" style="border:none; background:none; font-size:1.1rem; color:#64748b; cursor:pointer;" title="Toggle Fullscreen"><i class="fas fa-expand"></i></button>
       <div class="header-profile">
-        <img src="images/tvklogo.png" alt="Admin Avatar" id="dashboard-mla-avatar">
-        <div class="profile-info">
-          <span class="profile-name">Admin</span>
-          <span class="profile-role">Admin</span>
+        <!-- Clickable Profile Trigger Button -->
+        <div class="profile-trigger-btn" id="header-profile-trigger">
+          <img src="images/tvklogo.png" alt="Admin Avatar" id="dashboard-mla-avatar">
+          <div class="profile-info">
+            <span class="profile-name">Admin</span>
+            <span class="profile-role">Admin</span>
+          </div>
+          <i class="fas fa-chevron-down" style="font-size: 0.75rem; color: #64748b; margin-left: 0.25rem;"></i>
         </div>
-        <i class="fas fa-chevron-down" style="font-size: 0.75rem; color: #64748b; margin-left: 0.25rem;"></i>
+        
+        <!-- Profile Dropdown Menu -->
+        <div class="profile-dropdown-menu" id="profile-dropdown-menu">
+          <a href="index.html" target="_blank"><i class="fas fa-globe"></i> View Website</a>
+          <a href="#" id="dropdown-settings-lnk"><i class="fas fa-cog"></i> Settings</a>
+          <div class="dropdown-divider"></div>
+          <a href="#" id="dropdown-logout-lnk"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+        </div>
       </div>
     </div>
   </header>
@@ -1166,6 +1842,16 @@
         <!-- Dashboard -->
         <button class="sidebar-btn active" data-panel="dashboard">
           <i class="fas fa-chart-line"></i> Dashboard
+        </button>
+
+        <!-- Theme -->
+        <button class="sidebar-btn" data-panel="theme" type="button">
+          <i class="fas fa-paint-roller"></i> Theme
+        </button>
+
+        <!-- Layout Editor -->
+        <button class="sidebar-btn" data-panel="visual-editor" type="button">
+          <i class="fas fa-cubes"></i> Layout Editor
         </button>
 
         <!-- Post -->
@@ -1190,7 +1876,72 @@
           </button>
         </div>
 
-        <!-- 1. Media Library (Dropdown) -->
+        <!-- Video Post -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="video-post" type="button">
+          <i class="fas fa-video"></i> Video Post <i class="fas fa-chevron-left submenu-caret"></i>
+        </button>
+        <div class="sidebar-submenu" id="submenu-video-post">
+          <button class="sidebar-sub-btn" data-panel="gallery" data-subfilter="video-add" type="button">
+            <i class="fas fa-circle"></i> Add Video Post
+          </button>
+          <button class="sidebar-sub-btn" data-panel="gallery" data-subfilter="video-list" type="button">
+            <i class="fas fa-circle"></i> Video Post List
+          </button>
+        </div>
+
+        <!-- Page -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="page-post" type="button">
+          <i class="fas fa-list"></i> Page <i class="fas fa-chevron-left submenu-caret"></i>
+        </button>
+        <div class="sidebar-submenu" id="submenu-page-post">
+          <button class="sidebar-sub-btn" data-panel="settings" data-subfilter="header-nav" type="button">
+            <i class="fas fa-circle"></i> Header Navigation
+          </button>
+          <button class="sidebar-sub-btn" data-panel="settings" data-subfilter="footer-links" type="button">
+            <i class="fas fa-circle"></i> Footer Links
+          </button>
+        </div>
+
+        <!-- SEO -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="seo" type="button">
+          <i class="fas fa-random"></i> SEO <i class="fas fa-chevron-left submenu-caret"></i>
+        </button>
+        <div class="sidebar-submenu" id="submenu-seo">
+          <button class="sidebar-sub-btn" data-panel="seo" data-subfilter="meta" type="button">
+            <i class="fas fa-circle"></i> Meta Tags
+          </button>
+          <button class="sidebar-sub-btn" data-panel="seo" data-subfilter="sitemap" type="button">
+            <i class="fas fa-circle"></i> Sitemap Config
+          </button>
+        </div>
+
+        <!-- Web Setup -->
+        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="web-setup" type="button">
+          <i class="fas fa-cog"></i> Web Setup <i class="fas fa-chevron-left submenu-caret"></i>
+        </button>
+        <div class="sidebar-submenu" id="submenu-web-setup">
+          <button class="sidebar-sub-btn" data-panel="setup-top-breaking" type="button">
+            <i class="fas fa-circle"></i> Setup Top Breaking Post
+          </button>
+          <button class="sidebar-sub-btn" data-panel="home-page-settings" type="button">
+            <i class="fas fa-circle"></i> Home Page
+          </button>
+          <button class="sidebar-sub-btn" data-panel="contact-page-setup" type="button">
+            <i class="fas fa-circle"></i> Contact Page Setup
+          </button>
+        </div>
+
+        <!-- Settings -->
+        <button class="sidebar-btn" data-panel="settings" type="button">
+          <i class="fas fa-sliders-h"></i> Settings
+        </button>
+
+        <!-- Subscribers -->
+        <button class="sidebar-btn" data-panel="subscribers" type="button">
+          <i class="fas fa-users"></i> Subscribers
+        </button>
+
+        <!-- Media Library -->
         <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="media" type="button">
           <i class="fas fa-photo-video"></i> Media Library <i class="fas fa-chevron-left submenu-caret"></i>
         </button>
@@ -1203,73 +1954,7 @@
           </button>
         </div>
 
-        <!-- 2. Menu (Dropdown) -->
-        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="menu-options" type="button">
-          <i class="fas fa-bars"></i> Menu <i class="fas fa-chevron-left submenu-caret"></i>
-        </button>
-        <div class="sidebar-submenu" id="submenu-menu-options">
-          <button class="sidebar-sub-btn" data-panel="settings" type="button">
-            <i class="fas fa-circle"></i> Header Navigation
-          </button>
-          <button class="sidebar-sub-btn" data-panel="settings" type="button">
-            <i class="fas fa-circle"></i> Footer Links
-          </button>
-        </div>
-
-        <!-- 3. Ai Writer (Dropdown) -->
-        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="ai-options" type="button">
-          <i class="fas fa-brain"></i> Ai Writer <i class="fas fa-chevron-left submenu-caret"></i>
-        </button>
-        <div class="sidebar-submenu" id="submenu-ai-options">
-          <button class="sidebar-sub-btn" data-panel="add-post" type="button">
-            <i class="fas fa-circle"></i> AI Article Generator
-          </button>
-          <button class="sidebar-sub-btn" data-panel="add-post" type="button">
-            <i class="fas fa-circle"></i> AI Auto Translator
-          </button>
-        </div>
-
-        <!-- 4. Categories (Dropdown) -->
-        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="categories-options" type="button">
-          <i class="fas fa-tags"></i> Categories <i class="fas fa-chevron-left submenu-caret"></i>
-        </button>
-        <div class="sidebar-submenu" id="submenu-categories-options">
-          <button class="sidebar-sub-btn" data-panel="news" data-subfilter="all" type="button">
-            <i class="fas fa-circle"></i> Category Management
-          </button>
-        </div>
-
-        <!-- 5. Archive (Dropdown) -->
-        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="archive-options" type="button">
-          <i class="fas fa-archive"></i> Archive <i class="fas fa-chevron-left submenu-caret"></i>
-        </button>
-        <div class="sidebar-submenu" id="submenu-archive-options">
-          <button class="sidebar-sub-btn" data-panel="news" data-subfilter="all" type="button">
-            <i class="fas fa-circle"></i> Archive Logs
-          </button>
-        </div>
-
-        <!-- 6. Advertisement (Dropdown) -->
-        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="adv-options" type="button">
-          <i class="fas fa-bullhorn"></i> Advertisement <i class="fas fa-chevron-left submenu-caret"></i>
-        </button>
-        <div class="sidebar-submenu" id="submenu-adv-options">
-          <button class="sidebar-sub-btn" data-panel="dashboard" type="button">
-            <i class="fas fa-circle"></i> Ad Placements
-          </button>
-        </div>
-
-        <!-- 7. Rss Feeds (Dropdown) -->
-        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="rss-options" type="button">
-          <i class="fas fa-rss"></i> Rss Feeds <i class="fas fa-chevron-left submenu-caret"></i>
-        </button>
-        <div class="sidebar-submenu" id="submenu-rss-options">
-          <button class="sidebar-sub-btn" data-panel="dashboard" type="button">
-            <i class="fas fa-circle"></i> RSS Config
-          </button>
-        </div>
-
-        <!-- 8. Reporter (Dropdown) -->
+        <!-- Reporter -->
         <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="reporter-options" type="button">
           <i class="fas fa-user"></i> Reporter <i class="fas fa-chevron-left submenu-caret"></i>
           <span class="sidebar-btn-badge" id="stat-count-grievances" style="margin-left:0.5rem;">0</span>
@@ -1277,26 +1962,6 @@
         <div class="sidebar-submenu" id="submenu-reporter-options">
           <button class="sidebar-sub-btn" data-panel="grievances" type="button">
             <i class="fas fa-circle"></i> Petitions Inbox
-          </button>
-        </div>
-
-        <!-- 9. Opinions (Dropdown) -->
-        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="opinions-options" type="button">
-          <i class="fas fa-comments"></i> Opinions <i class="fas fa-chevron-left submenu-caret"></i>
-        </button>
-        <div class="sidebar-submenu" id="submenu-opinions-options">
-          <button class="sidebar-sub-btn" data-panel="dashboard" type="button">
-            <i class="fas fa-circle"></i> Citizen Feedback
-          </button>
-        </div>
-
-        <!-- 10. Polls (Dropdown) -->
-        <button class="sidebar-btn sidebar-dropdown-btn" data-submenu="polls-options" type="button">
-          <i class="fas fa-check-square"></i> Polls <i class="fas fa-chevron-left submenu-caret"></i>
-        </button>
-        <div class="sidebar-submenu" id="submenu-polls-options">
-          <button class="sidebar-sub-btn" data-panel="dashboard" type="button">
-            <i class="fas fa-circle"></i> Public Polls
           </button>
         </div>
       </nav>
@@ -1502,130 +2167,1109 @@
           <i class="fas fa-sliders-h" style="color: var(--primary);"></i>
         </div>
         
-        <form id="config-form">
-          <div class="admin-grid-layout-full">
-            <div class="card-block">
-              <div class="card-block-title">Branding & Titles (English / தமிழ்)</div>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">TVK Party Name (English)</label>
-                  <input type="text" class="form-input" id="cfg-site-title-en" required>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">TVK Party Name (Tamil)</label>
-                  <input type="text" class="form-input" id="cfg-site-title-ta" required>
-                </div>
+        <div class="settings-panel-container">
+          <!-- Inner Sidebar -->
+          <aside class="settings-inner-sidebar">
+            <div class="settings-nav-group">
+              <div class="settings-nav-header active" data-group="software">
+                Software setup <i class="fas fa-chevron-down nav-group-caret"></i>
               </div>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">MLA Profile Name (English)</label>
-                  <input type="text" class="form-input" id="cfg-mla-name-en" required>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">MLA Profile Name (Tamil)</label>
-                  <input type="text" class="form-input" id="cfg-mla-name-ta" required>
-                </div>
-              </div>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">MLA Office Title Subtitle (English)</label>
-                  <input type="text" class="form-input" id="cfg-mla-title-en" required>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">MLA Office Title Subtitle (Tamil)</label>
-                  <input type="text" class="form-input" id="cfg-mla-title-ta" required>
-                </div>
+              <div class="settings-nav-submenu" id="settings-submenu-software" style="display: block;">
+                <button type="button" class="settings-nav-item active" data-tab="application">Application</button>
+                <button type="button" class="settings-nav-item" data-tab="mla-profile">MLA & Party Profile</button>
+                <button type="button" class="settings-nav-item" data-tab="social-api">Social api setup</button>
+                <button type="button" class="settings-nav-item" data-tab="mail-setup">Mail setup</button>
+                <button type="button" class="settings-nav-item" data-tab="space-cred">Space credential</button>
               </div>
             </div>
             
-            <div class="card-block">
-              <div class="card-block-title">MLA Profile Portrait Upload</div>
+            <div class="settings-nav-group">
+              <div class="settings-nav-header" data-group="user-mgmt">
+                User management <i class="fas fa-chevron-right nav-group-caret"></i>
+              </div>
+              <div class="settings-nav-submenu" id="settings-submenu-user-mgmt">
+                <button type="button" class="settings-nav-item" data-tab="users-list">Users List</button>
+                <button type="button" class="settings-nav-item" data-tab="roles-permissions">Roles & Permissions</button>
+              </div>
+            </div>
+
+            <div class="settings-nav-group">
+              <div class="settings-nav-header" data-group="font-settings">
+                Font settings <i class="fas fa-chevron-right nav-group-caret"></i>
+              </div>
+              <div class="settings-nav-submenu" id="settings-submenu-font-settings">
+                <button type="button" class="settings-nav-item" data-tab="system-fonts">System Fonts</button>
+              </div>
+            </div>
+            
+            <button type="button" class="settings-nav-link" data-tab="lang-setup">Language setup</button>
+            <button type="button" class="settings-nav-link" data-tab="backup-reset">Backup reset</button>
+            <button type="button" class="settings-nav-link" data-tab="access-log">Access log</button>
+          </aside>
+          
+          <!-- Inner Content Area -->
+          <div class="settings-inner-content">
+            <!-- TAB 1: Edit Application (Matches the mock exactly) -->
+            <div class="settings-tab-panel active" id="settings-tab-application">
+              <div class="settings-tab-title">Edit Application</div>
               
-              <div class="form-row" style="align-items: center;">
-                <div class="form-group">
-                  <label class="form-label">Choose Real Photo from Computer</label>
-                  <div class="form-file-uploader">
-                    <i class="far fa-image"></i>
-                    <span id="cfg-mla-file-label">Select portrait photo <strong style="color: var(--primary);">[or Paste Ctrl+V here]</strong></span>
-                    <input type="file" id="cfg-mla-file" accept="image/*">
+              <form id="config-form">
+                <div class="settings-form-grid">
+                  <!-- Column 1 -->
+                  <div class="settings-grid-col">
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Title<span class="required-star">*</span></label>
+                      <input type="text" class="form-input-settings" id="cfg-site-title-en" placeholder="Enter title" required>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Phone<span class="required-star">*</span></label>
+                      <input type="text" class="form-input-settings" id="cfg-phone" placeholder="Enter phone" required>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Address<span class="required-star">*</span></label>
+                      <input type="text" class="form-input-settings" id="cfg-address-en" placeholder="Enter address" required>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Website</label>
+                      <input type="text" class="form-input-settings" id="cfg-website" placeholder="Enter website link">
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Copy right</label>
+                      <textarea class="form-input-settings form-textarea-settings" id="cfg-copyright" placeholder="Copy right description"></textarea>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Preloader status</label>
+                      <select class="form-input-settings" id="cfg-preloader-status">
+                        <option value="Enable">Enable</option>
+                        <option value="Disable">Disable</option>
+                      </select>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Fixed date</label>
+                      <div class="settings-toggle-container">
+                        <button type="button" class="settings-toggle-btn alert-danger-toggle" id="cfg-fixed-date" data-value="Disable">Disable</button>
+                      </div>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Favicon</label>
+                      <div class="settings-uploader-wrapper">
+                        <div class="settings-uploader-preview">
+                          <img id="preview-favicon" src="images/tvklogo.png" alt="Favicon">
+                        </div>
+                        <div class="settings-uploader-controls">
+                          <input type="file" class="settings-file-input" id="file-favicon" accept="image/*">
+                          <label for="file-favicon" class="btn-uploader-choose">Choose File</label>
+                          <span class="settings-filename" id="name-favicon">No file chosen</span>
+                          <button type="button" class="btn-uploader-upload" data-target="favicon">Upload</button>
+                        </div>
+                      </div>
+                      <span class="settings-uploader-hint">Recommended pixel (60 X 60)</span>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Default language<span class="required-star">*</span></label>
+                      <select class="form-input-settings" id="cfg-default-language">
+                        <option value="English">English</option>
+                        <option value="Tamil">Tamil</option>
+                      </select>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Show archive post</label>
+                      <div class="settings-toggle-container">
+                        <button type="button" class="settings-toggle-btn active-success-toggle" id="cfg-show-archive" data-value="Yes">Yes</button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Column 2 -->
+                  <div class="settings-grid-col">
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Email address<span class="required-star">*</span></label>
+                      <input type="email" class="form-input-settings" id="cfg-email" placeholder="Enter email" required>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Footer text<span class="required-star">*</span></label>
+                      <input type="text" class="form-input-settings" id="cfg-footer-text" placeholder="Enter footer text" required>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Direction</label>
+                      <input type="text" class="form-input-settings" id="cfg-direction" placeholder="Enter text direction">
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Time zone<span class="required-star">*</span></label>
+                      <input type="text" class="form-input-settings" id="cfg-timezone" placeholder="Enter timezone" required>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">News tricker status</label>
+                      <select class="form-input-settings" id="cfg-news-ticker-status">
+                        <option value="Enable">Enable</option>
+                        <option value="Disable">Disable</option>
+                      </select>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Speed optimization</label>
+                      <select class="form-input-settings" id="cfg-speed-optimization">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Login image</label>
+                      <div class="settings-uploader-wrapper">
+                        <div class="settings-uploader-preview preview-landscape">
+                          <img id="preview-login-image" src="images/tvklogo.png" alt="Login Image">
+                        </div>
+                        <div class="settings-uploader-controls">
+                          <input type="file" class="settings-file-input" id="file-login-image" accept="image/*">
+                          <label for="file-login-image" class="btn-uploader-choose">Choose File</label>
+                          <span class="settings-filename" id="name-login-image">No file chosen</span>
+                          <button type="button" class="btn-uploader-upload" data-target="login_image">Upload</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Breaking news limit<span class="required-star">*</span></label>
+                      <input type="number" class="form-input-settings" id="cfg-breaking-news-limit" placeholder="5" required>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Show reporter message</label>
+                      <div class="settings-toggle-container">
+                        <button type="button" class="settings-toggle-btn alert-danger-toggle" id="cfg-show-reporter" data-value="No">No</button>
+                      </div>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Web user can login</label>
+                      <div class="settings-toggle-container">
+                        <button type="button" class="settings-toggle-btn active-success-toggle" id="cfg-user-login" data-value="Yes">Yes</button>
+                      </div>
+                    </div>
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Web user can comment</label>
+                      <div class="settings-toggle-container">
+                        <button type="button" class="settings-toggle-btn active-success-toggle" id="cfg-user-comment" data-value="Yes">Yes</button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Column 3 -->
+                  <div class="settings-grid-col">
+                    <!-- Logo Upload -->
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Logo</label>
+                      <div class="settings-uploader-wrapper vertical-uploader">
+                        <div class="settings-uploader-preview preview-logo">
+                          <img id="preview-logo" src="images/tvklogo.png" alt="Logo">
+                        </div>
+                        <div class="settings-uploader-controls">
+                          <input type="file" class="settings-file-input" id="file-logo" accept="image/*">
+                          <label for="file-logo" class="btn-uploader-choose">Choose File</label>
+                          <span class="settings-filename" id="name-logo">No file chosen</span>
+                          <button type="button" class="btn-uploader-upload" data-target="logo">Upload</button>
+                        </div>
+                      </div>
+                      <span class="settings-uploader-hint">Recommended pixel (135 X 45)</span>
+                    </div>
+
+                    <!-- Sidebar Logo Upload -->
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Sidebar logo</label>
+                      <div class="settings-uploader-wrapper vertical-uploader">
+                        <div class="settings-uploader-preview preview-logo">
+                          <img id="preview-sidebar-logo" src="images/tvklogo.png" alt="Sidebar Logo">
+                        </div>
+                        <div class="settings-uploader-controls">
+                          <input type="file" class="settings-file-input" id="file-sidebar-logo" accept="image/*">
+                          <label for="file-sidebar-logo" class="btn-uploader-choose">Choose File</label>
+                          <span class="settings-filename" id="name-sidebar-logo">No file chosen</span>
+                          <button type="button" class="btn-uploader-upload" data-target="sidebar_logo">Upload</button>
+                        </div>
+                      </div>
+                      <span class="settings-uploader-hint">Recommended pixel (150 X 45)</span>
+                    </div>
+
+                    <!-- Footer Logo Upload -->
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Footer logo</label>
+                      <div class="settings-uploader-wrapper vertical-uploader">
+                        <div class="settings-uploader-preview preview-logo">
+                          <img id="preview-footer-logo" src="images/tvklogo.png" alt="Footer Logo">
+                        </div>
+                        <div class="settings-uploader-controls">
+                          <input type="file" class="settings-file-input" id="file-footer-logo" accept="image/*">
+                          <label for="file-footer-logo" class="btn-uploader-choose">Choose File</label>
+                          <span class="settings-filename" id="name-footer-logo">No file chosen</span>
+                          <button type="button" class="btn-uploader-upload" data-target="footer_logo">Upload</button>
+                        </div>
+                      </div>
+                      <span class="settings-uploader-hint">Recommended pixel (150 X 45)</span>
+                    </div>
+
+                    <!-- App Logo Upload -->
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">App logo</label>
+                      <div class="settings-uploader-wrapper vertical-uploader">
+                        <div class="settings-uploader-preview preview-logo">
+                          <img id="preview-app-logo" src="images/tvklogo.png" alt="App Logo">
+                        </div>
+                        <div class="settings-uploader-controls">
+                          <input type="file" class="settings-file-input" id="file-app-logo" accept="image/*">
+                          <label for="file-app-logo" class="btn-uploader-choose">Choose File</label>
+                          <span class="settings-filename" id="name-app-logo">No file chosen</span>
+                          <button type="button" class="btn-uploader-upload" data-target="app_logo">Upload</button>
+                        </div>
+                      </div>
+                      <span class="settings-uploader-hint">Recommended pixel (150 X 45)</span>
+                    </div>
+
+                    <!-- Mobile Menu Image Upload -->
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Mobile menu image</label>
+                      <div class="settings-uploader-wrapper vertical-uploader">
+                        <div class="settings-uploader-preview preview-logo">
+                          <img id="preview-mobile-menu-image" src="images/tvklogo.png" alt="Mobile Menu Image">
+                        </div>
+                        <div class="settings-uploader-controls">
+                          <input type="file" class="settings-file-input" id="file-mobile-menu-image" accept="image/*">
+                          <label for="file-mobile-menu-image" class="btn-uploader-choose">Choose File</label>
+                          <span class="settings-filename" id="name-mobile-menu-image">No file chosen</span>
+                          <button type="button" class="btn-uploader-upload" data-target="mobile_menu_image">Upload</button>
+                        </div>
+                      </div>
+                      <span class="settings-uploader-hint">Recommended pixel (150 X 45)</span>
+                    </div>
+
+                    <!-- Sidebar Collapsed Logo Upload -->
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Sidebar collapsed logo</label>
+                      <div class="settings-uploader-wrapper vertical-uploader">
+                        <div class="settings-uploader-preview preview-collapsed">
+                          <img id="preview-sidebar-collapsed-logo" src="images/tvklogo.png" alt="Sidebar Collapsed Logo">
+                        </div>
+                        <div class="settings-uploader-controls">
+                          <input type="file" class="settings-file-input" id="file-sidebar-collapsed-logo" accept="image/*">
+                          <label for="file-sidebar-collapsed-logo" class="btn-uploader-choose">Choose File</label>
+                          <span class="settings-filename" id="name-sidebar-collapsed-logo">No file chosen</span>
+                          <button type="button" class="btn-uploader-upload" data-target="sidebar_collapsed_logo">Upload</button>
+                        </div>
+                      </div>
+                      <span class="settings-uploader-hint">Recommended pixel (90px X 90px)</span>
+                    </div>
+
+                    <!-- Footer Background Upload -->
+                    <div class="form-group-settings">
+                      <label class="form-label-settings">Footer background img</label>
+                      <div class="settings-uploader-wrapper vertical-uploader">
+                        <div class="settings-uploader-preview preview-wide">
+                          <img id="preview-footer-bg-image" src="images/tvklogo.png" alt="Footer Background">
+                        </div>
+                        <div class="settings-uploader-controls">
+                          <input type="file" class="settings-file-input" id="file-footer-bg-image" accept="image/*">
+                          <label for="file-footer-bg-image" class="btn-uploader-choose">Choose File</label>
+                          <span class="settings-filename" id="name-footer-bg-image">No file chosen</span>
+                          <button type="button" class="btn-uploader-upload" data-target="footer_bg_image">Upload</button>
+                        </div>
+                      </div>
+                      <span class="settings-uploader-hint">Recommended pixel (1920px X 504px)</span>
+                    </div>
                   </div>
                 </div>
-                <div class="form-group" style="display:flex; flex-direction:column; align-items:center;">
-                  <label class="form-label">Active Image Preview</label>
-                  <img src="" id="cfg-mla-img-preview" style="width: 90px; height: 110px; border-radius: 8px; object-fit: cover; border: 2px solid var(--primary); display:none;">
+
+                <div class="settings-action-row" style="margin-top: 2rem;">
+                  <button type="submit" class="btn btn-submit-settings">Submit</button>
                 </div>
-              </div>
-              
-              <div class="form-group">
-                <label class="form-label">MLA Portrait Image URL (Alternative to file upload)</label>
-                <input type="text" class="form-input" id="cfg-mla-img">
+              </form>
+            </div>
+            
+            <!-- TAB 2: MLA & Party Profile (Keeps original features working!) -->
+            <div class="settings-tab-panel" id="settings-tab-mla-profile">
+              <div class="settings-tab-title">MLA & Party Profile Settings</div>
+              <form id="mla-profile-form">
+                <div class="admin-grid-layout-full" style="margin-top: 1rem;">
+                  <div class="card-block">
+                    <div class="card-block-title">MLA Profile Details</div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="form-label">MLA Profile Name (English)</label>
+                        <input type="text" class="form-input" id="cfg-mla-name-en" required>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">MLA Profile Name (Tamil)</label>
+                        <input type="text" class="form-input" id="cfg-mla-name-ta" required>
+                      </div>
+                    </div>
+                    
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="form-label">MLA Office Title Subtitle (English)</label>
+                        <input type="text" class="form-input" id="cfg-mla-title-en" required>
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">MLA Office Title Subtitle (Tamil)</label>
+                        <input type="text" class="form-input" id="cfg-mla-title-ta" required>
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="form-label">MLA Father Name (English)</label>
+                        <input type="text" class="form-input" id="cfg-mla-father-en">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">MLA Father Name (Tamil)</label>
+                        <input type="text" class="form-input" id="cfg-mla-father-ta">
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="form-label">MLA Age</label>
+                        <input type="number" class="form-input" id="cfg-mla-age">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Constituency Office Phone Helpline</label>
+                        <input type="text" class="form-input" id="cfg-const-phone">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card-block">
+                    <div class="card-block-title">MLA Profile Portrait Uploader</div>
+                    <div class="form-row" style="align-items: center;">
+                      <div class="form-group">
+                        <label class="form-label">Choose Real Photo from Computer</label>
+                        <div class="form-file-uploader" style="position:relative;">
+                          <i class="far fa-image"></i>
+                          <span id="cfg-mla-file-label">Select portrait photo <strong style="color: var(--primary);">[or Paste Ctrl+V here]</strong></span>
+                          <input type="file" id="cfg-mla-file" accept="image/*" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;">
+                        </div>
+                      </div>
+                      <div class="form-group" style="display:flex; flex-direction:column; align-items:center;">
+                        <label class="form-label">Active Image Preview</label>
+                        <img src="" id="cfg-mla-img-preview" style="width: 90px; height: 110px; border-radius: 8px; object-fit: cover; border: 2px solid var(--primary); display:none;">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">MLA Portrait Image URL (Alternative)</label>
+                      <input type="text" class="form-input" id="cfg-mla-img">
+                    </div>
+                  </div>
+
+                  <div class="card-block">
+                    <div class="card-block-title">Breaking News Marquee Announcements</div>
+                    <div class="form-group">
+                      <label class="form-label">Scrolling Marquee Text (English)</label>
+                      <input type="text" class="form-input" id="cfg-marquee-en" required>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Scrolling Marquee Text (Tamil)</label>
+                      <input type="text" class="form-input" id="cfg-marquee-ta" required>
+                    </div>
+                  </div>
+
+                  <div class="card-block">
+                    <div class="card-block-title">Social Media Links</div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="form-label">Facebook Profile Link</label>
+                        <input type="url" class="form-input" id="cfg-fb" placeholder="https://facebook.com/...">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Twitter/X Profile Link</label>
+                        <input type="url" class="form-input" id="cfg-tw" placeholder="https://x.com/...">
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="form-label">Instagram Profile Link</label>
+                        <input type="url" class="form-input" id="cfg-ig" placeholder="https://instagram.com/...">
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">YouTube Channel Link</label>
+                        <input type="url" class="form-input" id="cfg-yt" placeholder="https://youtube.com/...">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 1rem;">
+                    <button type="submit" class="btn btn-primary" style="max-width: 300px;"><i class="fas fa-save"></i> Save Profile Settings</button>
+                    <button type="button" class="btn btn-danger" id="reset-db-btn"><i class="fas fa-history"></i> Reset Seed Database</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <!-- Other Mock Tabs -->
+            <div class="settings-tab-panel" id="settings-tab-social-api">
+              <div class="settings-tab-title">Social API Integration</div>
+              <div style="padding: 2rem; text-align:center; color:#94a3b8;">Social API Configuration Setup.</div>
+            </div>
+            <div class="settings-tab-panel" id="settings-tab-mail-setup">
+              <div class="settings-tab-title">Mail SMTP Setup</div>
+              <div style="padding: 2rem; text-align:center; color:#94a3b8;">Mail & SMTP Server Configuration Setup.</div>
+            </div>
+            <div class="settings-tab-panel" id="settings-tab-space-cred">
+              <div class="settings-tab-title">Space Credentials</div>
+              <div style="padding: 2rem; text-align:center; color:#94a3b8;">Object Storage & CDN Credentials Setup.</div>
+            </div>
+
+            <!-- TAB 2: Users List -->
+            <div class="settings-tab-panel" id="settings-tab-users-list">
+              <div class="settings-tab-title">User Directory</div>
+              <div class="table-container" style="margin-top: 1rem;">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                          <img src="images/tvklogo.png" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                          <strong>K. G. Arunraj</strong>
+                        </div>
+                      </td>
+                      <td>tiruchengodu.mla@tvk.org.in</td>
+                      <td><span class="badge badge-success" style="background-color: #f0fdf4; color: #16a34a; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.75rem;">Super Admin</span></td>
+                      <td><span class="badge badge-active" style="background-color: #ecfdf5; color: #059669; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.75rem;">Active</span></td>
+                      <td>
+                        <button type="button" class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;"><i class="fas fa-edit"></i></button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                          <img src="images/tvklogo.png" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                          <strong>Ganesan P</strong>
+                        </div>
+                      </td>
+                      <td>ganesan.editor@tvk.org.in</td>
+                      <td><span class="badge badge-primary" style="background-color: #eff6ff; color: #2563eb; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.75rem;">Editor</span></td>
+                      <td><span class="badge badge-active" style="background-color: #ecfdf5; color: #059669; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.75rem;">Active</span></td>
+                      <td>
+                        <button type="button" class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;"><i class="fas fa-edit"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
+            <!-- TAB 3: Roles & Permissions -->
+            <div class="settings-tab-panel" id="settings-tab-roles-permissions">
+              <div class="settings-tab-title">Access Control Matrix</div>
+              <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="form-group-settings">
+                  <label class="form-label-settings">Select Role to Edit</label>
+                  <select class="form-input-settings" id="cfg-permission-role" style="max-width: 300px;">
+                    <option value="superadmin">Super Admin</option>
+                    <option value="editor">Editor</option>
+                    <option value="reporter">Reporter</option>
+                  </select>
+                </div>
+                <div>
+                  <h4 style="font-size: 0.9rem; font-weight: 700; color: #334155; margin-bottom: 0.75rem;">Module Permissions</h4>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-checkbox-inline">
+                      <input type="checkbox" id="perm-posts" checked>
+                      <label for="perm-posts">Create & Edit News Posts</label>
+                    </div>
+                    <div class="form-checkbox-inline">
+                      <input type="checkbox" id="perm-video-posts" checked>
+                      <label for="perm-video-posts">Manage Video Content</label>
+                    </div>
+                    <div class="form-checkbox-inline">
+                      <input type="checkbox" id="perm-pages" checked>
+                      <label for="perm-pages">Static Page Customization</label>
+                    </div>
+                    <div class="form-checkbox-inline">
+                      <input type="checkbox" id="perm-seo" checked>
+                      <label for="perm-seo">Update SEO Metadata</label>
+                    </div>
+                    <div class="form-checkbox-inline">
+                      <input type="checkbox" id="perm-settings" checked>
+                      <label for="perm-settings">Modify Global Configuration</label>
+                    </div>
+                    <div class="form-checkbox-inline">
+                      <input type="checkbox" id="perm-grievances" checked>
+                      <label for="perm-grievances">View Grievance Inbox</label>
+                    </div>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-primary" style="align-self: flex-start;" onclick="showAdminAlert('Role permissions updated successfully!', 'success')"><i class="fas fa-save"></i> Save Permissions</button>
+              </div>
+            </div>
+
+            <!-- TAB 4: Font settings -->
+            <div class="settings-tab-panel" id="settings-tab-system-fonts">
+              <div class="settings-tab-title">Typography & Density</div>
+              <div class="settings-form-grid" style="margin-top: 1.5rem;">
+                <div class="settings-grid-col">
+                  <div class="form-group-settings">
+                    <label class="form-label-settings">Header Font Family</label>
+                    <select class="form-input-settings" id="cfg-font-headings">
+                      <option value="Outfit" selected>Outfit</option>
+                      <option value="Inter">Inter</option>
+                      <option value="Roboto">Roboto</option>
+                    </select>
+                  </div>
+                  <div class="form-group-settings">
+                    <label class="form-label-settings">Body Font Family</label>
+                    <select class="form-input-settings" id="cfg-font-body">
+                      <option value="Inter" selected>Inter</option>
+                      <option value="Outfit">Outfit</option>
+                      <option value="Roboto">Roboto</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="settings-grid-col">
+                  <div class="form-group-settings">
+                    <label class="form-label-settings">Base Font Size (Rem)</label>
+                    <select class="form-input-settings" id="cfg-font-size">
+                      <option value="0.8">0.8 Rem (Dense)</option>
+                      <option value="0.85" selected>0.85 Rem (Normal)</option>
+                      <option value="0.9">0.9 Rem (Large)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary" style="margin-top: 1rem;" onclick="showAdminAlert('Typography preferences updated!', 'success')"><i class="fas fa-save"></i> Save Font Settings</button>
+            </div>
+
+            <!-- TAB 5: Language Setup -->
+            <div class="settings-tab-panel" id="settings-tab-lang-setup">
+              <div class="settings-tab-title">Language & Localization</div>
+              <div class="settings-form-grid" style="margin-top: 1.5rem;">
+                <div class="settings-grid-col">
+                  <div class="form-group-settings">
+                    <label class="form-label-settings">Admin Console Language</label>
+                    <select class="form-input-settings" id="cfg-admin-lang">
+                      <option value="English" selected>English</option>
+                      <option value="Tamil">Tamil (தமிழ்)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="settings-grid-col">
+                  <div class="form-group-settings">
+                    <label class="form-label-settings">Translation Mode</label>
+                    <select class="form-input-settings" id="cfg-translation-mode">
+                      <option value="manual" selected>Manual Selection</option>
+                      <option value="auto">Auto Browser Detect</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary" style="margin-top: 1rem;" onclick="showAdminAlert('Language configuration saved!', 'success')"><i class="fas fa-save"></i> Save Language Setup</button>
+            </div>
+
+            <!-- TAB 6: Backup Reset -->
+            <div class="settings-tab-panel" id="settings-tab-backup-reset">
+              <div class="settings-tab-title">Database Utilities</div>
+              <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                  <div style="border: 1px solid #e2e8f0; padding: 1.25rem; border-radius: 8px; background-color: #f8fafc;">
+                    <h4 style="font-weight:700; font-size: 0.9rem; color: #1e293b; margin-bottom: 0.5rem;"><i class="fas fa-download" style="color:var(--primary); margin-right:0.5rem;"></i> Backup Database</h4>
+                    <p style="font-size:0.8rem; color:#64748b; margin-bottom:1rem;">Download a full database backup in JSON format containing news posts, grievances, and settings.</p>
+                    <button type="button" class="btn btn-primary" id="btn-backup-db-export"><i class="fas fa-file-download"></i> Export JSON Backup</button>
+                  </div>
+                  
+                  <div style="border: 1px solid #e2e8f0; padding: 1.25rem; border-radius: 8px; background-color: #f8fafc;">
+                    <h4 style="font-weight:700; font-size: 0.9rem; color: #1e293b; margin-bottom: 0.5rem;"><i class="fas fa-undo-alt" style="color:#ef4444; margin-right:0.5rem;"></i> Reset System</h4>
+                    <p style="font-size:0.8rem; color:#64748b; margin-bottom:1rem;">Clear all customizations and restore the portal's databases to their default factory seed configurations.</p>
+                    <button type="button" class="btn btn-danger" id="btn-reset-db-factory"><i class="fas fa-trash-alt"></i> Reset to Seeds</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TAB 7: Access Log -->
+            <div class="settings-tab-panel" id="settings-tab-access-log">
+              <div class="settings-tab-title">System Audit Log</div>
+              <div class="table-container" style="margin-top: 1rem;">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th style="width:120px;">Timestamp</th>
+                      <th>User</th>
+                      <th>Activity</th>
+                      <th>IP Address</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>2026-06-03 15:42:01</td>
+                      <td>K. G. Arunraj</td>
+                      <td>Updated Branding Assets (App logo)</td>
+                      <td>192.168.1.10</td>
+                      <td><span style="color:#16a34a; font-weight:600;"><i class="fas fa-check-circle"></i> Success</span></td>
+                    </tr>
+                    <tr>
+                      <td>2026-06-03 15:39:15</td>
+                      <td>K. G. Arunraj</td>
+                      <td>Logged into administrative dashboard</td>
+                      <td>192.168.1.10</td>
+                      <td><span style="color:#16a34a; font-weight:600;"><i class="fas fa-check-circle"></i> Success</span></td>
+                    </tr>
+                    <tr>
+                      <td>2026-06-03 14:12:00</td>
+                      <td>Ganesan P</td>
+                      <td>Published new press release entry (#10)</td>
+                      <td>192.168.1.12</td>
+                      <td><span style="color:#16a34a; font-weight:600;"><i class="fas fa-check-circle"></i> Success</span></td>
+                    </tr>
+                    <tr>
+                      <td>2026-06-03 11:05:40</td>
+                      <td>System Cron</td>
+                      <td>Cleared system temporary file caches</td>
+                      <td>localhost</td>
+                      <td><span style="color:#16a34a; font-weight:600;"><i class="fas fa-check-circle"></i> Success</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Theme Customizer Panel -->
+      <section class="admin-panel" id="theme-panel">
+        <div class="panel-header">
+          <h3>Theme</h3>
+          <i class="fas fa-paint-roller" style="color: var(--primary);"></i>
+        </div>
+
+        <div class="admin-grid-layout-full">
+          <!-- Preset grid card -->
+          <div class="card-block" style="margin-bottom: 1.5rem;">
+            <div class="card-block-title">Theme Presets</div>
+            <div class="theme-presets-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+              
+              <!-- Classic -->
+              <div class="theme-preset-card active" data-preset="classic" style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; background: #fff;">
+                <div style="background: #f1f5f9; padding: 10px; display: flex; flex-direction: column; gap: 4px; height: 120px;">
+                  <div style="background: #7A0C1A; height: 16px; border-radius: 2px;"></div>
+                  <div style="display: flex; gap: 4px; flex-grow: 1;">
+                    <div style="background: #fff; border: 1px solid #e2e8f0; flex-grow: 1; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #7A0C1A; height: 6px; width: 60%; border-radius: 1px;"></div>
+                      <div style="background: #e2e8f0; height: 4px; border-radius: 1px;"></div>
+                    </div>
+                    <div style="background: #fff; border: 1px solid #e2e8f0; width: 30%; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #D4AF37; height: 6px; border-radius: 1px;"></div>
+                    </div>
+                  </div>
+                  <div style="background: #7A0C1A; height: 12px; border-radius: 2px;"></div>
+                </div>
+                <div class="preset-name" style="padding: 0.6rem; text-align: center; font-weight: 700; font-size: 0.9rem; background: var(--primary); color: #fff;">Classic</div>
+              </div>
+
+              <!-- News -->
+              <div class="theme-preset-card" data-preset="news" style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; background: #fff;">
+                <div style="background: #f1f5f9; padding: 10px; display: flex; flex-direction: column; gap: 4px; height: 120px;">
+                  <div style="background: #b31b1b; height: 16px; border-radius: 2px;"></div>
+                  <div style="display: flex; gap: 4px; flex-grow: 1;">
+                    <div style="background: #fff; border: 1px solid #e2e8f0; flex-grow: 1; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #b31b1b; height: 6px; width: 60%; border-radius: 1px;"></div>
+                      <div style="background: #e2e8f0; height: 4px; border-radius: 1px;"></div>
+                    </div>
+                    <div style="background: #fff; border: 1px solid #e2e8f0; width: 30%; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #111111; height: 6px; border-radius: 1px;"></div>
+                    </div>
+                  </div>
+                  <div style="background: #111111; height: 12px; border-radius: 2px;"></div>
+                </div>
+                <div class="preset-name" style="padding: 0.6rem; text-align: center; font-weight: 700; font-size: 0.9rem; background: #f1f5f9; color: #334155;">News</div>
+              </div>
+
+              <!-- Magazine -->
+              <div class="theme-preset-card" data-preset="magazine" style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; background: #fff;">
+                <div style="background: #f1f5f9; padding: 10px; display: flex; flex-direction: column; gap: 4px; height: 120px;">
+                  <div style="background: #005b5c; height: 16px; border-radius: 2px;"></div>
+                  <div style="display: flex; gap: 4px; flex-grow: 1;">
+                    <div style="background: #fff; border: 1px solid #e2e8f0; flex-grow: 1; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #005b5c; height: 6px; width: 60%; border-radius: 1px;"></div>
+                      <div style="background: #e2e8f0; height: 4px; border-radius: 1px;"></div>
+                    </div>
+                    <div style="background: #fff; border: 1px solid #e2e8f0; width: 30%; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #d4af37; height: 6px; border-radius: 1px;"></div>
+                    </div>
+                  </div>
+                  <div style="background: #005b5c; height: 12px; border-radius: 2px;"></div>
+                </div>
+                <div class="preset-name" style="padding: 0.6rem; text-align: center; font-weight: 700; font-size: 0.9rem; background: #f1f5f9; color: #334155;">Magazine</div>
+              </div>
+
+              <!-- Times -->
+              <div class="theme-preset-card" data-preset="times" style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; background: #fff;">
+                <div style="background: #f1f5f9; padding: 10px; display: flex; flex-direction: column; gap: 4px; height: 120px;">
+                  <div style="background: #0f1e36; height: 16px; border-radius: 2px;"></div>
+                  <div style="display: flex; gap: 4px; flex-grow: 1;">
+                    <div style="background: #fff; border: 1px solid #e2e8f0; flex-grow: 1; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #0f1e36; height: 6px; width: 60%; border-radius: 1px;"></div>
+                      <div style="background: #e2e8f0; height: 4px; border-radius: 1px;"></div>
+                    </div>
+                    <div style="background: #fff; border: 1px solid #e2e8f0; width: 30%; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #b39243; height: 6px; border-radius: 1px;"></div>
+                    </div>
+                  </div>
+                  <div style="background: #0f1e36; height: 12px; border-radius: 2px;"></div>
+                </div>
+                <div class="preset-name" style="padding: 0.6rem; text-align: center; font-weight: 700; font-size: 0.9rem; background: #f1f5f9; color: #334155;">Times</div>
+              </div>
+
+              <!-- Gazette -->
+              <div class="theme-preset-card" data-preset="gazette" style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; background: #fff;">
+                <div style="background: #f1f5f9; padding: 10px; display: flex; flex-direction: column; gap: 4px; height: 120px;">
+                  <div style="background: #1a1a1a; height: 16px; border-radius: 2px;"></div>
+                  <div style="display: flex; gap: 4px; flex-grow: 1;">
+                    <div style="background: #fff; border: 1px solid #e2e8f0; flex-grow: 1; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #1a1a1a; height: 6px; width: 60%; border-radius: 1px;"></div>
+                      <div style="background: #e2e8f0; height: 4px; border-radius: 1px;"></div>
+                    </div>
+                    <div style="background: #fff; border: 1px solid #e2e8f0; width: 30%; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #e0a96d; height: 6px; border-radius: 1px;"></div>
+                    </div>
+                  </div>
+                  <div style="background: #1a1a1a; height: 12px; border-radius: 2px;"></div>
+                </div>
+                <div class="preset-name" style="padding: 0.6rem; text-align: center; font-weight: 700; font-size: 0.9rem; background: #f1f5f9; color: #334155;">Gazette</div>
+              </div>
+
+              <!-- Fashion -->
+              <div class="theme-preset-card" data-preset="fashion" style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; background: #fff;">
+                <div style="background: #f1f5f9; padding: 10px; display: flex; flex-direction: column; gap: 4px; height: 120px;">
+                  <div style="background: #c2185b; height: 16px; border-radius: 2px;"></div>
+                  <div style="display: flex; gap: 4px; flex-grow: 1;">
+                    <div style="background: #fff; border: 1px solid #e2e8f0; flex-grow: 1; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #c2185b; height: 6px; width: 60%; border-radius: 1px;"></div>
+                      <div style="background: #e2e8f0; height: 4px; border-radius: 1px;"></div>
+                    </div>
+                    <div style="background: #fff; border: 1px solid #e2e8f0; width: 30%; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #f48fb1; height: 6px; border-radius: 1px;"></div>
+                    </div>
+                  </div>
+                  <div style="background: #c2185b; height: 12px; border-radius: 2px;"></div>
+                </div>
+                <div class="preset-name" style="padding: 0.6rem; text-align: center; font-weight: 700; font-size: 0.9rem; background: #f1f5f9; color: #334155;">Fashion</div>
+              </div>
+
+              <!-- Penmark -->
+              <div class="theme-preset-card" data-preset="penmark" style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; background: #fff;">
+                <div style="background: #f1f5f9; padding: 10px; display: flex; flex-direction: column; gap: 4px; height: 120px;">
+                  <div style="background: #1b4332; height: 16px; border-radius: 2px;"></div>
+                  <div style="display: flex; gap: 4px; flex-grow: 1;">
+                    <div style="background: #fff; border: 1px solid #e2e8f0; flex-grow: 1; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #1b4332; height: 6px; width: 60%; border-radius: 1px;"></div>
+                      <div style="background: #e2e8f0; height: 4px; border-radius: 1px;"></div>
+                    </div>
+                    <div style="background: #fff; border: 1px solid #e2e8f0; width: 30%; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #d8f3dc; height: 6px; border-radius: 1px;"></div>
+                    </div>
+                  </div>
+                  <div style="background: #1b4332; height: 12px; border-radius: 2px;"></div>
+                </div>
+                <div class="preset-name" style="padding: 0.6rem; text-align: center; font-weight: 700; font-size: 0.9rem; background: #f1f5f9; color: #334155;">Penmark</div>
+              </div>
+
+              <!-- Storylane -->
+              <div class="theme-preset-card" data-preset="storylane" style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; background: #fff;">
+                <div style="background: #f1f5f9; padding: 10px; display: flex; flex-direction: column; gap: 4px; height: 120px;">
+                  <div style="background: #bc4749; height: 16px; border-radius: 2px;"></div>
+                  <div style="display: flex; gap: 4px; flex-grow: 1;">
+                    <div style="background: #fff; border: 1px solid #e2e8f0; flex-grow: 1; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #bc4749; height: 6px; width: 60%; border-radius: 1px;"></div>
+                      <div style="background: #e2e8f0; height: 4px; border-radius: 1px;"></div>
+                    </div>
+                    <div style="background: #fff; border: 1px solid #e2e8f0; width: 30%; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #f2e8cf; height: 6px; border-radius: 1px;"></div>
+                    </div>
+                  </div>
+                  <div style="background: #bc4749; height: 12px; border-radius: 2px;"></div>
+                </div>
+                <div class="preset-name" style="padding: 0.6rem; text-align: center; font-weight: 700; font-size: 0.9rem; background: #f1f5f9; color: #334155;">Storylane</div>
+              </div>
+
+              <!-- Wordcraft -->
+              <div class="theme-preset-card" data-preset="wordcraft" style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; background: #fff;">
+                <div style="background: #f1f5f9; padding: 10px; display: flex; flex-direction: column; gap: 4px; height: 120px;">
+                  <div style="background: #4a148c; height: 16px; border-radius: 2px;"></div>
+                  <div style="display: flex; gap: 4px; flex-grow: 1;">
+                    <div style="background: #fff; border: 1px solid #e2e8f0; flex-grow: 1; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #4a148c; height: 6px; width: 60%; border-radius: 1px;"></div>
+                      <div style="background: #e2e8f0; height: 4px; border-radius: 1px;"></div>
+                    </div>
+                    <div style="background: #fff; border: 1px solid #e2e8f0; width: 30%; border-radius: 2px; padding: 4px; display: flex; flex-direction: column; gap: 2px;">
+                      <div style="background: #ea80fc; height: 6px; border-radius: 1px;"></div>
+                    </div>
+                  </div>
+                  <div style="background: #4a148c; height: 12px; border-radius: 2px;"></div>
+                </div>
+                <div class="preset-name" style="padding: 0.6rem; text-align: center; font-weight: 700; font-size: 0.9rem; background: #f1f5f9; color: #334155;">Wordcraft</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Theme setting Form -->
+          <div class="card-block">
+            <div class="card-block-title">Theme setting</div>
+            <form id="theme-custom-settings-form">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+                <div class="form-group">
+                  <label class="form-label">Header background color</label>
+                  <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input type="text" class="form-input" id="theme-header-bg-text" placeholder="#7A0C1A" style="font-family: monospace;">
+                    <input type="color" id="theme-header-bg-picker" style="width: 40px; height: 38px; padding: 0; border: 1px solid var(--border-color); border-radius: 4px; cursor: pointer;">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Header font color</label>
+                  <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input type="text" class="form-input" id="theme-header-font-text" placeholder="#FFFFFF" style="font-family: monospace;">
+                    <input type="color" id="theme-header-font-picker" style="width: 40px; height: 38px; padding: 0; border: 1px solid var(--border-color); border-radius: 4px; cursor: pointer;">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Footer background color</label>
+                  <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input type="text" class="form-input" id="theme-footer-bg-text" placeholder="#7A0C1A" style="font-family: monospace;">
+                    <input type="color" id="theme-footer-bg-picker" style="width: 40px; height: 38px; padding: 0; border: 1px solid var(--border-color); border-radius: 4px; cursor: pointer;">
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+                <button type="submit" class="btn btn-primary" style="background-color: #2563eb; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+                  <i class="fas fa-save"></i> Save changes
+                </button>
+                <button type="button" class="btn" id="theme-reset-btn" style="background-color: #ef4444; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+                  <i class="fas fa-undo"></i> Reset to default
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Setup Top Breaking Post -->
+      <section class="admin-panel" id="setup-top-breaking-panel">
+        <div class="panel-header">
+          <h3>Setup top breaking</h3>
+          <i class="fas fa-bullhorn" style="color: var(--primary);"></i>
+        </div>
+        <form id="setup-top-breaking-form">
+          <div class="admin-grid-layout-full">
             <div class="card-block">
-              <div class="card-block-title">Breaking News Marquee Announcements</div>
-              <div class="form-group">
-                <label class="form-label">Scrolling Marquee Text (English)</label>
-                <input type="text" class="form-input" id="cfg-marquee-en" required>
+              <div class="card-block-title">Setup Top Breaking Post</div>
+              
+              <div class="form-group" style="margin-top: 1rem;">
+                <label class="form-label">Entire Title <span class="required-star" style="color: red;">*</span></label>
+                <input type="text" class="form-input" id="breaking-title" required placeholder="Entire Title">
               </div>
-              <div class="form-group">
-                <label class="form-label">Scrolling Marquee Text (Tamil)</label>
-                <input type="text" class="form-input" id="cfg-marquee-ta" required>
-              </div>
-            </div>
 
+              <div class="form-group">
+                <label class="form-label">Background Color <span class="required-star" style="color: red;">*</span></label>
+                <input type="text" class="form-input" id="breaking-bg-color" required placeholder="Background Color">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Category <span class="required-star" style="color: red;">*</span></label>
+                <select class="form-input" id="breaking-category" required>
+                  <option value="">--Select--</option>
+                  <option value="Press Releases">Press Releases</option>
+                  <option value="Constituency Work">Constituency Work</option>
+                  <option value="Welfare Activities">Welfare Activities</option>
+                  <option value="Announcements">Announcements</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" style="display:block; margin-bottom: 0.5rem;">Status</label>
+                <div style="display: flex; gap: 1.5rem; align-items: center;">
+                  <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="breaking-status" value="Active" checked style="accent-color: var(--primary);"> Active
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="breaking-status" value="Inactive" style="accent-color: var(--primary);"> Inactive
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-success" style="background-color: #1b7b43; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+                <i class="fas fa-check-circle"></i> Update
+              </button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Home Page View Settings -->
+      <section class="admin-panel" id="home-page-settings-panel">
+        <div class="panel-header">
+          <h3>Home page view setting</h3>
+          <i class="fas fa-home" style="color: var(--primary);"></i>
+        </div>
+        
+        <div class="admin-grid-layout-full">
+          <!-- Add Position Card -->
+          <div class="card-block" style="margin-bottom: 1.5rem;">
+            <div class="card-block-title">Add Position</div>
+            <form id="home-add-position-form">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: flex-end; margin-top: 1rem;">
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">Language <span class="required-star" style="color: red;">*</span></label>
+                  <select class="form-input" id="home-pos-lang" required>
+                    <option value="English">English</option>
+                    <option value="Tamil">Tamil</option>
+                  </select>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">Position Number <span class="required-star" style="color: red;">*</span></label>
+                  <select class="form-input" id="home-pos-number" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                  </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 0;">
+                  <label class="form-label">Category Name <span class="required-star" style="color: red;">*</span></label>
+                  <select class="form-input" id="home-pos-category" required>
+                    <option value="Press Releases">Press Releases</option>
+                    <option value="Constituency Work">Constituency Work</option>
+                    <option value="Welfare Activities">Welfare Activities</option>
+                    <option value="Announcements">Announcements</option>
+                  </select>
+                </div>
+
+                <button type="submit" class="btn" style="background-color: #2563eb; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 4px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; justify-content: center; height: 38px;">
+                  <i class="fas fa-plus-circle"></i> Add Position
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Position Table List -->
+          <div class="card-block">
+            <div class="card-block-title">Active Home Page Category Views</div>
+            <form id="home-positions-update-form">
+              <div class="table-responsive" style="margin-top: 1rem; overflow-x: auto;">
+                <table class="admin-table" style="width: 100%; border-collapse: collapse;">
+                  <thead>
+                    <tr>
+                      <th style="text-align: left; padding: 0.75rem;">Language</th>
+                      <th style="text-align: left; padding: 0.75rem;">Position number</th>
+                      <th style="text-align: left; padding: 0.75rem;">Category name</th>
+                      <th style="text-align: center; padding: 0.75rem; width: 100px;">Status</th>
+                      <th style="text-align: center; padding: 0.75rem; width: 80px;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="home-positions-table-body">
+                    <!-- Dynamic Rows Loaded Here -->
+                  </tbody>
+                </table>
+              </div>
+
+              <div style="margin-top: 1.5rem; display: flex; gap: 1rem; align-items: center;">
+                <button type="submit" class="btn btn-success" style="background-color: #1b7b43; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+                  <i class="fas fa-check-circle"></i> Update
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Page Setup -->
+      <section class="admin-panel" id="contact-page-setup-panel">
+        <div class="panel-header">
+          <h3>Contact settings</h3>
+          <i class="fas fa-address-book" style="color: var(--primary);"></i>
+        </div>
+        <form id="contact-page-setup-form">
+          <div class="admin-grid-layout-full">
             <div class="card-block">
-              <div class="card-block-title">Official Office & Social Media Contact Details</div>
+              <div class="card-block-title">Contact Information Details</div>
               
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Contact Phone Helpline</label>
-                  <input type="text" class="form-input" id="cfg-phone" required>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Official Email Address</label>
-                  <input type="email" class="form-input" id="cfg-email" required>
-                </div>
-              </div>
-              
-              <div class="form-group">
-                <label class="form-label">Physical Office Address (English)</label>
-                <input type="text" class="form-input" id="cfg-address-en" required>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Physical Office Address (Tamil)</label>
-                <input type="text" class="form-input" id="cfg-address-ta" required>
-              </div>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Facebook Profile Link</label>
-                  <input type="url" class="form-input" id="cfg-fb">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Twitter/X Profile Link</label>
-                  <input type="url" class="form-input" id="cfg-tw">
-                </div>
-              </div>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Instagram Profile Link</label>
-                  <input type="url" class="form-input" id="cfg-ig">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">YouTube channel Link</label>
-                  <input type="url" class="form-input" id="cfg-yt">
-                </div>
-              </div>
-            </div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+                <!-- Column 1 -->
+                <div>
+                  <div class="form-group">
+                    <label class="form-label">Editor Name</label>
+                    <input type="text" class="form-input" id="contact-editor-name" placeholder="Editor Name">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="text" class="form-input" id="contact-phone" placeholder="Phone One">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">Phone Two</label>
+                    <input type="text" class="form-input" id="contact-phone-two" placeholder="Phone Two">
+                  </div>
 
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <button type="submit" class="btn btn-primary btn-full" style="max-width: 300px;"><i class="fas fa-save"></i> Save Settings</button>
-              <button type="button" class="btn btn-danger" id="reset-db-btn"><i class="fas fa-history"></i> Reset Seed Database</button>
+                  <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="contact-email" placeholder="Email Address">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Website</label>
+                    <input type="text" class="form-input" id="contact-website" placeholder="Website Link">
+                  </div>
+                </div>
+
+                <!-- Column 2 -->
+                <div>
+                  <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <textarea class="form-input" id="contact-address" rows="3" style="resize:vertical;" placeholder="Office/Contact Address"></textarea>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Content</label>
+                    <textarea class="form-input" id="contact-content" rows="3" style="resize:vertical;" placeholder="General contact page description text"></textarea>
+                  </div>
+
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                      <label class="form-label">Latitude</label>
+                      <input type="text" class="form-input" id="contact-latitude" placeholder="e.g. 11.3789">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Longitude</label>
+                      <input type="text" class="form-input" id="contact-longitude" placeholder="e.g. 77.8967">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Map iframe src URL -->
+              <div class="form-group" style="margin-top: 1rem;">
+                <label class="form-label">Map</label>
+                <textarea class="form-input" id="contact-map-src" rows="2" style="resize:vertical;" placeholder="Embed map src URL"></textarea>
+                <span class="settings-uploader-hint" style="color: #64748b; font-size: 0.75rem; margin-top: 0.25rem; display: block;">Embed a map src url (e.g. https://www.google.com/maps/embed?pb=...)</span>
+              </div>
+
+              <button type="submit" class="btn btn-success" style="background-color: #1b7b43; color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 4px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem;">
+                <i class="fas fa-check-circle"></i> Update
+              </button>
             </div>
           </div>
         </form>
@@ -2170,6 +3814,123 @@
         </div>
       </section>
 
+      <!-- PANEL 6: SEO PANEL -->
+      <section class="admin-panel" id="seo-panel">
+        <div class="panel-header">
+          <h3>Search Engine Optimization (SEO) Config</h3>
+          <i class="fas fa-search-plus" style="color: var(--primary);"></i>
+        </div>
+        <form id="seo-form">
+          <div class="admin-grid-layout-full">
+            <div class="card-block">
+              <div class="card-block-title">Search Engine Metadata</div>
+              <div class="form-group">
+                <label class="form-label">Meta Title</label>
+                <input type="text" class="form-input" id="seo-meta-title" placeholder="e.g. Dr. K. G. Arunraj MLA | TVK Tiruchengodu Portal">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Meta Description</label>
+                <textarea class="form-input" id="seo-meta-desc" rows="3" style="resize:vertical;" placeholder="e.g. Official constituency portal of Minister Dr. K. G. Arunraj MLA representing TVK in Tiruchengodu..."></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Meta Keywords (comma separated)</label>
+                <input type="text" class="form-input" id="seo-meta-keywords" placeholder="e.g. TVK, Arunraj, Tiruchengodu, MLA, Namakkal">
+              </div>
+            </div>
+            
+            <div class="card-block">
+              <div class="card-block-title">Open Graph & Social Sharing</div>
+              <div class="form-group">
+                <label class="form-label">OG Title</label>
+                <input type="text" class="form-input" id="seo-og-title" placeholder="OG sharing title">
+              </div>
+              <div class="form-group">
+                <label class="form-label">OG Description</label>
+                <input type="text" class="form-input" id="seo-og-desc" placeholder="OG sharing description">
+              </div>
+            </div>
+
+            <div class="card-block">
+              <div class="card-block-title">Sitemap & Web Crawling</div>
+              <div class="form-checkbox-inline" style="margin-bottom:1rem;">
+                <input type="checkbox" id="seo-sitemap-enable" checked>
+                <label for="seo-sitemap-enable">Enable Auto XML Sitemap Indexing</label>
+              </div>
+              <div class="form-checkbox-inline">
+                <input type="checkbox" id="seo-search-index" checked>
+                <label for="seo-search-index">Allow Search Engines to Index this Site (Robots.txt)</label>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="margin-top:1rem;"><i class="fas fa-save"></i> Save SEO Settings</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- PANEL 7: SUBSCRIBERS PANEL -->
+      <section class="admin-panel" id="subscribers-panel">
+        <div class="panel-header">
+          <h3>Newsletter Subscribers Directory</h3>
+          <i class="fas fa-users" style="color: var(--primary);"></i>
+        </div>
+        
+        <div class="admin-grid-layout-full">
+          <div class="card-block">
+            <div class="card-block-title">Registered Emails</div>
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width: 80px; text-align:center;">Sl</th>
+                    <th>Email Address</th>
+                    <th>Subscription Date</th>
+                    <th style="width: 120px; text-align:center;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="subscribers-table-body">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Visual Layout Editor Panel -->
+      <section class="admin-panel" id="visual-editor-panel">
+        <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 1rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-cubes" style="color: var(--primary); font-size: 1.25rem;"></i>
+            <h3 style="margin: 0; font-size: 1.25rem; font-weight: 700;">Visual Layout Editor</h3>
+          </div>
+          
+          <!-- Toolbar Controls -->
+          <div class="editor-workspace-controls" style="display: flex; align-items: center; gap: 1rem;">
+            <!-- Preview Sizes -->
+            <div class="preview-mode-group" style="display: flex; background: #f1f5f9; border-radius: 6px; padding: 2px; border: 1px solid #cbd5e1;">
+              <button type="button" class="preview-btn active" data-device="desktop" style="background: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.35rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"><i class="fas fa-desktop"></i> Desktop</button>
+              <button type="button" class="preview-btn" data-device="tablet" style="background: transparent; border: none; padding: 6px 12px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.35rem; color: #64748b; margin-left: 2px;"><i class="fas fa-tablet-alt"></i> Tablet</button>
+              <button type="button" class="preview-btn" data-device="mobile" style="background: transparent; border: none; padding: 6px 12px; border-radius: 4px; font-weight: 600; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 0.35rem; color: #64748b; margin-left: 2px;"><i class="fas fa-mobile-alt"></i> Mobile</button>
+            </div>
+
+            <!-- History actions -->
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="button" id="editor-undo-btn" disabled style="background: #f1f5f9; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: not-allowed; color: #94a3b8; display: flex; align-items: center; gap: 0.35rem;"><i class="fas fa-undo"></i> Undo</button>
+              <button type="button" id="editor-redo-btn" disabled style="background: #f1f5f9; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: not-allowed; color: #94a3b8; display: flex; align-items: center; gap: 0.35rem;"><i class="fas fa-redo"></i> Redo</button>
+            </div>
+
+            <!-- Reset & Save layout -->
+            <button type="button" id="editor-reset-btn" style="background: #ef4444; border: none; color: #fff; padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.35rem;"><i class="fas fa-history"></i> Reset Layout</button>
+            <button type="button" id="editor-save-btn" style="background: #3b82f6; border: none; color: #fff; padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.35rem;"><i class="fas fa-save"></i> Save Layout</button>
+          </div>
+        </div>
+
+        <!-- Editable Canvas Area -->
+        <div id="layout-canvas-frame-container" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; margin-top: 1.5rem; padding: 1.5rem; display: flex; justify-content: center; align-items: flex-start; overflow-x: auto; min-height: 700px;">
+          <iframe id="layout-editor-iframe" src="index.html?mode=editor" style="width: 100%; min-height: 800px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); transition: width 0.3s ease;"></iframe>
+        </div>
+      </section>
+
       <!-- Footer -->
       <footer class="admin-footer">
         <div class="footer-left">© 2026 TVK TIRUCHENGODU MLA. All Rights Reserved.</div>
@@ -2182,5 +3943,124 @@
   <script src="js/db.js"></script>
   <!-- Admin panel operations controller script -->
   <script src="js/admin.js"></script>
+  
+  <!-- Interactive Admin Login and Profile Dropdown Scripts -->
+  <script>
+    (function() {
+      function initDropdownAndLogin() {
+        const loginForm = document.getElementById("admin-login-form");
+        const emailInput = document.getElementById("login-email");
+        const passwordInput = document.getElementById("login-password");
+        const errorMsg = document.getElementById("login-error-msg");
+        const errorText = document.getElementById("login-error-text");
+        const forgotBtn = document.getElementById("login-forgot-btn");
+        
+        // Toggle dropdown menu
+        const profileTrigger = document.getElementById("header-profile-trigger");
+        const dropdownMenu = document.getElementById("profile-dropdown-menu");
+        
+        if (profileTrigger && dropdownMenu) {
+          profileTrigger.addEventListener("click", (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle("show");
+          });
+          
+          // Stop propagation inside dropdown menu to prevent accidental closures
+          dropdownMenu.addEventListener("click", (e) => {
+            e.stopPropagation();
+          });
+          
+          document.addEventListener("click", () => {
+            dropdownMenu.classList.remove("show");
+          });
+        }
+        
+        // Close dropdown and handle View Website link click
+        if (dropdownMenu) {
+          const viewSiteLnk = dropdownMenu.querySelector('a[href="index.html"]');
+          if (viewSiteLnk) {
+            viewSiteLnk.addEventListener("click", () => {
+              dropdownMenu.classList.remove("show");
+            });
+          }
+        }
+        
+        // Dropdown Settings click
+        const settingsLnk = document.getElementById("dropdown-settings-lnk");
+        if (settingsLnk && dropdownMenu) {
+          settingsLnk.addEventListener("click", (e) => {
+            e.preventDefault();
+            dropdownMenu.classList.remove("show");
+            // Find sidebar button for Settings and click it
+            const sidebarSettingsBtn = document.querySelector('.sidebar-btn[data-panel="settings"]');
+            if (sidebarSettingsBtn) {
+              sidebarSettingsBtn.click();
+            }
+          });
+        }
+        
+        // Dropdown Sign Out click
+        const logoutLnk = document.getElementById("dropdown-logout-lnk");
+        if (logoutLnk && dropdownMenu) {
+          logoutLnk.addEventListener("click", (e) => {
+            e.preventDefault();
+            dropdownMenu.classList.remove("show");
+            sessionStorage.removeItem("admin_logged_in");
+            // Reload page to show login screen
+            location.reload();
+          });
+        }
+
+        // Handle Forgot Password
+        if (forgotBtn) {
+          forgotBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            alert("To reset your password, please contact the TVK IT Wing Systems Administrator.");
+          });
+        }
+
+        // Handle login submission
+        if (loginForm) {
+          loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            const emailVal = emailInput.value.trim();
+            const passVal = passwordInput.value;
+            
+            // Get config credentials from TVKDb
+            let expectedEmail = "tiruchengodu.mla@tvk.org.in";
+            let expectedPassword = "tvk2026";
+            
+            if (typeof TVKDb !== 'undefined') {
+              const config = TVKDb.getConfig();
+              if (config) {
+                if (config.email) expectedEmail = config.email;
+                if (config.admin_password) expectedPassword = config.admin_password;
+              }
+            }
+            
+            if (emailVal === expectedEmail && passVal === expectedPassword) {
+              // Authentication successful
+              sessionStorage.setItem("admin_logged_in", "true");
+              location.reload(); // Reload page to render the dashboard
+            } else {
+              // Authentication failed
+              if (errorMsg) {
+                errorMsg.style.display = "flex";
+                errorText.textContent = "Invalid email address or password. Please try again.";
+              }
+            }
+          });
+        }
+      }
+
+      // Safe ready check: runs immediately if document is already loaded
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initDropdownAndLogin);
+      } else {
+        initDropdownAndLogin();
+      }
+    })();
+  </script>
 </body>
 </html>

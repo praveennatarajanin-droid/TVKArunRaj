@@ -23,6 +23,7 @@
   --bg-color: #FFFFFF;
   --bg-card: #FDFEFE;
   --text-color: #1F2937;
+  --text-dark: #111827;
   --text-muted: #6B7280;
   --border-color: #E5E7EB;
   
@@ -46,6 +47,7 @@ body.dark-theme {
   --bg-color: #120204;
   --bg-card: #1C0509;
   --text-color: #F9FAFB;
+  --text-dark: #F3F4F6;
   --text-muted: #9CA3AF;
   --border-color: #2D0C10;
   --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
@@ -468,7 +470,7 @@ button, input, textarea, select {
 }
 
 .mega-card-img-wrap {
-  height: 120px;
+  height: 160px;
   width: 100%;
   overflow: hidden;
 }
@@ -477,6 +479,7 @@ button, input, textarea, select {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 20% !important;
 }
 
 .mega-card-content {
@@ -490,7 +493,8 @@ button, input, textarea, select {
 .mega-card-title {
   font-size: 0.85rem;
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.5;
+  padding-bottom: 2px;
   color: var(--text-dark);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -1926,8 +1930,8 @@ button, input, textarea, select {
 }
 
 .nav-links a {
-  padding: 0.9rem 1.1rem !important;
-  font-size: 0.82rem !important;
+  padding: 0.9rem 0.8rem !important;
+  font-size: 0.78rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.3px !important;
   color: #e5e5e5 !important;
@@ -3183,28 +3187,28 @@ button, input, textarea, select {
 /* Tamil-specific responsive navigation adjustments to prevent overlap on desktop */
 @media (min-width: 769px) {
   html[lang="ta"] .navbar .container {
-    max-width: 1400px !important;
+    max-width: 1480px !important;
   }
   html[lang="ta"] .nav-links a {
-    padding: 0.9rem 0.75rem !important;
-    font-size: 0.78rem !important;
-    gap: 0.3rem !important;
+    padding: 0.9rem 0.5rem !important;
+    font-size: 0.75rem !important;
+    gap: 0.2rem !important;
   }
   html[lang="ta"] .admin-nav-btn {
-    padding: 0.45rem 0.75rem !important;
-    font-size: 0.78rem !important;
+    padding: 0.45rem 0.6rem !important;
+    font-size: 0.75rem !important;
   }
 }
 
 @media (max-width: 1250px) and (min-width: 769px) {
   html[lang="ta"] .nav-links a {
-    padding: 0.9rem 0.5rem !important;
-    font-size: 0.72rem !important;
-    gap: 0.2rem !important;
+    padding: 0.9rem 0.4rem !important;
+    font-size: 0.7rem !important;
+    gap: 0.15rem !important;
   }
   html[lang="ta"] .admin-nav-btn {
-    padding: 0.4rem 0.5rem !important;
-    font-size: 0.72rem !important;
+    padding: 0.4rem 0.4rem !important;
+    font-size: 0.7rem !important;
   }
 }
 
@@ -3540,7 +3544,7 @@ body.dark-theme .theme-toggle {
 
 .editorial-featured-img-wrap {
   width: 100%;
-  height: 240px;
+  height: 380px;
   position: relative;
   overflow: hidden;
 }
@@ -4283,7 +4287,7 @@ html, body {
     min-height: 300px;
   }
   .editorial-featured-img-wrap {
-    height: 200px !important; /* Shorter image on mobile */
+    height: 280px !important; /* Shorter image on mobile */
   }
   .editorial-featured-title {
     font-size: 1.1rem !important;
@@ -4445,4 +4449,31 @@ html, body {
 /* Limit the number of recommended posts shown to a maximum of 3 to balance the columns */
 #side-news-list .recommended-item:nth-child(n+4) {
   display: none !important;
+}
+
+
+/* ==========================================================================
+   GLOBAL FIX: PREVENT FACE CROPPING (Object Position Override)
+   ========================================================================== */
+img {
+    object-position: top center !important;
+}
+
+/* Ensure background images also prioritize top center for focal points */
+.bg-cover,
+[style*="background-image"] {
+    background-position: top center !important;
+}
+
+/* Target specific interactive/slider elements just to be safe */
+.editorial-featured-img,
+.recommended-hero img,
+.overlay-card-img,
+.hero-col-featured img,
+.news-card-img img,
+.gallery-img,
+.video-thumbnail img,
+.sidebar-widget-img,
+.trending-img {
+    object-position: top center !important;
 }

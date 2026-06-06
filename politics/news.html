@@ -10,6 +10,14 @@
   
   <!-- Core Design System stylesheet -->
   <link rel="stylesheet" href="css/style.css">
+  <!-- Google Analytics Integration -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3TTBN9ZV8T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3TTBN9ZV8T');
+  </script>
 </head>
 <body>
 
@@ -66,7 +74,7 @@
           <i class="fas fa-search search-icon"></i>
         </div>
         <!-- Quick Action button for Petitions -->
-        <a href="index.html#grievance" class="action-btn-petition">
+        <a href="#grievance" class="action-btn-petition">
           <i class="fas fa-edit"></i> <span data-i18n="nav_grievance">மனு பிரிவு</span>
         </a>
       </div>
@@ -92,7 +100,7 @@
         </div>
         
         <div class="nav-item-dropdown">
-          <a href="index.html#news" data-i18n="nav_news">செய்திகள் <i class="fas fa-chevron-down"></i></a>
+          <a href="#news" data-i18n="nav_news">செய்திகள் <i class="fas fa-chevron-down"></i></a>
           <div class="mega-dropdown-panel">
             <div class="container">
               <div class="mega-dropdown-grid" id="mega-grid-news">
@@ -103,7 +111,7 @@
         </div>
         
         <div class="nav-item-dropdown">
-          <a href="index.html#projects" data-i18n="nav_projects">வளர்ச்சி திட்டங்கள் <i class="fas fa-chevron-down"></i></a>
+          <a href="#projects" data-i18n="nav_projects">வளர்ச்சி திட்டங்கள் <i class="fas fa-chevron-down"></i></a>
           <div class="mega-dropdown-panel">
             <div class="container">
               <div class="mega-dropdown-grid" id="mega-grid-projects">
@@ -114,11 +122,11 @@
         </div>
         
         <div class="nav-item-dropdown">
-          <a href="index.html#services">பொது சேவைகள்</a>
+          <a href="#services">பொது சேவைகள்</a>
         </div>
         
         <div class="nav-item-dropdown">
-          <a href="index.html#events">நிகழ்வுகள் <i class="fas fa-chevron-down"></i></a>
+          <a href="#events">நிகழ்வுகள் <i class="fas fa-chevron-down"></i></a>
           <div class="mega-dropdown-panel">
             <div class="container">
               <div class="mega-dropdown-grid" id="mega-grid-events">
@@ -129,11 +137,11 @@
         </div>
         
         <div class="nav-item-dropdown">
-          <a href="index.html#voices">மக்கள் குரல்</a>
+          <a href="#voices">மக்கள் குரல்</a>
         </div>
         
         <div class="nav-item-dropdown">
-          <a href="index.html#gallery" data-i18n="nav_gallery">புகைப்பட கேலரி <i class="fas fa-chevron-down"></i></a>
+          <a href="#gallery" data-i18n="nav_gallery">புகைப்பட கேலரி <i class="fas fa-chevron-down"></i></a>
           <div class="mega-dropdown-panel">
             <div class="container">
               <div class="mega-dropdown-grid" id="mega-grid-gallery">
@@ -144,11 +152,15 @@
         </div>
         
         <div class="nav-item-dropdown">
-          <a href="index.html#videos" data-i18n="videos_title">காணொளிகள்</a>
+          <a href="#videos" data-i18n="videos_title">காணொளிகள்</a>
         </div>
         
         <div class="nav-item-dropdown">
-          <a href="index.html#grievance">உதவி மையம்</a>
+          <a href="#grievance" data-i18n="nav_grievance">உதவி மையம்</a>
+        </div>
+
+        <div class="nav-item-dropdown">
+          <a href="#contact" data-i18n="nav_contact">தொடர்புக்கு</a>
         </div>
       </div>
 
@@ -186,8 +198,8 @@
           <!-- Share buttons -->
           <div class="share-buttons" style="display: flex; gap: 0.5rem;">
             <button style="border: 1px solid var(--border-color); background: none; color: var(--text-color); padding: 0.4rem 0.6rem; cursor: pointer; border-radius: 4px;" onclick="window.print()"><i class="fas fa-print"></i></button>
-            <a href="https://www.facebook.com/people/Arunraaj-TVK/61579221207463/#" target="_blank" style="background: #3b5998; color: #fff; padding: 0.4rem 0.6rem; border-radius: 4px; text-decoration: none;"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://x.com/arunraajkg" target="_blank" style="background: #1da1f2; color: #fff; padding: 0.4rem 0.6rem; border-radius: 4px; text-decoration: none;"><i class="fab fa-twitter"></i></a>
+            <a href="https://facebook.com/drarunrajtvk" target="_blank" style="background: #3b5998; color: #fff; padding: 0.4rem 0.6rem; border-radius: 4px; text-decoration: none;"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/drarunrajtvk" target="_blank" style="background: #1da1f2; color: #fff; padding: 0.4rem 0.6rem; border-radius: 4px; text-decoration: none;"><i class="fab fa-twitter"></i></a>
             <a href="https://wa.me/?text=Check%20out%20this%20news" target="_blank" style="background: #25d366; color: #fff; padding: 0.4rem 0.6rem; border-radius: 4px; text-decoration: none;"><i class="fab fa-whatsapp"></i></a>
           </div>
         </div>
@@ -258,9 +270,9 @@
         <h4 data-i18n="footer_links_title">இணைப்புகள்</h4>
         <ul class="footer-links">
           <li><a href="index.html"><i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i> <span data-i18n="nav_home">முகப்பு</span></a></li>
-          <li><a href="index.html#about"><i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i> <span data-i18n="nav_about">அமைச்சர் பற்றி</span></a></li>
-          <li><a href="index.html#news"><i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i> <span data-i18n="nav_news">செய்திகள்</span></a></li>
-          <li><a href="index.html#projects"><i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i> <span data-i18n="nav_projects">திருச்செங்கோடு திட்டங்கள்</span></a></li>
+          <li><a href="#about"><i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i> <span data-i18n="nav_about">அமைச்சர் பற்றி</span></a></li>
+          <li><a href="#news"><i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i> <span data-i18n="nav_news">செய்திகள்</span></a></li>
+          <li><a href="#projects"><i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i> <span data-i18n="nav_projects">திருச்செங்கோடு திட்டங்கள்</span></a></li>
         </ul>
       </div>
       
@@ -323,7 +335,13 @@
   <!-- Main portal rendering & translation scripts -->
   <script src="js/app.js"></script>
   <script src="js/news_detail.js"></script>
+  <script>
+    if (window.location.search.includes('mode=editor')) {
+      const editorScript = document.createElement('script');
+      editorScript.src = 'js/layout-editor.js';
+      document.body.appendChild(editorScript);
+    }
+  </script>
 </body>
 </html>
-
 

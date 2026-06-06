@@ -41,7 +41,56 @@ const TVKDb = (() => {
     "mla_spouse_en": "Doctor, Assistant Professor at Kilpauk Medical College (KMC)",
     "mla_spouse_ta": "டாக்டர், கீழ்பாக்கம் மருத்துவக் கல்லூரியின் உதவிப் பேராசிரியர் (KMC)",
     "mla_margin_en": "28,712 votes",
-    "mla_margin_ta": "28,712 வாக்குகள்"
+    "mla_margin_ta": "28,712 வாக்குகள்",
+    "website": "https://www.tvk-tiruchengodu.org.in",
+    "copyright": "TVK TIRUCHENGODU MLA © 2026. All Rights Reserved.",
+    "preloader_status": "Enable",
+    "fixed_date": "Disable",
+    "default_language": "English",
+    "show_archive_post": "Yes",
+    "direction": "LTR",
+    "timezone": "Asia/Kolkata",
+    "news_ticker_status": "Enable",
+    "speed_optimization": "Yes",
+    "breaking_news_limit": "5",
+    "show_reporter_message": "No",
+    "web_user_can_login": "Yes",
+    "web_user_can_comment": "Yes",
+    "login_image": "",
+    "logo": "",
+    "sidebar_logo": "",
+    "footer_logo": "",
+    "app_logo": "",
+    "mobile_menu_image": "",
+    "sidebar_collapsed_logo": "",
+    "footer_bg_image": "",
+    "favicon": "",
+    "theme_preset": "classic",
+    "theme_header_bg": "#7A0C1A",
+    "theme_header_font": "#FFFFFF",
+    "theme_footer_bg": "#7A0C1A",
+    "breaking_title": "மழைக்காலங்களில் ஏரி தூர்வாரும் சிறப்புப் பணிகள் நாமக்கல்லில் துவக்கம்!",
+    "breaking_bg_color": "#FDF2F4",
+    "breaking_category": "Announcements",
+    "breaking_status": "Active",
+    "home_positions": [
+      { "id": "pos_1", "lang": "Tamil", "position": "1", "category": "Constituency Work", "status": true },
+      { "id": "pos_2", "lang": "Tamil", "position": "2", "category": "Welfare Activities", "status": true },
+      { "id": "pos_3", "lang": "English", "position": "1", "category": "Constituency Work", "status": true },
+      { "id": "pos_4", "lang": "English", "position": "2", "category": "Welfare Activities", "status": true }
+    ],
+    "contact_editor_name": "Dr. K. G. Arunraj",
+    "contact_content": "Tiruchengodu Constituency MLA and Commercial Taxes Minister Dr. K. G. Arunraj Legislative Office.",
+    "office_address_en": "No. 46, South Car Street, Tiruchengodu, Namakkal District - 637211",
+    "phone": "+91 4288 252 444",
+    "contact_phone_two": "+91 4288 252 555",
+    "email": "tiruchengodu.mla@tvk.org.in",
+    "website": "www.tvk-tiruchengodu.org.in",
+    "contact_latitude": "11.3791",
+    "contact_longitude": "77.8967",
+    "contact_map_src": "https://maps.google.com/maps?q=11.3791,77.8967&hl=en&z=14&output=embed",
+    "section_order": ["home","dynamic-category-feeds","news","community","initiatives","videos","voices","data-highlights","about","grievance","contact"],
+    "hidden_sections": []
   },
   "news": [
     {
@@ -319,6 +368,15 @@ const TVKDb = (() => {
       if (!parsed.config) {
         parsed.config = { ...seedData.config };
         repaired = true;
+      } else {
+        let configRepaired = false;
+        for (const key in seedData.config) {
+          if (parsed.config[key] === undefined) {
+            parsed.config[key] = seedData.config[key];
+            configRepaired = true;
+          }
+        }
+        if (configRepaired) repaired = true;
       }
       if (!parsed.news || !Array.isArray(parsed.news)) {
         parsed.news = [ ...seedData.news ];
@@ -342,6 +400,26 @@ const TVKDb = (() => {
       }
       if (!parsed.comments || !Array.isArray(parsed.comments)) {
         parsed.comments = [ ...seedData.comments ];
+        repaired = true;
+      }
+      if (!parsed.seo) {
+        parsed.seo = {
+          meta_title: "Dr. K. G. Arunraj MLA | TVK Tiruchengodu Portal",
+          meta_desc: "Official constituency portal of Minister Dr. K. G. Arunraj MLA representing TVK in Tiruchengodu.",
+          meta_keywords: "TVK, Arunraj, Tiruchengodu, MLA, Namakkal",
+          og_title: "Dr. K. G. Arunraj MLA | TVK Tiruchengodu Portal",
+          og_desc: "Official constituency portal of Minister Dr. K. G. Arunraj MLA representing TVK in Tiruchengodu.",
+          sitemap_enable: true,
+          search_index: true
+        };
+        repaired = true;
+      }
+      if (!parsed.subscribers || !Array.isArray(parsed.subscribers)) {
+        parsed.subscribers = [
+          { email: "volunteer1@tvk.org.in", date: "2026-06-01" },
+          { email: "supporter2@gmail.com", date: "2026-06-02" },
+          { email: "citizen3@yahoo.co.in", date: "2026-06-03" }
+        ];
         repaired = true;
       }
 
@@ -678,6 +756,51 @@ const TVKDb = (() => {
       saveDb(db);
       return true;
     },
+
+    // ---------------- SEO METHODS ----------------
+    getSeo: () => {
+      return getDb().seo || {
+        meta_title: "",
+        meta_desc: "",
+        meta_keywords: "",
+        og_title: "",
+        og_desc: "",
+        sitemap_enable: true,
+        search_index: true
+      };
+    },
+    saveSeo: (seoData) => {
+      const db = getDb();
+      db.seo = { ...db.seo, ...seoData };
+      saveDb(db);
+      return db.seo;
+    },
+
+    // ---------------- SUBSCRIBERS METHODS ----------------
+    getSubscribers: () => {
+      return getDb().subscribers || [];
+    },
+    addSubscriber: (email) => {
+      const db = getDb();
+      if (!db.subscribers) db.subscribers = [];
+      const exists = db.subscribers.some(s => s.email.toLowerCase() === email.toLowerCase());
+      if (!exists) {
+        db.subscribers.push({
+          email: email,
+          date: new Date().toISOString().split("T")[0]
+        });
+        saveDb(db);
+      }
+      return db.subscribers;
+    },
+    deleteSubscriber: (email) => {
+      const db = getDb();
+      if (!db.subscribers) db.subscribers = [];
+      db.subscribers = db.subscribers.filter(s => s.email.toLowerCase() !== email.toLowerCase());
+      saveDb(db);
+      return true;
+    },
+
     
     // Helper to completely reset database to initial seed data
     resetDb: async () => {

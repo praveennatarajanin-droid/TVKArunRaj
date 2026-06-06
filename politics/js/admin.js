@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Custom smooth scroll helper for Media Library sub-filters
+    // Custom smooth scroll helper for sub-filters
     if (panelId === "gallery") {
       const subfilter = btn.getAttribute("data-subfilter");
       setTimeout(() => {
@@ -129,6 +129,32 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (subfilter === "list") {
           const catalog = document.getElementById("gallery-table-body");
           if (catalog) catalog.closest(".card-block").scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (subfilter === "video-add") {
+          const videoForm = document.getElementById("video-form");
+          if (videoForm) videoForm.closest(".card-block").scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (subfilter === "video-list") {
+          const videosTable = document.getElementById("videos-table-body");
+          if (videosTable) videosTable.closest(".card-block").scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    } else if (panelId === "settings") {
+      const subfilter = btn.getAttribute("data-subfilter");
+      setTimeout(() => {
+        if (subfilter === "setup-branding") {
+          const brandingField = document.getElementById("cfg-site-title-en");
+          if (brandingField) brandingField.closest(".card-block").scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (subfilter === "setup-contact") {
+          const contactField = document.getElementById("cfg-phone");
+          if (contactField) contactField.closest(".card-block").scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (subfilter === "setup-social") {
+          const socialField = document.getElementById("cfg-fb");
+          if (socialField) socialField.closest(".card-block").scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (subfilter === "header-nav") {
+          const brandingField = document.getElementById("cfg-site-title-en");
+          if (brandingField) brandingField.closest(".card-block").scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (subfilter === "footer-links") {
+          const contactField = document.getElementById("cfg-phone");
+          if (contactField) contactField.closest(".card-block").scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }, 100);
     }
@@ -199,6 +225,20 @@ document.addEventListener("DOMContentLoaded", () => {
       loadVideosTable();
     } else if (currentPanel === "grievances") {
       loadGrievanceInbox();
+    } else if (currentPanel === "seo") {
+      loadSeoForm();
+    } else if (currentPanel === "subscribers") {
+      loadSubscribersTable();
+    } else if (currentPanel === "theme") {
+      loadThemePanel();
+    } else if (currentPanel === "setup-top-breaking") {
+      loadSetupTopBreaking();
+    } else if (currentPanel === "home-page-settings") {
+      loadHomePageSettings();
+    } else if (currentPanel === "contact-page-setup") {
+      loadContactPageSetup();
+    } else if (currentPanel === "visual-editor") {
+      loadVisualEditorPanel();
     }
     updateDashboardStats();
   };
@@ -340,94 +380,100 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const renderDashboardCharts = (news, totalComments, totalSubscribers) => {
     // Doughnut chart for Last Week Performance
-    const ctxDoughnut = document.getElementById("chart-last-week-perf").getContext("2d");
-    if (window.lastWeekChart) {
-      window.lastWeekChart.destroy();
-    }
-    window.lastWeekChart = new Chart(ctxDoughnut, {
-      type: "doughnut",
-      data: {
-        labels: ["Posts", "Read int", "Comments"],
-        datasets: [{
-          data: [news.length, totalSubscribers, totalComments],
-          backgroundColor: ["#7A0C1A", "#F1C40F", "#9E1527"],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: "bottom",
-            labels: {
-              boxWidth: 12,
-              font: { size: 11, weight: 600 }
-            }
-          }
-        },
-        cutout: "70%"
+    const doughnutCanvas = document.getElementById("chart-last-week-perf");
+    if (doughnutCanvas && typeof Chart !== "undefined") {
+      const ctxDoughnut = doughnutCanvas.getContext("2d");
+      if (window.lastWeekChart) {
+        window.lastWeekChart.destroy();
       }
-    });
+      window.lastWeekChart = new Chart(ctxDoughnut, {
+        type: "doughnut",
+        data: {
+          labels: ["Posts", "Read int", "Comments"],
+          datasets: [{
+            data: [news.length, totalSubscribers, totalComments],
+            backgroundColor: ["#7A0C1A", "#F1C40F", "#9E1527"],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                boxWidth: 12,
+                font: { size: 11, weight: 600 }
+              }
+            }
+          },
+          cutout: "70%"
+        }
+      });
+    }
 
     // Weekly Bar Chart
-    const ctxBar = document.getElementById("chart-weekly-perf").getContext("2d");
-    if (window.weeklyChart) {
-      window.weeklyChart.destroy();
-    }
-    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const labels = [];
-    const barData = [];
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      labels.push(dayNames[d.getDay()]);
-      const dateStr = d.toISOString().split("T")[0];
-      const postsOnDay = news.filter(item => item.date === dateStr).length;
-      
-      const dayOfWeek = d.getDay();
-      let activityValue = postsOnDay * 5;
-      if (dayOfWeek === 0) {
-        activityValue += 14;
-      } else if (dayOfWeek === 6) {
-        activityValue += 12;
-      } else {
-        activityValue += 2 + (dayOfWeek % 4);
+    const barCanvas = document.getElementById("chart-weekly-perf");
+    if (barCanvas && typeof Chart !== "undefined") {
+      const ctxBar = barCanvas.getContext("2d");
+      if (window.weeklyChart) {
+        window.weeklyChart.destroy();
       }
-      barData.push(activityValue);
-    }
-    window.weeklyChart = new Chart(ctxBar, {
-      type: "bar",
-      data: {
-        labels: labels,
-        datasets: [{
-          label: "Activity",
-          data: barData,
-          backgroundColor: "#7A0C1A",
-          borderRadius: 4,
-          borderWidth: 0,
-          barThickness: 16
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false }
+      const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const labels = [];
+      const barData = [];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        labels.push(dayNames[d.getDay()]);
+        const dateStr = d.toISOString().split("T")[0];
+        const postsOnDay = news.filter(item => item.date === dateStr).length;
+
+        const dayOfWeek = d.getDay();
+        let activityValue = postsOnDay * 5;
+        if (dayOfWeek === 0) {
+          activityValue += 14;
+        } else if (dayOfWeek === 6) {
+          activityValue += 12;
+        } else {
+          activityValue += 2 + (dayOfWeek % 4);
+        }
+        barData.push(activityValue);
+      }
+      window.weeklyChart = new Chart(ctxBar, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [{
+            label: "Activity",
+            data: barData,
+            backgroundColor: "#7A0C1A",
+            borderRadius: 4,
+            borderWidth: 0,
+            barThickness: 16
+          }]
         },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: { color: "#f1f5f9" },
-            ticks: { font: { size: 10, weight: 500 } }
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
           },
-          x: {
-            grid: { display: false },
-            ticks: { font: { size: 9, weight: 500 } }
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: "#f1f5f9" },
+              ticks: { font: { size: 10, weight: 500 } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { font: { size: 9, weight: 500 } }
+            }
           }
         }
-      }
-    });
+      });
+    }
   };
 
   const renderLatestPostsList = (newsList) => {
@@ -611,23 +657,147 @@ document.addEventListener("DOMContentLoaded", () => {
     reader.readAsDataURL(file);
   };
 
+  // ---------------- SEO PANEL ----------------
+  const loadSeoForm = () => {
+    const seo = TVKDb.getSeo();
+    document.getElementById("seo-meta-title").value = seo.meta_title || "";
+    document.getElementById("seo-meta-desc").value = seo.meta_desc || "";
+    document.getElementById("seo-meta-keywords").value = seo.meta_keywords || "";
+    document.getElementById("seo-og-title").value = seo.og_title || "";
+    document.getElementById("seo-og-desc").value = seo.og_desc || "";
+    document.getElementById("seo-sitemap-enable").checked = seo.sitemap_enable !== false;
+    document.getElementById("seo-search-index").checked = seo.search_index !== false;
+  };
+
+  const seoForm = document.getElementById("seo-form");
+  if (seoForm) {
+    seoForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const seoData = {
+        meta_title: document.getElementById("seo-meta-title").value.trim(),
+        meta_desc: document.getElementById("seo-meta-desc").value.trim(),
+        meta_keywords: document.getElementById("seo-meta-keywords").value.trim(),
+        og_title: document.getElementById("seo-og-title").value.trim(),
+        og_desc: document.getElementById("seo-og-desc").value.trim(),
+        sitemap_enable: document.getElementById("seo-sitemap-enable").checked,
+        search_index: document.getElementById("seo-search-index").checked
+      };
+      TVKDb.saveSeo(seoData);
+      showAdminAlert("SEO Configuration Settings updated successfully!", "success");
+    });
+  }
+
+  // ---------------- SUBSCRIBERS PANEL ----------------
+  const loadSubscribersTable = () => {
+    const tbody = document.getElementById("subscribers-table-body");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+    
+    const subscribers = TVKDb.getSubscribers();
+    if (subscribers.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8; padding: 1.5rem;">No subscribers found.</td></tr>`;
+      return;
+    }
+    
+    subscribers.forEach((sub, index) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td style="text-align:center; font-weight: 600;">${index + 1}</td>
+        <td style="font-weight: 600; color: var(--text-dark);">${sub.email}</td>
+        <td>${sub.date}</td>
+        <td style="text-align:center;">
+          <button class="action-btn action-btn-delete delete-sub-btn" data-email="${sub.email}">
+            <i class="fas fa-trash-alt"></i> Remove
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Attach delete listeners
+    tbody.querySelectorAll(".delete-sub-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const email = btn.getAttribute("data-email");
+        if (confirm(`Are you sure you want to remove subscriber: ${email}?`)) {
+          TVKDb.deleteSubscriber(email);
+          showAdminAlert(`Subscriber ${email} removed.`, "success");
+          loadSubscribersTable();
+        }
+      });
+    });
+  };
+
   // ---------------- 1. SETTINGS PANEL ----------------
+  const setToggleButtonState = (btnId, value) => {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    btn.setAttribute("data-value", value);
+    btn.textContent = value;
+    
+    if (value === "Yes" || value === "Enable") {
+      btn.className = "settings-toggle-btn active-success-toggle";
+    } else {
+      btn.className = "settings-toggle-btn alert-danger-toggle";
+    }
+  };
+
+  const loadPreviewImage = (previewId, value) => {
+    const img = document.getElementById(previewId);
+    if (img) {
+      img.src = value || "images/tvklogo.png";
+    }
+  };
+
   const loadSettingsForm = () => {
     const config = TVKDb.getConfig();
     mlaProfileImageBase64 = ""; // Reset paste buffer
     
+    // TAB 1: Edit Application
     document.getElementById("cfg-site-title-en").value = config.site_title_en || "";
-    document.getElementById("cfg-site-title-ta").value = config.site_title_ta || "";
+    document.getElementById("cfg-phone").value = config.phone || "";
+    document.getElementById("cfg-address-en").value = config.office_address_en || "";
+    document.getElementById("cfg-website").value = config.website || "";
+    document.getElementById("cfg-copyright").value = config.copyright || "";
+    document.getElementById("cfg-preloader-status").value = config.preloader_status || "Enable";
+    
+    setToggleButtonState("cfg-fixed-date", config.fixed_date || "Disable");
+    document.getElementById("cfg-default-language").value = config.default_language || "English";
+    setToggleButtonState("cfg-show-archive", config.show_archive_post || "Yes");
+    
+    document.getElementById("cfg-email").value = config.email || "";
+    document.getElementById("cfg-footer-text").value = config.footer_text || "";
+    document.getElementById("cfg-direction").value = config.direction || "LTR";
+    document.getElementById("cfg-timezone").value = config.timezone || "Asia/Kolkata";
+    document.getElementById("cfg-news-ticker-status").value = config.news_ticker_status || "Enable";
+    document.getElementById("cfg-speed-optimization").value = config.speed_optimization || "Yes";
+    document.getElementById("cfg-breaking-news-limit").value = config.breaking_news_limit || "5";
+    
+    setToggleButtonState("cfg-show-reporter", config.show_reporter_message || "No");
+    setToggleButtonState("cfg-user-login", config.web_user_can_login || "Yes");
+    setToggleButtonState("cfg-user-comment", config.web_user_can_comment || "Yes");
+    
+    // Load Previews
+    loadPreviewImage("preview-favicon", config.favicon);
+    loadPreviewImage("preview-login-image", config.login_image);
+    loadPreviewImage("preview-logo", config.logo);
+    loadPreviewImage("preview-sidebar-logo", config.sidebar_logo);
+    loadPreviewImage("preview-footer-logo", config.footer_logo);
+    loadPreviewImage("preview-app-logo", config.app_logo);
+    loadPreviewImage("preview-mobile-menu-image", config.mobile_menu_image);
+    loadPreviewImage("preview-sidebar-collapsed-logo", config.sidebar_collapsed_logo);
+    loadPreviewImage("preview-footer-bg-image", config.footer_bg_image);
+    
+    // TAB 2: MLA & Party Profile
     document.getElementById("cfg-mla-name-en").value = config.mla_name_en || "";
     document.getElementById("cfg-mla-name-ta").value = config.mla_name_ta || "";
     document.getElementById("cfg-mla-title-en").value = config.mla_title_en || "";
     document.getElementById("cfg-mla-title-ta").value = config.mla_title_ta || "";
+    document.getElementById("cfg-mla-father-en").value = config.mla_father_en || "";
+    document.getElementById("cfg-mla-father-ta").value = config.mla_father_ta || "";
+    document.getElementById("cfg-mla-age").value = config.mla_age || "";
+    document.getElementById("cfg-const-phone").value = config.phone || "";
     document.getElementById("cfg-marquee-en").value = config.marquee_news_en || "";
     document.getElementById("cfg-marquee-ta").value = config.marquee_news_ta || "";
-    document.getElementById("cfg-phone").value = config.phone || "";
-    document.getElementById("cfg-email").value = config.email || "";
-    document.getElementById("cfg-address-en").value = config.office_address_en || "";
-    document.getElementById("cfg-address-ta").value = config.office_address_ta || "";
     document.getElementById("cfg-fb").value = config.facebook || "";
     document.getElementById("cfg-tw").value = config.twitter || "";
     document.getElementById("cfg-ig").value = config.instagram || "";
@@ -639,51 +809,250 @@ document.addEventListener("DOMContentLoaded", () => {
       mlaAvatarPreview.src = config.mla_image_url;
       mlaAvatarPreview.style.display = "block";
     }
-    const dashboardMlaAvatar = document.getElementById("dashboard-mla-avatar");
-    if (dashboardMlaAvatar && config.mla_image_url) {
-      dashboardMlaAvatar.src = config.mla_image_url;
-    }
   };
 
-  elements.configForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const newConfig = {
-      site_title_en: document.getElementById("cfg-site-title-en").value.trim(),
-      site_title_ta: document.getElementById("cfg-site-title-ta").value.trim(),
-      mla_name_en: document.getElementById("cfg-mla-name-en").value.trim(),
-      mla_name_ta: document.getElementById("cfg-mla-name-ta").value.trim(),
-      mla_title_en: document.getElementById("cfg-mla-title-en").value.trim(),
-      mla_title_ta: document.getElementById("cfg-mla-title-ta").value.trim(),
-      marquee_news_en: document.getElementById("cfg-marquee-en").value.trim(),
-      marquee_news_ta: document.getElementById("cfg-marquee-ta").value.trim(),
-      phone: document.getElementById("cfg-phone").value.trim(),
-      email: document.getElementById("cfg-email").value.trim(),
-      office_address_en: document.getElementById("cfg-address-en").value.trim(),
-      office_address_ta: document.getElementById("cfg-address-ta").value.trim(),
-      facebook: document.getElementById("cfg-fb").value.trim(),
-      twitter: document.getElementById("cfg-tw").value.trim(),
-      instagram: document.getElementById("cfg-ig").value.trim(),
-      youtube: document.getElementById("cfg-yt").value.trim(),
-      mla_image_url: mlaProfileImageBase64 || document.getElementById("cfg-mla-img").value.trim()
-    };
+  // Helper to setup upload preview listeners
+  const setupUploadPreview = (inputId, previewId, filenameId) => {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+    const filename = document.getElementById(filenameId);
+    if (!input || !preview || !filename) return;
 
-    // If an MLA image file was uploaded
-    const mlaFileSelect = document.getElementById("cfg-mla-file");
-    if (mlaFileSelect.files.length > 0 && !mlaProfileImageBase64) {
-      processImageUpload(mlaFileSelect.files[0], (base64) => {
-        newConfig.mla_image_url = base64;
-        TVKDb.updateConfig(newConfig);
-        showAdminAlert("Global Configuration Settings updated successfully!", "success");
-        loadPanelData();
-      });
-    } else {
-      TVKDb.updateConfig(newConfig);
-      showAdminAlert("Global Configuration Settings updated successfully!", "success");
-      loadPanelData();
-    }
+    input.addEventListener("change", (e) => {
+      if (e.target.files.length > 0) {
+        const file = e.target.files[0];
+        filename.textContent = file.name;
+        processImageUpload(file, (base64) => {
+          preview.src = base64;
+          input.setAttribute("data-base64", base64);
+        });
+      }
+    });
+  };
+
+  // Initialize upload previews
+  setupUploadPreview("file-favicon", "preview-favicon", "name-favicon");
+  setupUploadPreview("file-login-image", "preview-login-image", "name-login-image");
+  setupUploadPreview("file-logo", "preview-logo", "name-logo");
+  setupUploadPreview("file-sidebar-logo", "preview-sidebar-logo", "name-sidebar-logo");
+  setupUploadPreview("file-footer-logo", "preview-footer-logo", "name-footer-logo");
+  setupUploadPreview("file-app-logo", "preview-app-logo", "name-app-logo");
+  setupUploadPreview("file-mobile-menu-image", "preview-mobile-menu-image", "name-mobile-menu-image");
+  setupUploadPreview("file-sidebar-collapsed-logo", "preview-sidebar-collapsed-logo", "name-sidebar-collapsed-logo");
+  setupUploadPreview("file-footer-bg-image", "preview-footer-bg-image", "name-footer-bg-image");
+
+  // Setup click uploads for the "Upload" buttons
+  document.querySelectorAll(".btn-uploader-upload").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const target = e.target.getAttribute("data-target");
+      showAdminAlert(`Image for '${target}' selected and staged. Click Submit to save changes!`, "success");
+    });
   });
 
-  // Settings File Input Listener
+  // Toggle button click logic
+  document.querySelectorAll(".settings-toggle-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const currentValue = btn.getAttribute("data-value");
+      let newValue = "";
+      if (currentValue === "Yes") newValue = "No";
+      else if (currentValue === "No") newValue = "Yes";
+      else if (currentValue === "Enable") newValue = "Disable";
+      else if (currentValue === "Disable") newValue = "Enable";
+      
+      setToggleButtonState(btn.id, newValue);
+    });
+  });
+
+  // Inner settings sidebar tabs and accordion navigation logic
+  document.querySelectorAll(".settings-nav-header").forEach(header => {
+    header.addEventListener("click", () => {
+      const group = header.getAttribute("data-group");
+      const submenu = document.getElementById(`settings-submenu-${group}`);
+      
+      // Close other submenus and reset carets
+      document.querySelectorAll(".settings-nav-submenu").forEach(sub => {
+        if (sub !== submenu) {
+          sub.style.display = "none";
+        }
+      });
+      document.querySelectorAll(".settings-nav-header").forEach(h => {
+        if (h !== header) {
+          h.classList.remove("active");
+          const caret = h.querySelector(".nav-group-caret");
+          if (caret) {
+            caret.className = "fas fa-chevron-right nav-group-caret";
+          }
+        }
+      });
+
+      // Toggle this submenu
+      if (submenu) {
+        const isCollapsed = submenu.style.display === "none" || !submenu.style.display;
+        submenu.style.display = isCollapsed ? "block" : "none";
+        header.classList.toggle("active", isCollapsed);
+        const caret = header.querySelector(".nav-group-caret");
+        if (caret) {
+          caret.className = isCollapsed ? "fas fa-chevron-down nav-group-caret" : "fas fa-chevron-right nav-group-caret";
+        }
+      }
+    });
+  });
+
+  // Handle setting tab navigation switches
+  const switchSettingsTab = (tabId) => {
+    document.querySelectorAll(".settings-tab-panel").forEach(panel => {
+      panel.classList.remove("active");
+    });
+    const activePanel = document.getElementById(`settings-tab-${tabId}`);
+    if (activePanel) {
+      activePanel.classList.add("active");
+    }
+
+    // Highlight nav item
+    document.querySelectorAll(".settings-nav-item, .settings-nav-link").forEach(item => {
+      item.classList.remove("active");
+      if (item.getAttribute("data-tab") === tabId) {
+        item.classList.add("active");
+      }
+    });
+  };
+
+  document.querySelectorAll(".settings-nav-item, .settings-nav-link").forEach(item => {
+    item.addEventListener("click", (e) => {
+      const tabId = item.getAttribute("data-tab");
+      switchSettingsTab(tabId);
+    });
+  });
+
+  // Form submission for config (TAB 1)
+  elements.configForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const config = TVKDb.getConfig();
+    const newConfig = {
+      ...config,
+      site_title_en: document.getElementById("cfg-site-title-en").value.trim(),
+      phone: document.getElementById("cfg-phone").value.trim(),
+      office_address_en: document.getElementById("cfg-address-en").value.trim(),
+      website: document.getElementById("cfg-website").value.trim(),
+      copyright: document.getElementById("cfg-copyright").value.trim(),
+      preloader_status: document.getElementById("cfg-preloader-status").value,
+      fixed_date: document.getElementById("cfg-fixed-date").getAttribute("data-value"),
+      default_language: document.getElementById("cfg-default-language").value,
+      show_archive_post: document.getElementById("cfg-show-archive").getAttribute("data-value"),
+      email: document.getElementById("cfg-email").value.trim(),
+      footer_text: document.getElementById("cfg-footer-text").value.trim(),
+      direction: document.getElementById("cfg-direction").value.trim(),
+      timezone: document.getElementById("cfg-timezone").value.trim(),
+      news_ticker_status: document.getElementById("cfg-news-ticker-status").value,
+      speed_optimization: document.getElementById("cfg-speed-optimization").value,
+      breaking_news_limit: document.getElementById("cfg-breaking-news-limit").value,
+      show_reporter_message: document.getElementById("cfg-show-reporter").getAttribute("data-value"),
+      web_user_can_login: document.getElementById("cfg-user-login").getAttribute("data-value"),
+      web_user_can_comment: document.getElementById("cfg-user-comment").getAttribute("data-value"),
+      
+      // Uploaded images preview data or original config
+      favicon: document.getElementById("file-favicon").getAttribute("data-base64") || config.favicon || "",
+      login_image: document.getElementById("file-login-image").getAttribute("data-base64") || config.login_image || "",
+      logo: document.getElementById("file-logo").getAttribute("data-base64") || config.logo || "",
+      sidebar_logo: document.getElementById("file-sidebar-logo").getAttribute("data-base64") || config.sidebar_logo || "",
+      footer_logo: document.getElementById("file-footer-logo").getAttribute("data-base64") || config.footer_logo || "",
+      app_logo: document.getElementById("file-app-logo").getAttribute("data-base64") || config.app_logo || "",
+      mobile_menu_image: document.getElementById("file-mobile-menu-image").getAttribute("data-base64") || config.mobile_menu_image || "",
+      sidebar_collapsed_logo: document.getElementById("file-sidebar-collapsed-logo").getAttribute("data-base64") || config.sidebar_collapsed_logo || "",
+      footer_bg_image: document.getElementById("file-footer-bg-image").getAttribute("data-base64") || config.footer_bg_image || ""
+    };
+
+    TVKDb.updateConfig(newConfig);
+    showAdminAlert("Application configuration saved successfully!", "success");
+    loadPanelData();
+  });
+
+  // Settings - Backup Database Export
+  const backupBtn = document.getElementById("btn-backup-db-export");
+  if (backupBtn) {
+    backupBtn.addEventListener("click", () => {
+      try {
+        const dbData = localStorage.getItem("tvk_tiruchengodu_database");
+        if (!dbData) {
+          showAdminAlert("No database content found to backup!", "danger");
+          return;
+        }
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(dbData);
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "tvk_tiruchengodu_database_backup.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        showAdminAlert("Database exported successfully!", "success");
+      } catch (err) {
+        showAdminAlert("Failed to export database: " + err.message, "danger");
+      }
+    });
+  }
+
+  // Settings - Reset Database to Factory Seeds
+  const resetBtn = document.getElementById("btn-reset-db-factory");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      const confirmReset = confirm("WARNING: Are you sure you want to restore the database to its default factory seed configuration? This will delete all customized posts, settings, and grievances.");
+      if (confirmReset) {
+        try {
+          localStorage.removeItem("tvk_tiruchengodu_database");
+          showAdminAlert("Database reset successful! Reloading page...", "success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        } catch (err) {
+          showAdminAlert("Failed to reset database: " + err.message, "danger");
+        }
+      }
+    });
+  }
+
+  // Form submission for MLA Profile (TAB 2)
+  const mlaProfileForm = document.getElementById("mla-profile-form");
+  if (mlaProfileForm) {
+    mlaProfileForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const config = TVKDb.getConfig();
+      const newConfig = {
+        ...config,
+        mla_name_en: document.getElementById("cfg-mla-name-en").value.trim(),
+        mla_name_ta: document.getElementById("cfg-mla-name-ta").value.trim(),
+        mla_title_en: document.getElementById("cfg-mla-title-en").value.trim(),
+        mla_title_ta: document.getElementById("cfg-mla-title-ta").value.trim(),
+        mla_father_en: document.getElementById("cfg-mla-father-en").value.trim(),
+        mla_father_ta: document.getElementById("cfg-mla-father-ta").value.trim(),
+        mla_age: document.getElementById("cfg-mla-age").value.trim(),
+        phone: document.getElementById("cfg-const-phone").value.trim(),
+        marquee_news_en: document.getElementById("cfg-marquee-en").value.trim(),
+        marquee_news_ta: document.getElementById("cfg-marquee-ta").value.trim(),
+        facebook: document.getElementById("cfg-fb").value.trim(),
+        twitter: document.getElementById("cfg-tw").value.trim(),
+        instagram: document.getElementById("cfg-ig").value.trim(),
+        youtube: document.getElementById("cfg-yt").value.trim(),
+        mla_image_url: mlaProfileImageBase64 || document.getElementById("cfg-mla-img").value.trim()
+      };
+
+      // Handle portrait image file selection upload
+      const mlaFileSelect = document.getElementById("cfg-mla-file");
+      if (mlaFileSelect.files.length > 0 && !mlaProfileImageBase64) {
+        processImageUpload(mlaFileSelect.files[0], (base64) => {
+          newConfig.mla_image_url = base64;
+          TVKDb.updateConfig(newConfig);
+          showAdminAlert("MLA & Party Profile Settings updated successfully!", "success");
+          loadPanelData();
+        });
+      } else {
+        TVKDb.updateConfig(newConfig);
+        showAdminAlert("MLA & Party Profile Settings updated successfully!", "success");
+        loadPanelData();
+      }
+    });
+  }
+
+  // Portrait photo change listener
   document.getElementById("cfg-mla-file").addEventListener("change", (e) => {
     if (e.target.files.length > 0) {
       mlaProfileImageBase64 = ""; // Clear paste buffer if file chosen
@@ -1861,10 +2230,586 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ---------------- THEME PRESETS & SETTINGS ----------------
+  const themePresets = {
+    classic: { headerBg: "#7A0C1A", headerFont: "#FFFFFF", footerBg: "#7A0C1A" },
+    news: { headerBg: "#b31b1b", headerFont: "#FFFFFF", footerBg: "#111111" },
+    magazine: { headerBg: "#005b5c", headerFont: "#FFFFFF", footerBg: "#005b5c" },
+    times: { headerBg: "#0f1e36", headerFont: "#FFFFFF", footerBg: "#0f1e36" },
+    gazette: { headerBg: "#1a1a1a", headerFont: "#FFFFFF", footerBg: "#1a1a1a" },
+    fashion: { headerBg: "#c2185b", headerFont: "#FFFFFF", footerBg: "#c2185b" },
+    penmark: { headerBg: "#1b4332", headerFont: "#FFFFFF", footerBg: "#1b4332" },
+    storylane: { headerBg: "#bc4749", headerFont: "#FFFFFF", footerBg: "#bc4749" },
+    wordcraft: { headerBg: "#4a148c", headerFont: "#FFFFFF", footerBg: "#4a148c" }
+  };
+
+  let activePreset = "classic";
+
+  const loadThemePanel = () => {
+    const config = TVKDb.getConfig();
+    activePreset = config.theme_preset || "classic";
+    
+    const presetCards = document.querySelectorAll(".theme-preset-card");
+    presetCards.forEach(card => {
+      const preset = card.getAttribute("data-preset");
+      const nameLabel = card.querySelector(".preset-name");
+      if (preset === activePreset) {
+        card.classList.add("active");
+        if (nameLabel) {
+          nameLabel.style.background = "var(--primary)";
+          nameLabel.style.color = "#fff";
+        }
+      } else {
+        card.classList.remove("active");
+        if (nameLabel) {
+          nameLabel.style.background = "#f1f5f9";
+          nameLabel.style.color = "#334155";
+        }
+      }
+    });
+
+    const headerBg = config.theme_header_bg || themePresets.classic.headerBg;
+    const headerFont = config.theme_header_font || themePresets.classic.headerFont;
+    const footerBg = config.theme_footer_bg || themePresets.classic.footerBg;
+
+    const bgText = document.getElementById("theme-header-bg-text");
+    const bgPicker = document.getElementById("theme-header-bg-picker");
+    const fontText = document.getElementById("theme-header-font-text");
+    const fontPicker = document.getElementById("theme-header-font-picker");
+    const fbgText = document.getElementById("theme-footer-bg-text");
+    const fbgPicker = document.getElementById("theme-footer-bg-picker");
+
+    if (bgText) bgText.value = headerBg;
+    if (bgPicker) bgPicker.value = headerBg;
+    if (fontText) fontText.value = headerFont;
+    if (fontPicker) fontPicker.value = headerFont;
+    if (fbgText) fbgText.value = footerBg;
+    if (fbgPicker) fbgPicker.value = footerBg;
+  };
+
+  const setupThemePanelListeners = () => {
+    const presetCards = document.querySelectorAll(".theme-preset-card");
+    presetCards.forEach(card => {
+      card.addEventListener("click", () => {
+        const preset = card.getAttribute("data-preset");
+        activePreset = preset;
+        
+        presetCards.forEach(c => {
+          c.classList.remove("active");
+          const lbl = c.querySelector(".preset-name");
+          if (lbl) {
+            lbl.style.background = "#f1f5f9";
+            lbl.style.color = "#334155";
+          }
+        });
+        
+        card.classList.add("active");
+        const lbl = card.querySelector(".preset-name");
+        if (lbl) {
+          lbl.style.background = "var(--primary)";
+          lbl.style.color = "#fff";
+        }
+
+        const colors = themePresets[preset];
+        if (colors) {
+          const bgText = document.getElementById("theme-header-bg-text");
+          const bgPicker = document.getElementById("theme-header-bg-picker");
+          const fontText = document.getElementById("theme-header-font-text");
+          const fontPicker = document.getElementById("theme-header-font-picker");
+          const fbgText = document.getElementById("theme-footer-bg-text");
+          const fbgPicker = document.getElementById("theme-footer-bg-picker");
+
+          if (bgText) bgText.value = colors.headerBg;
+          if (bgPicker) bgPicker.value = colors.headerBg;
+          if (fontText) fontText.value = colors.headerFont;
+          if (fontPicker) fontPicker.value = colors.headerFont;
+          if (fbgText) fbgText.value = colors.footerBg;
+          if (fbgPicker) fbgPicker.value = colors.footerBg;
+        }
+      });
+    });
+
+    const syncColorPair = (textId, pickerId) => {
+      const textEl = document.getElementById(textId);
+      const pickerEl = document.getElementById(pickerId);
+      if (textEl && pickerEl) {
+        textEl.addEventListener("input", (e) => {
+          const val = e.target.value;
+          if (/^#[0-9A-F]{6}$/i.test(val)) {
+            pickerEl.value = val;
+          }
+        });
+        pickerEl.addEventListener("input", (e) => {
+          textEl.value = e.target.value.toUpperCase();
+        });
+      }
+    };
+
+    syncColorPair("theme-header-bg-text", "theme-header-bg-picker");
+    syncColorPair("theme-header-font-text", "theme-header-font-picker");
+    syncColorPair("theme-footer-bg-text", "theme-footer-bg-picker");
+
+    const themeForm = document.getElementById("theme-custom-settings-form");
+    if (themeForm) {
+      themeForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const headerBg = document.getElementById("theme-header-bg-text").value;
+        const headerFont = document.getElementById("theme-header-font-text").value;
+        const footerBg = document.getElementById("theme-footer-bg-text").value;
+
+        TVKDb.updateConfig({
+          theme_preset: activePreset,
+          theme_header_bg: headerBg,
+          theme_header_font: headerFont,
+          theme_footer_bg: footerBg
+        });
+
+        showAdminAlert("Theme settings updated successfully!", "success");
+      });
+    }
+
+    const themeResetBtn = document.getElementById("theme-reset-btn");
+    if (themeResetBtn) {
+      themeResetBtn.addEventListener("click", () => {
+        activePreset = "classic";
+        TVKDb.updateConfig({
+          theme_preset: "classic",
+          theme_header_bg: themePresets.classic.headerBg,
+          theme_header_font: themePresets.classic.headerFont,
+          theme_footer_bg: themePresets.classic.footerBg
+        });
+        loadThemePanel();
+        showAdminAlert("Theme reset to classic defaults.", "success");
+      });
+    }
+  };
+
+  // ---------------- SETUP TOP BREAKING POST ----------------
+  const loadSetupTopBreaking = () => {
+    const config = TVKDb.getConfig();
+    
+    const titleEl = document.getElementById("breaking-title");
+    const bgEl = document.getElementById("breaking-bg-color");
+    const catEl = document.getElementById("breaking-category");
+    
+    if (titleEl) titleEl.value = config.breaking_title || "";
+    if (bgEl) bgEl.value = config.breaking_bg_color || "rgba(122, 12, 26, 0.1)";
+    if (catEl) catEl.value = config.breaking_category || "Announcements";
+    
+    const status = config.breaking_status || "Active";
+    const radioEl = document.querySelector(`input[name="breaking-status"][value="${status}"]`);
+    if (radioEl) radioEl.checked = true;
+  };
+
+  const setupTopBreakingListeners = () => {
+    const form = document.getElementById("setup-top-breaking-form");
+    if (form) {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        const titleVal = document.getElementById("breaking-title").value;
+        const bgVal = document.getElementById("breaking-bg-color").value;
+        const catVal = document.getElementById("breaking-category").value;
+        const statusVal = document.querySelector(`input[name="breaking-status"]:checked`).value;
+        
+        TVKDb.updateConfig({
+          breaking_title: titleVal,
+          breaking_bg_color: bgVal,
+          breaking_category: catVal,
+          breaking_status: statusVal
+        });
+        
+        showAdminAlert("Top Breaking Post configuration updated!", "success");
+      });
+    }
+  };
+
+  // ---------------- HOME PAGE VIEW SETTINGS ----------------
+  const loadHomePageSettings = () => {
+    const config = TVKDb.getConfig();
+    if (!config.home_positions) {
+      config.home_positions = [
+        { id: 1, lang: "Tamil", position: "1", category: "Press Releases", status: true },
+        { id: 2, lang: "Tamil", position: "2", category: "Constituency Work", status: true },
+        { id: 3, lang: "English", position: "1", category: "Welfare Activities", status: true },
+        { id: 4, lang: "English", position: "2", category: "Announcements", status: true }
+      ];
+      TVKDb.updateConfig({ home_positions: config.home_positions });
+    }
+    
+    renderHomePositionsTable(config.home_positions);
+  };
+
+  const renderHomePositionsTable = (positions) => {
+    const tbody = document.getElementById("home-positions-table-body");
+    if (!tbody) return;
+    
+    tbody.innerHTML = "";
+    if (positions.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 1rem; color: var(--text-muted);">No category positions configured yet.</td></tr>`;
+      return;
+    }
+    
+    const sorted = [...positions].sort((a, b) => {
+      if (a.lang !== b.lang) return a.lang.localeCompare(b.lang);
+      return parseInt(a.position) - parseInt(b.position);
+    });
+    
+    sorted.forEach(pos => {
+      const tr = document.createElement("tr");
+      tr.style.borderBottom = "1px solid var(--border-color)";
+      tr.innerHTML = `
+        <td style="padding: 0.75rem;">${pos.lang}</td>
+        <td style="padding: 0.75rem;">
+          <select class="form-input row-pos-num" data-id="${pos.id}" style="width: 70px; padding: 0.25rem;">
+            ${Array.from({length: 10}, (_, i) => i + 1).map(n => `<option value="${n}" ${pos.position == n ? "selected" : ""}>${n}</option>`).join("")}
+          </select>
+        </td>
+        <td style="padding: 0.75rem;">
+          <input type="text" class="form-input row-pos-cat" data-id="${pos.id}" value="${pos.category}" style="padding: 0.25rem 0.5rem; max-width: 250px;">
+        </td>
+        <td style="padding: 0.75rem; text-align: center;">
+          <input type="checkbox" class="row-pos-status" data-id="${pos.id}" ${pos.status ? "checked" : ""} style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary);">
+        </td>
+        <td style="padding: 0.75rem; text-align: center;">
+          <button type="button" class="btn-delete-pos" data-id="${pos.id}" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1rem;" title="Delete Position">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    tbody.querySelectorAll(".btn-delete-pos").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = parseInt(btn.getAttribute("data-id"));
+        const config = TVKDb.getConfig();
+        const updated = config.home_positions.filter(p => p.id !== id);
+        TVKDb.updateConfig({ home_positions: updated });
+        loadHomePageSettings();
+      });
+    });
+  };
+
+  const setupHomePageSettingsListeners = () => {
+    const addForm = document.getElementById("home-add-position-form");
+    if (addForm) {
+      addForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        const lang = document.getElementById("home-pos-lang").value;
+        const num = document.getElementById("home-pos-number").value;
+        const cat = document.getElementById("home-pos-category").value;
+        
+        const config = TVKDb.getConfig();
+        const positions = config.home_positions || [];
+        
+        const maxId = positions.reduce((max, p) => p.id > max ? p.id : max, 0);
+        
+        positions.push({
+          id: maxId + 1,
+          lang: lang,
+          position: num,
+          category: cat,
+          status: true
+        });
+        
+        TVKDb.updateConfig({ home_positions: positions });
+        addForm.reset();
+        loadHomePageSettings();
+        showAdminAlert("New homepage position added!", "success");
+      });
+    }
+
+    const updateForm = document.getElementById("home-positions-update-form");
+    if (updateForm) {
+      updateForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        const config = TVKDb.getConfig();
+        const positions = config.home_positions || [];
+        
+        const rows = document.querySelectorAll("#home-positions-table-body tr");
+        rows.forEach(row => {
+          const catInput = row.querySelector(".row-pos-cat");
+          if (!catInput) return;
+          const id = parseInt(catInput.getAttribute("data-id"));
+          const numVal = row.querySelector(".row-pos-num").value;
+          const catVal = catInput.value;
+          const statusVal = row.querySelector(".row-pos-status").checked;
+          
+          const pos = positions.find(p => p.id === id);
+          if (pos) {
+            pos.position = numVal;
+            pos.category = catVal;
+            pos.status = statusVal;
+          }
+        });
+        
+        TVKDb.updateConfig({ home_positions: positions });
+        loadHomePageSettings();
+        showAdminAlert("Homepage settings updated successfully!", "success");
+      });
+    }
+  };
+
+  // ---------------- CONTACT PAGE SETUP ----------------
+  const loadContactPageSetup = () => {
+    const config = TVKDb.getConfig();
+    
+    const editor = document.getElementById("contact-editor-name");
+    const phone = document.getElementById("contact-phone");
+    const phoneTwo = document.getElementById("contact-phone-two");
+    const email = document.getElementById("contact-email");
+    const website = document.getElementById("contact-website");
+    const address = document.getElementById("contact-address");
+    const content = document.getElementById("contact-content");
+    const lat = document.getElementById("contact-latitude");
+    const lon = document.getElementById("contact-longitude");
+    const mapSrc = document.getElementById("contact-map-src");
+    
+    if (editor) editor.value = config.contact_editor_name || config.mla_name_en || "Dr. K. G. Arunraj";
+    if (phone) phone.value = config.phone || "+91 4288 252 444";
+    if (phoneTwo) phoneTwo.value = config.contact_phone_two || "";
+    if (email) email.value = config.email || "tiruchengodu.mla@tvk.org.in";
+    if (website) website.value = config.website || "www.tvk-tiruchengodu.org.in";
+    if (address) address.value = config.office_address_en || "No. 46, South Car Street, Tiruchengodu, Namakkal - 637211";
+    if (content) content.value = config.contact_content || "";
+    if (lat) lat.value = config.contact_latitude || "11.3791";
+    if (lon) lon.value = config.contact_longitude || "77.8967";
+    if (mapSrc) mapSrc.value = config.contact_map_src || "";
+  };
+
+  const setupContactPageSetupListeners = () => {
+    const form = document.getElementById("contact-page-setup-form");
+    if (form) {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        const editor = document.getElementById("contact-editor-name").value;
+        const phone = document.getElementById("contact-phone").value;
+        const phoneTwo = document.getElementById("contact-phone-two").value;
+        const email = document.getElementById("contact-email").value;
+        const website = document.getElementById("contact-website").value;
+        const address = document.getElementById("contact-address").value;
+        const content = document.getElementById("contact-content").value;
+        const lat = document.getElementById("contact-latitude").value;
+        const lon = document.getElementById("contact-longitude").value;
+        const mapSrc = document.getElementById("contact-map-src").value;
+        
+        TVKDb.updateConfig({
+          contact_editor_name: editor,
+          phone: phone,
+          contact_phone_two: phoneTwo,
+          email: email,
+          website: website,
+          office_address_en: address,
+          office_address_ta: address,
+          contact_content: content,
+          contact_latitude: lat,
+          contact_longitude: lon,
+          contact_map_src: mapSrc
+        });
+        
+        showAdminAlert("Contact settings updated successfully!", "success");
+      });
+    }
+  };
+
+  // ---------------- VISUAL LAYOUT EDITOR CONTROLLER ----------------
+  let undoStack = [];
+  let redoStack = [];
+  let currentLayoutState = null;
+  let isUpdatingIframe = false;
+
+  // Global methods called from iframe
+  window.registerLayoutChange = (state) => {
+    if (isUpdatingIframe) return;
+
+    // Deep compare to prevent duplicate stack pushes
+    if (currentLayoutState && JSON.stringify(currentLayoutState) === JSON.stringify(state)) {
+      return;
+    }
+
+    if (currentLayoutState) {
+      undoStack.push(JSON.parse(JSON.stringify(currentLayoutState)));
+      redoStack = []; // Reset redo
+    }
+    currentLayoutState = JSON.parse(JSON.stringify(state));
+    updateHistoryButtons();
+  };
+
+  window.saveLayoutState = () => {
+    if (currentLayoutState) {
+      TVKDb.updateConfig({
+        section_order: currentLayoutState.section_order,
+        hidden_sections: currentLayoutState.hidden_sections
+      });
+      showAdminAlert("Layout structure saved successfully and synchronized live!", "success");
+    }
+  };
+
+  const updateHistoryButtons = () => {
+    const undoBtn = document.getElementById("editor-undo-btn");
+    const redoBtn = document.getElementById("editor-redo-btn");
+    if (!undoBtn || !redoBtn) return;
+
+    undoBtn.disabled = undoStack.length === 0;
+    undoBtn.style.cursor = undoStack.length === 0 ? "not-allowed" : "pointer";
+    undoBtn.style.color = undoStack.length === 0 ? "#94a3b8" : "#1e293b";
+    undoBtn.style.background = undoStack.length === 0 ? "#f1f5f9" : "#fff";
+
+    redoBtn.disabled = redoStack.length === 0;
+    redoBtn.style.cursor = redoStack.length === 0 ? "not-allowed" : "pointer";
+    redoBtn.style.color = redoStack.length === 0 ? "#94a3b8" : "#1e293b";
+    redoBtn.style.background = redoStack.length === 0 ? "#f1f5f9" : "#fff";
+  };
+
+  const updateIframeFromState = (state) => {
+    const iframe = document.getElementById("layout-editor-iframe");
+    if (!iframe || !iframe.contentDocument) return;
+
+    isUpdatingIframe = true;
+
+    const iframeDoc = iframe.contentDocument;
+    const container = iframeDoc.getElementById("homepage-sections-container");
+    if (container && state.section_order) {
+      const sections = Array.from(container.children).filter(el => el.tagName === "SECTION");
+      state.section_order.forEach(id => {
+        const el = sections.find(s => s.id === id);
+        if (el) {
+          container.appendChild(el);
+        }
+      });
+
+      // Sync visibility
+      sections.forEach(el => {
+        if (state.hidden_sections && state.hidden_sections.includes(el.id)) {
+          el.style.setProperty("display", "none", "important");
+        } else {
+          el.style.removeProperty("display");
+          // Re-trigger layout engine logic inside page contexts
+          if (el.id === "dynamic-category-feeds" && iframe.contentWindow.renderDynamicCategoryFeeds) {
+            iframe.contentWindow.renderDynamicCategoryFeeds();
+          }
+        }
+      });
+
+      // Sync hiddenSections inside iframe
+      if (iframe.contentWindow && typeof iframe.contentWindow.setHiddenSections === "function") {
+        iframe.contentWindow.setHiddenSections(state.hidden_sections);
+      }
+    }
+
+    isUpdatingIframe = false;
+  };
+
+  const loadVisualEditorPanel = () => {
+    const iframe = document.getElementById("layout-editor-iframe");
+    if (iframe) {
+      iframe.src = "index.html?mode=editor&t=" + Date.now();
+      // Initialize stacks
+      undoStack = [];
+      redoStack = [];
+      currentLayoutState = null;
+      updateHistoryButtons();
+    }
+  };
+
+  const setupVisualEditorListeners = () => {
+    // Device Preview Toggles
+    const previewBtns = document.querySelectorAll(".preview-btn");
+    const iframe = document.getElementById("layout-editor-iframe");
+    
+    previewBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        previewBtns.forEach(b => {
+          b.classList.remove("active");
+          b.style.background = "transparent";
+          b.style.color = "#64748b";
+          b.style.boxShadow = "none";
+        });
+        btn.classList.add("active");
+        btn.style.background = "#fff";
+        btn.style.color = "#1e293b";
+        btn.style.boxShadow = "0 1px 3px rgba(0,0,0,0.1)";
+
+        const device = btn.getAttribute("data-device");
+        if (device === "desktop") {
+          iframe.style.width = "100%";
+        } else if (device === "tablet") {
+          iframe.style.width = "768px";
+        } else if (device === "mobile") {
+          iframe.style.width = "375px";
+        }
+      });
+    });
+
+    // Undo / Redo Actions
+    const undoBtn = document.getElementById("editor-undo-btn");
+    const redoBtn = document.getElementById("editor-redo-btn");
+
+    if (undoBtn) {
+      undoBtn.addEventListener("click", () => {
+        if (undoStack.length > 0) {
+          const prevState = undoStack.pop();
+          if (currentLayoutState) {
+            redoStack.push(JSON.parse(JSON.stringify(currentLayoutState)));
+          }
+          currentLayoutState = prevState;
+          updateIframeFromState(prevState);
+          updateHistoryButtons();
+        }
+      });
+    }
+
+    if (redoBtn) {
+      redoBtn.addEventListener("click", () => {
+        if (redoStack.length > 0) {
+          const nextState = redoStack.pop();
+          if (currentLayoutState) {
+            undoStack.push(JSON.parse(JSON.stringify(currentLayoutState)));
+          }
+          currentLayoutState = nextState;
+          updateIframeFromState(nextState);
+          updateHistoryButtons();
+        }
+      });
+    }
+
+    // Reset Layout
+    const resetBtn = document.getElementById("editor-reset-btn");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
+        if (confirm("Are you sure you want to reset layout positioning to default?")) {
+          TVKDb.updateConfig({
+            section_order: ["home","dynamic-category-feeds","news","community","initiatives","videos","voices","data-highlights","about","grievance","contact"],
+            hidden_sections: []
+          });
+          loadVisualEditorPanel();
+          showAdminAlert("Layout reset to default. Canvas reloaded.", "success");
+        }
+      });
+    }
+
+    // Save Layout
+    const saveBtn = document.getElementById("editor-save-btn");
+    if (saveBtn) {
+      saveBtn.addEventListener("click", () => {
+        window.saveLayoutState();
+      });
+    }
+  };
+
   // ---------------- INITIALIZE ADMIN DASHBOARD ----------------
   const initAdmin = async () => {
     await TVKDb.init();
     setupDashboardFilters();
+    setupThemePanelListeners();
+    setupTopBreakingListeners();
+    setupHomePageSettingsListeners();
+    setupContactPageSetupListeners();
+    setupVisualEditorListeners();
     loadPanelData();
   };
 

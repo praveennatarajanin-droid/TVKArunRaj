@@ -323,6 +323,12 @@ document.addEventListener("DOMContentLoaded", () => {
     renderGalleryGrid();
     renderVideoSection();
     renderMegaMenus();
+    
+    applyDynamicTheme();
+    renderBreakingBanner();
+    renderDynamicCategoryFeeds();
+    renderContactSection();
+    applySectionOrdering();
   };
 
   // 1. Theme Toggle: Light / Dark Mode Redirection
@@ -1027,6 +1033,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const email = elements.newsletterInput ? elements.newsletterInput.value.trim() : "";
       
       if (email && elements.newsletterBtn && elements.newsletterInput) {
+        if (typeof TVKDb !== "undefined" && typeof TVKDb.addSubscriber === "function") {
+          TVKDb.addSubscriber(email);
+        }
         elements.newsletterBtn.textContent = "✓";
         elements.newsletterInput.value = "";
         elements.newsletterInput.setAttribute("disabled", "true");
@@ -1091,6 +1100,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Populate dynamic translation nodes
     updateLanguageUI();
     
+    // Wire up breaking banner close button
+    const closeBtn = document.getElementById("close-breaking-banner-btn");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        sessionStorage.setItem("tvk_breaking_banner_closed", "true");
+        const banner = document.getElementById("top-breaking-post-banner");
+        if (banner) banner.style.display = "none";
+      });
+    }
+
     // Live date-time ticker update
     setInterval(() => {
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
@@ -1101,6 +1120,290 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Run dynamic counter animations
     animateStatsCounters();
+  };
+
+  // ---------------- THEME OVERRIDE HELPER ----------------
+  const themePresets = {
+    classic: { primary: "#7A0C1A", secondary: "#D4AF37" },
+    news: { primary: "#b31b1b", secondary: "#111111" },
+    magazine: { primary: "#005b5c", secondary: "#d4af37" },
+    times: { primary: "#0f1e36", secondary: "#b39243" },
+    gazette: { primary: "#1a1a1a", secondary: "#e0a96d" },
+    fashion: { primary: "#c2185b", secondary: "#f48fb1" },
+    penmark: { primary: "#1b4332", secondary: "#d8f3dc" },
+    storylane: { primary: "#bc4749", secondary: "#f2e8cf" },
+    wordcraft: { primary: "#4a148c", secondary: "#ea80fc" }
+  };
+
+  const applyDynamicTheme = () => {
+    const config = siteConfig || TVKDb.getConfig();
+    const preset = config.theme_preset || "classic";
+    const headerBg = config.theme_header_bg || "#7A0C1A";
+    const headerFont = config.theme_header_font || "#FFFFFF";
+    const footerBg = config.theme_footer_bg || "#7A0C1A";
+
+    const colors = themePresets[preset] || themePresets.classic;
+    const primaryColor = colors.primary;
+    const secondaryColor = colors.secondary;
+
+    let styleEl = document.getElementById("tvk-dynamic-theme-styles");
+    if (!styleEl) {
+      styleEl = document.createElement("style");
+      styleEl.id = "tvk-dynamic-theme-styles";
+      document.head.appendChild(styleEl);
+    }
+
+    styleEl.innerHTML = `
+      :root {
+        --primary: ${primaryColor} !important;
+        --primary-light: ${primaryColor}dd !important;
+        --primary-dark: ${primaryColor}aa !important;
+        --secondary: ${secondaryColor} !important;
+      }
+      .main-header {
+        background-color: ${headerBg} !important;
+      }
+      .main-header .brand-text h1, 
+      .main-header .brand-text p, 
+      .main-header .brand-text span,
+      .main-header .brand-text a,
+      .main-header .header-meta-item,
+      .main-header .header-meta-item i,
+      .main-header .admin-nav-btn,
+      .main-header .admin-nav-btn i {
+        color: ${headerFont} !important;
+      }
+      .main-footer {
+        background-color: ${footerBg} !important;
+        border-top-color: ${secondaryColor} !important;
+      }
+      #breaking-banner-inner {
+        background-color: ${primaryColor}1a !important;
+        border-left: 4px solid ${primaryColor} !important;
+      }
+      #breaking-banner-category {
+        background-color: ${primaryColor} !important;
+        color: #fff !important;
+      }
+    `;
+  };
+
+  // ---------------- BREAKING ALERT BANNER ----------------
+  const renderBreakingBanner = () => {
+    const config = siteConfig || TVKDb.getConfig();
+    const banner = document.getElementById("top-breaking-post-banner");
+    const titleEl = document.getElementById("breaking-banner-title");
+    const catEl = document.getElementById("breaking-banner-category");
+    const innerEl = document.getElementById("breaking-banner-inner");
+
+    if (!banner) return;
+
+    const isClosed = sessionStorage.getItem("tvk_breaking_banner_closed") === "true";
+    const isActive = (config.breaking_status || "Active") === "Active";
+
+    if (isActive && !isClosed && config.breaking_title) {
+      banner.style.display = "block";
+      if (titleEl) titleEl.textContent = config.breaking_title;
+      if (catEl) {
+        catEl.textContent = currentLang === "en" ? (config.breaking_category || "Announcements") : getCategoryTamil(config.breaking_category || "Announcements");
+      }
+      if (innerEl) {
+        innerEl.style.backgroundColor = config.breaking_bg_color || "rgba(122, 12, 26, 0.1)";
+      }
+    } else {
+      banner.style.display = "none";
+    }
+  };
+
+  // ---------------- DYNAMIC CATEGORY POSITION FEEDS ----------------
+  const renderDynamicCategoryFeeds = () => {
+    const container = document.getElementById("dynamic-category-feeds-container");
+    const sectionTitle = document.getElementById("category-feeds-section-title");
+    
+    if (!container) return;
+    
+    if (sectionTitle) {
+      sectionTitle.textContent = currentLang === "en" ? "Constituency Category Feeds" : "தொகுதி செய்திக் களங்கள்";
+    }
+
+    const config = siteConfig || TVKDb.getConfig();
+    const positions = config.home_positions || [];
+    
+    const currentLangText = currentLang === "en" ? "English" : "Tamil";
+    const activePositions = positions
+      .filter(pos => pos.status && pos.lang === currentLangText)
+      .sort((a, b) => parseInt(a.position) - parseInt(b.position));
+
+    container.innerHTML = "";
+    
+    if (activePositions.length === 0) {
+      const section = document.getElementById("dynamic-category-feeds");
+      if (section) section.style.display = "none";
+      return;
+    } else {
+      const section = document.getElementById("dynamic-category-feeds");
+      if (section) section.style.display = "block";
+    }
+
+    activePositions.forEach(pos => {
+      const categoryNews = allNews.filter(n => n.category === pos.category).slice(0, 3);
+      
+      const feedBlock = document.createElement("div");
+      feedBlock.className = "category-feed-block";
+      feedBlock.style.backgroundColor = "var(--bg-card)";
+      feedBlock.style.borderRadius = "8px";
+      feedBlock.style.padding = "1.25rem";
+      feedBlock.style.boxShadow = "var(--shadow-sm)";
+      feedBlock.style.border = "1px solid var(--border-color)";
+      feedBlock.style.display = "flex";
+      feedBlock.style.flexDirection = "column";
+      feedBlock.style.gap = "1rem";
+
+      const categoryNameLabel = currentLang === "en" ? pos.category : getCategoryTamil(pos.category);
+
+      let articlesHtml = "";
+      if (categoryNews.length === 0) {
+        articlesHtml = `<p style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">${currentLang === "en" ? "No articles in this category." : "இப்பிரிவில் செய்திகள் எதுவும் இல்லை."}</p>`;
+      } else {
+        categoryNews.forEach(item => {
+          articlesHtml += `
+            <div class="category-feed-item" onclick="openNewsModal('${item.id}')" style="display: flex; gap: 0.75rem; align-items: center; cursor: pointer; transition: transform 0.2s;">
+              <img src="${item.image_url}" alt="Thumbnail" referrerpolicy="no-referrer" style="width: 50px; height: 50px; border-radius: 4px; object-fit: cover;">
+              <div style="flex-grow: 1;">
+                <h5 style="font-size: 0.85rem; font-weight: 700; margin: 0 0 0.25rem 0; color: var(--text-color); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${item[`title_${currentLang}`]}</h5>
+                <span style="font-size: 0.75rem; color: var(--text-muted);"><i class="far fa-calendar-alt"></i> ${formatDateString(item.date)}</span>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      feedBlock.innerHTML = `
+        <div style="border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+          <h4 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--primary);">${categoryNameLabel}</h4>
+          <span style="font-size: 0.7rem; font-weight: 700; background: var(--secondary); color: #fff; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;">Pos ${pos.position}</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          ${articlesHtml}
+        </div>
+      `;
+      container.appendChild(feedBlock);
+    });
+  };
+
+  // ---------------- DYNAMIC MLA CONTACT SECTION ----------------
+  const renderContactSection = () => {
+    const config = siteConfig || TVKDb.getConfig();
+    
+    const editorEl = document.getElementById("contact-view-editor");
+    const addressEl = document.getElementById("contact-view-address");
+    const phone1El = document.getElementById("contact-view-phone-1");
+    const phone2El = document.getElementById("contact-view-phone-2");
+    const emailEl = document.getElementById("contact-view-email");
+    const linkEl = document.getElementById("contact-view-web-link");
+    const coordsEl = document.getElementById("contact-view-coords");
+    const iframeEl = document.getElementById("contact-view-map-iframe");
+    const titleEl = document.getElementById("contact-view-title");
+    const contentEl = document.getElementById("contact-view-content");
+
+    if (titleEl) titleEl.textContent = currentLang === "en" ? "Contact Office" : "தொடர்பு அலுவலகம்";
+    if (contentEl) contentEl.textContent = config.contact_content || (currentLang === "en" ? "Feel free to reach out to us at our constituency office or via any of our online channels." : "எங்கள் தொகுதி அலுவலகத்திலோ அல்லது இணையவழி மூலமாகவோ எங்களைத் தொடர்பு கொள்ளலாம்.");
+    if (editorEl) editorEl.textContent = config.contact_editor_name || config.mla_name_en || "Dr. K. G. Arunraj";
+    if (addressEl) addressEl.textContent = config.office_address_en || "No. 46, South Car Street, Tiruchengodu, Namakkal - 637211";
+    
+    if (phone1El) {
+      const p1 = config.phone || "+91 4288 252 444";
+      phone1El.textContent = p1;
+      phone1El.href = `tel:${p1}`;
+    }
+    
+    if (phone2El) {
+      const p2 = config.contact_phone_two || "";
+      if (p2) {
+        phone2El.textContent = `| ${p2}`;
+        phone2El.style.display = "inline";
+      } else {
+        phone2El.style.display = "none";
+      }
+    }
+
+    if (emailEl) {
+      const email = config.email || "tiruchengodu.mla@tvk.org.in";
+      emailEl.textContent = email;
+      emailEl.href = `mailto:${email}`;
+    }
+
+    if (linkEl) {
+      const website = config.website || "www.tvk-tiruchengodu.org.in";
+      linkEl.textContent = website;
+      linkEl.href = website.startsWith("http") ? website : `https://${website}`;
+    }
+
+    const lat = config.contact_latitude || "11.3791";
+    const lon = config.contact_longitude || "77.8967";
+    if (coordsEl) {
+      coordsEl.textContent = `${lat}, ${lon}`;
+    }
+
+    if (iframeEl) {
+      if (config.contact_map_src) {
+        iframeEl.src = config.contact_map_src;
+      } else {
+        iframeEl.src = `https://maps.google.com/maps?q=${lat},${lon}&hl=en&z=14&output=embed`;
+      }
+    }
+  };
+
+  // ---------------- APPLY DYNAMIC LAYOUT SECTION ORDERING ----------------
+  const applySectionOrdering = () => {
+    const config = siteConfig || TVKDb.getConfig();
+    const order = config.section_order;
+    const hidden = config.hidden_sections || [];
+
+    const container = document.getElementById("homepage-sections-container");
+    if (!container) return;
+
+    // Default chronological section sequence
+    const defaultOrder = [
+      "home",
+      "dynamic-category-feeds",
+      "news",
+      "community",
+      "initiatives",
+      "videos",
+      "voices",
+      "data-highlights",
+      "about",
+      "grievance",
+      "contact"
+    ];
+
+    const activeOrder = (order && Array.isArray(order) && order.length > 0) ? order : defaultOrder;
+
+    // Get current sections present in layout container
+    const sections = Array.from(container.children).filter(el => el.tagName === "SECTION");
+
+    // Reorder DOM nodes sequentially
+    activeOrder.forEach(id => {
+      const el = sections.find(s => s.id === id);
+      if (el) {
+        container.appendChild(el);
+      }
+    });
+
+    // Sync visibility state
+    sections.forEach(el => {
+      if (hidden.includes(el.id)) {
+        el.style.setProperty("display", "none", "important");
+      } else {
+        // Remove style override to fallback to stylesheets
+        el.style.removeProperty("display");
+        // For dynamic feeds, re-trigger default layout logic
+        if (el.id === "dynamic-category-feeds") {
+          renderDynamicCategoryFeeds();
+        }
+      }
+    });
   };
 
   // Cross-tab real-time sync for immediate reflection of admin changes with loop prevention
